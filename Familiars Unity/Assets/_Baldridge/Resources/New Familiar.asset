@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: New Familiar
+  m_EditorClassIdentifier: Assembly-CSharp::Familiar
+  speciesName: 
+  level: 1
+  sprite: {fileID: 0}
+  type: 0000000000000000
+  baseHP: 0
+  baseAttack: 0
+  baseDefense: 0
+  baseSpecialAttack: 0
+  baseSpecialDefense: 0
+  baseSpeed: 0
+  hp: 0
+  attack: 0
+  defense: 0
+  specialAttack: 0
+  specialDefense: 0
+  speed: 0
+  maxMovement: 1
