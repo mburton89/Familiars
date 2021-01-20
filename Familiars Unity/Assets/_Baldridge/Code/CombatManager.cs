@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum BattleState { Start, PlayerSelection, PlayerAction, PlayerAttack, EnemyAttack, Busy }
+public enum BattleState { Start, PlayerSelection, PlayerAction, PlayerAttack, PlayerTargeting, EnemyAttack, Busy }
 
 public class CombatManager : MonoBehaviour
 {
@@ -28,9 +28,11 @@ public class CombatManager : MonoBehaviour
 
     [SerializeField] BattleDialogBox dialogBox;
     [SerializeField] BattleSelector battleSelector;
+    [SerializeField] BattleSelector battleTargetSelector;
 
     BattleState state;
-    int currentPosition;
+    int currentPosition = 4;
+    int currentTargetPosition = 4;
     int currentAction;
     int currentAttack;
 
@@ -58,6 +60,7 @@ public class CombatManager : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
+        battleTargetSelector.gameObject.SetActive(false);
         PlayerSelection();
     }
     
@@ -70,6 +73,7 @@ public class CombatManager : MonoBehaviour
     void PlayerAction()
     {
         state = BattleState.PlayerAction;
+        battleSelector.gameObject.SetActive(false);
         dialogBox.EnableDialogText(false);
         dialogBox.EnableActionSelector(true);
     }
@@ -80,6 +84,52 @@ public class CombatManager : MonoBehaviour
         dialogBox.EnableActionSelector(false);
         dialogBox.EnableAttackSelector(true);
         playerHUD.gameObject.SetActive(false);
+    }
+
+    void PlayerTargeting()
+    {
+        state = BattleState.PlayerTargeting;
+        battleTargetSelector.gameObject.SetActive(true);
+        dialogBox.EnableAttackSelector(false);
+    }
+
+    IEnumerator PerformPlayerAttacks()
+    {
+        state = BattleState.Busy;
+
+        var attack = selectedFamiliar.Familiar.Attacks[currentAttack];
+        yield return dialogBox.TypeDialog($"{selectedFamiliar.Familiar.Base.Name} used {attack.Base.Name}");
+        yield return new WaitForSeconds(1f);
+        bool isFainted = enemyUnits[0].Familiar.TakeDamage(attack, selectedFamiliar.Familiar);
+        
+        if (isFainted)
+        {
+            yield return dialogBox.TypeDialog($"{enemyUnits[0].Familiar.Base.Name} fainted");
+        }
+        else
+        {
+            StartCoroutine(EnemyMove());
+        }
+    }
+
+    IEnumerator EnemyMove()
+    {
+        state = BattleState.EnemyAttack;
+
+        var attack = enemyUnits[0].Familiar.GetRandomAttack();
+        yield return dialogBox.TypeDialog($"{enemyUnits[0].Familiar.Base.Name} used {attack.Base.Name}");
+        yield return new WaitForSeconds(1f);
+        bool isFainted = playerUnits[0].Familiar.TakeDamage(attack, enemyUnits[0].Familiar);
+        yield return playerHUD.UpdateHP();
+
+        if (isFainted)
+        {
+            yield return dialogBox.TypeDialog($"{playerUnits[0].Familiar.Base.Name} fainted");
+        }
+        else
+        {
+            StartCoroutine(EnemyMove());
+        }
     }
 
     private void Update()
@@ -94,6 +144,9 @@ public class CombatManager : MonoBehaviour
                 break;
             case BattleState.PlayerAttack:
                 HandleAttackSelection();
+                break;
+            case BattleState.PlayerTargeting:
+                HandleTargetSelection();
                 break;
         }
     }
@@ -204,6 +257,65 @@ public class CombatManager : MonoBehaviour
         }
 
         dialogBox.UpdateAttackSelection(currentAttack, selectedFamiliar.Familiar.Attacks[currentAttack]);
+
+        playerTeam.SetFieldPattern(selectedFamiliar.Familiar.Attacks[currentAttack].Base.Sources, Tile.State.Source);
+        enemyTeam.SetFieldPattern(selectedFamiliar.Familiar.Attacks[currentAttack].Base.Targets, Tile.State.Target);
+        enemyTeam.SetFieldTargetingRecticle(selectedFamiliar.Familiar.Attacks[currentAttack].Base.TargetingReticle, Tile.State.TargetReticle);
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+
+            // Once all actions are selected
+            dialogBox.EnableAttackSelector(false);
+            dialogBox.EnableDialogText(false);
+
+            PlayerTargeting();
+
+            // Select a target
+            //StartCoroutine(PerformPlayerAttacks());
+        }
     }
 
+    void HandleTargetSelection()
+    {
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            if (!(currentTargetPosition == 2 || currentTargetPosition == 5 || currentTargetPosition == 8))
+            {
+                if (enemyTeam.field[currentTargetPosition + 1].currentState == Tile.State.Target)
+                    currentTargetPosition++;
+            }
+                
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            if (!(currentTargetPosition == 0 || currentTargetPosition == 3 || currentTargetPosition == 6))
+            {
+                if (enemyTeam.field[currentTargetPosition - 1].currentState == Tile.State.Target)
+                    currentTargetPosition--;
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            if (currentTargetPosition > 2)
+            {
+                if (enemyTeam.field[currentTargetPosition - 3].currentState == Tile.State.Target)
+                    currentTargetPosition -= 3;
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            if (currentTargetPosition < 6)
+            {
+                if (enemyTeam.field[currentTargetPosition + 3].currentState == Tile.State.Target)
+                    currentTargetPosition += 3;
+            }
+        }
+
+        battleTargetSelector.SetPosition(currentTargetPosition);
+
+
+        enemyTeam.SetFieldPattern(selectedFamiliar.Familiar.Attacks[currentAttack].Base.Targets, Tile.State.Target);
+        enemyTeam.SetFieldTargetingRecticle(selectedFamiliar.Familiar.Attacks[currentAttack].Base.TargetingReticle, Tile.State.TargetReticle, currentTargetPosition);
+    }
 }

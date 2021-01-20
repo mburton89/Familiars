@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    public enum State {Normal, Move, Switch, Target, AllyTarget}
+    public enum State {Normal, Source, Move, Switch, Target, AllyTarget, TargetReticle, AllyTargetReticle}
     public CombatAvatar familiarOccupant;
     public GameObject hazardOccupant;
 
@@ -68,6 +68,9 @@ public class Tile : MonoBehaviour
             case State.Normal:
                 sprite.color = Color.white;
                 break;
+            case State.Source:
+                sprite.color = Color.cyan;
+                break;
             case State.Move:
                 sprite.color = Color.blue;
                 break;
@@ -79,6 +82,12 @@ public class Tile : MonoBehaviour
                 break;
             case State.AllyTarget:
                 sprite.color = Color.green;
+                break;
+            case State.TargetReticle:
+                sprite.color = new Color(0.47f, 0.13f, 0.05f);
+                break;
+            case State.AllyTargetReticle:
+                sprite.color = new Color(0.13f, 0.5f, 0.19f);
                 break;
             default:
                 currentState = State.Normal;

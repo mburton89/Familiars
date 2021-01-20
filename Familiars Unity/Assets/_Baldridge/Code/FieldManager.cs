@@ -43,6 +43,45 @@ public class FieldManager : MonoBehaviour
         }
     }
 
+    public void SetFieldPattern(PatternBase pattern, Tile.State st)
+    {
+        bool[] _patternSets = pattern.Active;
+        for (int _p = 0; _p < _patternSets.Length; _p++)
+        {
+            if (_patternSets[_p])
+            {
+                field[_p].SetState(st);
+            }
+            else
+            {
+                field[_p].SetState(Tile.State.Normal);
+            }
+            
+        }
+    }
+
+
+    public void SetFieldTargetingRecticle(PatternBase pattern, Tile.State st)
+    {
+        SetFieldTargetingRecticle(pattern, st, 4);
+    }
+
+    public void SetFieldTargetingRecticle(PatternBase pattern, Tile.State st, int centerPos)
+    {
+        bool[] _patternSets = pattern.Active;
+        for (int _p = 0; _p < _patternSets.Length; _p++)
+        {
+            // Check to see if the shifted array would go out of bounds
+            if (!(_p - (4 - centerPos) > _patternSets.Length || _p - (4 - centerPos) < 0))
+            {
+                if (_patternSets[_p])
+                {
+                    field[_p - (4 - centerPos)].SetState(st);
+                }
+            }
+        }
+    }
+
     public Tile GetTile(int t)
     {
         return field[t];

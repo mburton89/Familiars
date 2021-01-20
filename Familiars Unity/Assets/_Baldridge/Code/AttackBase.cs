@@ -17,7 +17,7 @@ public class AttackBase : ScriptableObject
 
     [SerializeField] PatternBase sources; // The places that the familiar can use the attack from
     [SerializeField] PatternBase targets; // The places that the familiar is able to target with the move
-    [SerializeField] PatternBase targettingReticle; // the shape that the attack resolves in (AOE's and such)
+    [SerializeField] PatternBase targetingReticle; // the shape that the attack resolves in (AOE's and such)
 
     public string Name
     {
@@ -46,5 +46,22 @@ public class AttackBase : ScriptableObject
     {
         get { return type; }
     }
+
+    public PatternBase Sources
+    {
+        get { return sources; }
+    }
+
+    public PatternBase Targets
+    {
+        get { return targets; }
+    }
+
+    public PatternBase TargetingReticle
+    {
+        get { return targetingReticle;  }
+    }
+
+
 
 }

@@ -62,4 +62,27 @@ public class Familiar
         get { return Mathf.FloorToInt((Base.MaxHp * Level) / 100f) + 10; }
     }
 
+    public bool TakeDamage(Attack attack, Familiar attacker)
+    {
+        float modifier = Random.Range(0.8f, 1f);
+        float a = (2 * attacker.Level + 10) / 250f;
+        float d = a * attack.Base.Power * ((float)attacker.Attack / Defense) + 2;
+        int damage = Mathf.FloorToInt(d * modifier);
+
+        HP -= damage;
+        if (HP <= 0)
+        {
+            HP = 0;
+            return true;
+        }
+
+        return false;
+
+    }
+
+    public Attack GetRandomAttack()
+    {
+        int _r = Random.Range(0, Attacks.Count);
+        return Attacks[_r];
+    }
 }
