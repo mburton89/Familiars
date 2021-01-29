@@ -1,0 +1,19 @@
+--- v1.2.0 ---
+
+- ADDED unscaledTime property to UIDialog
+- ADDED pause game property to UIDialog
+- ADDED event OnFilledTextEvent to TypewriterText component
+- ADDED property displayActionsAfterTextIsFilled to UIDialog to display the dialog actions only when the full text is displayed
+- ADDED UIDialog events OnEnableEvent and OnDisableEvent
+- FIXED don't restart the conversation when using OnButtonDown trigger using the "Submit" button and the UIDialog was not animated.
+- FIXED select the first action when actions are visible after the text is filled
+- FIXED some bugs generating the Dialog Preview
+- FIXED dialog preview displacement when the pivot is not centered
+- FIXED not enabling the actionList UIDialog element when the dialog has no actions to show
+
+--- v1.1.0 ---
+
+- ADDED TimeToContinueText to the UIDialog component to automatically go to the next text after a while.
+- ADDED ConversationTrigger events: OnKeyDown and OnKeyPressed
+- ADDED Tag Filter to ConversationTrigger so only the gameObject with certain trigger will activate it on collision
+- FIXED The UIDialog transform position is set after playing the conversation to avoid the onExit event of current conversation to change it, for example, calling OverrideUIDialogParent.
