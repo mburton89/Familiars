@@ -17,6 +17,7 @@ public class BattleDialogBox : MonoBehaviour
     [SerializeField] List<Text> attackTexts;
 
     [SerializeField] Text usesText;
+    [SerializeField] Text styleText;
     [SerializeField] Text typeText;
 
     public void SetDialog(string dialog)
@@ -72,6 +73,7 @@ public class BattleDialogBox : MonoBehaviour
         }
 
         usesText.text = $"Uses {attack.Uses}/{attack.Base.Uses}";
+        styleText.text = attack.Base.AttackStyle.ToString();
         typeText.text = attack.Base.Type.ToString();
     }
 

@@ -15,13 +15,14 @@ MonoBehaviour:
   name: Ohro
   description: 
   familiarSprite: {fileID: 21300000, guid: 88dfbd87ba934bf4e8801808e71244ce, type: 3}
-  types: 0400000000000000
+  types: 0500000000000000
   maxHp: 60
   attack: 30
   defense: 40
   spAttack: 30
   spDefense: 40
   speed: 25
+  movement: 3
   learnableAttacks:
   - attackBase: {fileID: 11400000, guid: bc3d50a6614e7ff4e8fbfd90e5edc0f4, type: 2}
     level: 1

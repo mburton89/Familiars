@@ -21,6 +21,7 @@ public class FamiliarBase : ScriptableObject
     [SerializeField] int spAttack;
     [SerializeField] int spDefense;
     [SerializeField] int speed;
+    [SerializeField] int movement;
 
     [SerializeField] List<LearnableAttack> learnableAttacks;
 
@@ -59,15 +60,20 @@ public class FamiliarBase : ScriptableObject
     }
     public int SpAttack
     {
-        get { return SpAttack; }
+        get { return spAttack; }
     }
     public int SpDefense
     {
-        get { return SpDefense; }
+        get { return spDefense; }
     }
     public int Speed
     {
         get { return speed; }
+    }
+
+    public int Movement
+    {
+        get { return movement; }
     }
 
     public List<LearnableAttack> LearnableAttacks
@@ -102,7 +108,7 @@ public enum Type
     Normal,
     Fire,
     Aqua,
-    Plant,
+    Nature,
     Earth,
     Air,
     Shock,
@@ -110,7 +116,6 @@ public enum Type
     Arcane,
     Sweet,
     Sound,
-    Bug,
     Light,
     Dark,
     Ancient

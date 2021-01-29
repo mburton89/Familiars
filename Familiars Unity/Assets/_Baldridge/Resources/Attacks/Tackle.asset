@@ -16,8 +16,10 @@ MonoBehaviour:
   description: 
   power: 40
   accuracy: 100
+  range: 1
   uses: 30
   type: 1
+  attackStyle: 1
   sources: {fileID: 11400000, guid: 657e23ff3bf7a3a49b7572c010a6c9a0, type: 2}
   targets: {fileID: 11400000, guid: 657e23ff3bf7a3a49b7572c010a6c9a0, type: 2}
   targetingReticle: {fileID: 11400000, guid: adfbd9d9716edd44888ac690c94389cd, type: 2}

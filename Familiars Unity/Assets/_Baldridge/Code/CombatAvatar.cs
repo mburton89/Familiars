@@ -17,6 +17,11 @@ public class CombatAvatar : MonoBehaviour
 
     private CombatManager combatManager;
 
+    List<Node> selectableNodes = new List<Node>();
+    Stack<Node> path = new Stack<Node>();
+
+    Node currentNode;
+
     public Familiar Familiar { get; set; }
 
     public void Setup()
