@@ -1,96 +1,72 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
+public enum TileState { Normal, Source, Move, Switch, Target, AllyTarget, TargetReticle, AllyTargetReticle }
 
 public class Tile : MonoBehaviour
 {
-    public enum State {Normal, Source, Move, Switch, Target, AllyTarget, TargetReticle, AllyTargetReticle}
-    public CombatAvatar familiarOccupant;
+    public CombatUnit familiarOccupant;
     public GameObject hazardOccupant;
 
     public int x;
     public int y;
 
-    public State currentState;
+    public TileState currentState;
 
-    private CombatManager cm;
-    [SerializeField] private SpriteRenderer sprite;
+    public bool playerField;
+
+    [SerializeField] bool mainField;
+
+    [SerializeField] CombatHandler ch;
+    [SerializeField] Image sprite;
+
+    [HideInInspector] public bool visited;
+    [HideInInspector] public bool selectable;
+    [HideInInspector] public int distance;
+    [HideInInspector] public Tile parent;
+    [HideInInspector] public bool current;
 
     private List<Tile> neighbors = new List<Tile>();
 
     // Start is called before the first frame update
     void Start()
     {
-        cm = GameObject.Find("CombatManager").GetComponent<CombatManager>();
-        currentState = State.Normal;
+        currentState = TileState.Normal;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    /*
-    private void OnMouseDown()
-    {
-        switch (currentState)
-        {
-            case State.Normal:
-                cm.selectedFamiliar = familiarOccupant;
-                if (familiarOccupant != null)
-                {
-                    //cm.UpdateMenuState(BattleMenuState.Main);
-                }
-                else
-                {
-                    //cm.UpdateMenuState(BattleMenuState.None);
-                }
-                break;
-            case State.Move:
-                break;
-            case State.Switch:
-                break;
-            case State.Target:
-                break;
-                
-
-        }
-       
-        
-        
-    }*/
-
-    public void SetState(State st)
+    public void SetState(TileState st)
     {
         currentState = st;
         switch (currentState)
         {
-            case State.Normal:
+            case TileState.Normal:
                 sprite.color = Color.white;
                 break;
-            case State.Source:
+            case TileState.Source:
                 sprite.color = Color.cyan;
                 break;
-            case State.Move:
+            case TileState.Move:
                 sprite.color = Color.blue;
                 break;
-            case State.Switch:
+            case TileState.Switch:
                 sprite.color = Color.blue;
                 break;
-            case State.Target:
+            case TileState.Target:
                 sprite.color = Color.red;
                 break;
-            case State.AllyTarget:
+            case TileState.AllyTarget:
                 sprite.color = Color.green;
                 break;
-            case State.TargetReticle:
+            case TileState.TargetReticle:
                 sprite.color = new Color(0.47f, 0.13f, 0.05f);
                 break;
-            case State.AllyTargetReticle:
+            case TileState.AllyTargetReticle:
                 sprite.color = new Color(0.13f, 0.5f, 0.19f);
                 break;
             default:
-                currentState = State.Normal;
+                currentState = TileState.Normal;
                 sprite.color = Color.white;
                 break;
         }
@@ -101,7 +77,7 @@ public class Tile : MonoBehaviour
     {
         familiarOccupant = null;
         hazardOccupant = null;
-        SetState(State.Normal);
+        SetState(TileState.Normal);
     }
 
     public List<Tile> GetNeighbors()
@@ -112,5 +88,18 @@ public class Tile : MonoBehaviour
     public void AddNeighbors(Tile t)
     {
         neighbors.Add(t);
+    }
+
+    public void Reset()
+    {
+        current = false;
+        //target = false;
+        selectable = false;
+        //walkable = true;
+
+        visited = false;
+        parent = null;
+        distance = 0;
+        SetState(TileState.Normal);
     }
 }

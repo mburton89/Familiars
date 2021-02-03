@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
+/*
 public enum BattleState { Start, PlayerSelection, PlayerAction, PlayerAttack, PlayerTargeting, EnemyAttack, Busy }
 
 public class CombatManager : MonoBehaviour
@@ -258,9 +258,9 @@ public class CombatManager : MonoBehaviour
 
         dialogBox.UpdateAttackSelection(currentAttack, selectedFamiliar.Familiar.Attacks[currentAttack]);
 
-        playerTeam.SetFieldPattern(selectedFamiliar.Familiar.Attacks[currentAttack].Base.Sources, Tile.State.Source);
-        enemyTeam.SetFieldPattern(selectedFamiliar.Familiar.Attacks[currentAttack].Base.Targets, Tile.State.Target);
-        enemyTeam.SetFieldTargetingRecticle(selectedFamiliar.Familiar.Attacks[currentAttack].Base.TargetingReticle, Tile.State.TargetReticle);
+        playerTeam.SetFieldPattern(selectedFamiliar.Familiar.Attacks[currentAttack].Base.Sources, TileState.Source);
+        enemyTeam.SetFieldPattern(selectedFamiliar.Familiar.Attacks[currentAttack].Base.Targets, TileState.Target);
+        enemyTeam.SetFieldTargetingRecticle(selectedFamiliar.Familiar.Attacks[currentAttack].Base.TargetingReticle, TileState.TargetReticle);
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
@@ -282,7 +282,7 @@ public class CombatManager : MonoBehaviour
         {
             if (!(currentTargetPosition == 2 || currentTargetPosition == 5 || currentTargetPosition == 8))
             {
-                if (enemyTeam.field[currentTargetPosition + 1].currentState == Tile.State.Target)
+                if (enemyTeam.field[currentTargetPosition + 1].currentState == TileState.Target)
                     currentTargetPosition++;
             }
                 
@@ -291,7 +291,7 @@ public class CombatManager : MonoBehaviour
         {
             if (!(currentTargetPosition == 0 || currentTargetPosition == 3 || currentTargetPosition == 6))
             {
-                if (enemyTeam.field[currentTargetPosition - 1].currentState == Tile.State.Target)
+                if (enemyTeam.field[currentTargetPosition - 1].currentState == TileState.Target)
                     currentTargetPosition--;
             }
         }
@@ -299,7 +299,7 @@ public class CombatManager : MonoBehaviour
         {
             if (currentTargetPosition > 2)
             {
-                if (enemyTeam.field[currentTargetPosition - 3].currentState == Tile.State.Target)
+                if (enemyTeam.field[currentTargetPosition - 3].currentState == TileState.Target)
                     currentTargetPosition -= 3;
             }
         }
@@ -307,7 +307,7 @@ public class CombatManager : MonoBehaviour
         {
             if (currentTargetPosition < 6)
             {
-                if (enemyTeam.field[currentTargetPosition + 3].currentState == Tile.State.Target)
+                if (enemyTeam.field[currentTargetPosition + 3].currentState == TileState.Target)
                     currentTargetPosition += 3;
             }
         }
@@ -315,7 +315,7 @@ public class CombatManager : MonoBehaviour
         battleTargetSelector.SetPosition(currentTargetPosition);
 
 
-        enemyTeam.SetFieldPattern(selectedFamiliar.Familiar.Attacks[currentAttack].Base.Targets, Tile.State.Target);
-        enemyTeam.SetFieldTargetingRecticle(selectedFamiliar.Familiar.Attacks[currentAttack].Base.TargetingReticle, Tile.State.TargetReticle, currentTargetPosition);
+        enemyTeam.SetFieldPattern(selectedFamiliar.Familiar.Attacks[currentAttack].Base.Targets, TileState.Target);
+        enemyTeam.SetFieldTargetingRecticle(selectedFamiliar.Familiar.Attacks[currentAttack].Base.TargetingReticle, TileState.TargetReticle, currentTargetPosition);
     }
-}
+}*/

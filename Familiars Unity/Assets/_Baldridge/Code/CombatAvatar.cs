@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
 public class CombatAvatar : MonoBehaviour
 {
     [SerializeField] FamiliarBase _base;
@@ -49,3 +50,4 @@ public class CombatAvatar : MonoBehaviour
 
     }
 }
+*/

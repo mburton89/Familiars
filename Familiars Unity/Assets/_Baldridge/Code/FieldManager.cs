@@ -43,7 +43,7 @@ public class FieldManager : MonoBehaviour
         }
     }
 
-    public void SetFieldPattern(PatternBase pattern, Tile.State st)
+    public void SetFieldPattern(PatternBase pattern, TileState st)
     {
         bool[] _patternSets = pattern.Active;
         for (int _p = 0; _p < _patternSets.Length; _p++)
@@ -54,19 +54,19 @@ public class FieldManager : MonoBehaviour
             }
             else
             {
-                field[_p].SetState(Tile.State.Normal);
+                field[_p].SetState(TileState.Normal);
             }
             
         }
     }
 
 
-    public void SetFieldTargetingRecticle(PatternBase pattern, Tile.State st)
+    public void SetFieldTargetingRecticle(PatternBase pattern, TileState st)
     {
         SetFieldTargetingRecticle(pattern, st, 4);
     }
 
-    public void SetFieldTargetingRecticle(PatternBase pattern, Tile.State st, int centerPos)
+    public void SetFieldTargetingRecticle(PatternBase pattern, TileState st, int centerPos)
     {
         bool[] _patternSets = pattern.Active;
         for (int _p = 0; _p < _patternSets.Length; _p++)
@@ -91,7 +91,7 @@ public class FieldManager : MonoBehaviour
     {
         for (int _i = 0; _i < field.Length; _i++)
         {
-            field[_i].SetState(Tile.State.Normal);
+            field[_i].SetState(TileState.Normal);
         }
     }
 }

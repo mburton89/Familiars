@@ -15,14 +15,14 @@ MonoBehaviour:
   name: Petalim
   description: 
   familiarSprite: {fileID: 21300000, guid: c2e1f6c630162c9469ed3d5ce12e08eb, type: 3}
-  types: 0400000000000000
+  type: 0000000000000000
   maxHp: 30
   attack: 20
   defense: 25
   spAttack: 40
   spDefense: 38
   speed: 27
-  movement: 3
+  movement: 1
   learnableAttacks:
   - attackBase: {fileID: 11400000, guid: bc3d50a6614e7ff4e8fbfd90e5edc0f4, type: 2}
     level: 1

@@ -15,14 +15,14 @@ MonoBehaviour:
   name: Vinabit
   description: 
   familiarSprite: {fileID: 21300000, guid: ad76391dc68f0f144800d94f17c0ab0b, type: 3}
-  types: 0400000000000000
+  type: 0000000000000000
   maxHp: 40
   attack: 50
   defense: 30
   spAttack: 35
   spDefense: 35
   speed: 40
-  movement: 3
+  movement: 1
   learnableAttacks:
   - attackBase: {fileID: 11400000, guid: bc3d50a6614e7ff4e8fbfd90e5edc0f4, type: 2}
     level: 1
