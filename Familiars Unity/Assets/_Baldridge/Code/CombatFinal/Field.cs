@@ -69,4 +69,21 @@ public class Field : MonoBehaviour
             }
         }
     }
+
+    public void SetFieldPattern(PatternBase pattern, TileState tileState)
+    {
+        bool[] _patternSets = pattern.Active;
+        for (int _p = 0; _p < _patternSets.Length; _p++)
+        {
+            if (_patternSets[_p])
+            {
+                GetTile(_p).SetState(tileState);
+            }
+            else
+            {
+                GetTile(_p).SetState(TileState.Normal);
+            }
+
+        }
+    }
 }
