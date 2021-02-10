@@ -7,6 +7,7 @@ public class CombatUnit : MonoBehaviour
     [SerializeField] FamiliarBase _base;
     [SerializeField] int level;
     public bool isPlayerUnit;
+    public int teamPosition;
 
     [SerializeField] public int x;
     [SerializeField] public int y;

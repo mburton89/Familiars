@@ -86,4 +86,33 @@ public class Field : MonoBehaviour
 
         }
     }
+
+    public void SetFieldTargetingRecticle(PatternBase pattern, TileState st)
+    {
+        SetFieldTargetingRecticle(pattern, st, 4);
+    }
+
+    public void SetFieldTargetingRecticle(PatternBase pattern, TileState st, int centerPos)
+    {
+        bool[] _patternSets = pattern.Active;
+        for (int _p = 0; _p < _patternSets.Length; _p++)
+        {
+            // Check to see if the shifted array would go out of bounds
+            if (!(_p - (4 - centerPos) > _patternSets.Length || _p - (4 - centerPos) < 0))
+            {
+                if (_patternSets[_p])
+                {
+                    GetTile(_p - (4 - centerPos)).SetState(st);
+                }
+            }
+        }
+    }
+
+    public void ClearTiles()
+    {
+        for (int _i = 0; _i < board.Length; _i++)
+        {
+            GetTile(_i).SetState(TileState.Normal);
+        }
+    }
 }

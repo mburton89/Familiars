@@ -12,6 +12,7 @@ public class BattleDialogBox : MonoBehaviour
     [SerializeField] GameObject actionSelector;
     [SerializeField] GameObject attackSelector;
     [SerializeField] GameObject attackDetails;
+    [SerializeField] GameObject attackScreen; 
 
     [SerializeField] List<Text> actionTexts;
     [SerializeField] List<Text> attackTexts;
@@ -47,6 +48,7 @@ public class BattleDialogBox : MonoBehaviour
 
     public void EnableAttackSelector(bool enabled)
     {
+        attackScreen.SetActive(enabled);
         attackSelector.SetActive(enabled);
         attackDetails.SetActive(enabled);
     }
@@ -72,7 +74,7 @@ public class BattleDialogBox : MonoBehaviour
                 attackTexts[_i].color = Color.black;
         }
 
-        usesText.text = $"Uses {attack.Uses}/{attack.Base.Uses}";
+        usesText.text = $"Uses: {attack.Uses}/{attack.Base.Uses}";
         styleText.text = attack.Base.AttackStyle.ToString();
         typeText.text = attack.Base.Type.ToString();
     }

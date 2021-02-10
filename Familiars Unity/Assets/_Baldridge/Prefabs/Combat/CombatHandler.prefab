@@ -48,9 +48,13 @@ MonoBehaviour:
   playerField: {fileID: 0}
   enemyField: {fileID: 0}
   combatUnitPrefab: {fileID: 602898915496371749, guid: 13a4296e88b934e43b1dbb68ea7605d7, type: 3}
-  playerHUDs: {fileID: 0}
-  enemyHUDs: {fileID: 0}
+  playerHUDs: []
+  enemyHUDs: []
+  navigator: {fileID: 0}
   dialogMenu: {fileID: 0}
-  dialogBox: {fileID: 0}
-  actionSelector: {fileID: 0}
-  attackSelector: {fileID: 0}
+  playerTeam: []
+  enemyTeam: []
+  playerActive: []
+  playerBench: []
+  enemyActive: []
+  enemyBench: []

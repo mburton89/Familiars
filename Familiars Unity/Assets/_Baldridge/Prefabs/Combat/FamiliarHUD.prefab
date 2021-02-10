@@ -165,6 +165,7 @@ GameObject:
   - component: {fileID: 3497131667679949047}
   - component: {fileID: 3497131667679949045}
   - component: {fileID: 3497131667679949046}
+  - component: {fileID: 4994545320589462257}
   m_Layer: 5
   m_Name: FamiliarHUD
   m_TagString: Untagged
@@ -232,6 +233,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4994545320589462257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3497131667679949040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 267fc8ff72e027048938bfb000673f77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameText: {fileID: 1158752411465103491}
+  levelText: {fileID: 2746292019434429623}
+  hpBar: {fileID: 255895369978492441}
 --- !u!1 &4040403837312910270
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,8 +435,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -51.639, y: 0}
-  m_SizeDelta: {x: 16.75122, y: 14.886505}
+  m_AnchoredPosition: {x: -51.1, y: -0.44323}
+  m_SizeDelta: {x: 17.031708, y: 14.886505}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &514991823749750506
 CanvasRenderer:
@@ -552,6 +568,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1106251651139965330}
+  - component: {fileID: 255895369978492441}
   m_Layer: 5
   m_Name: Healthbar
   m_TagString: Untagged
@@ -579,3 +596,16 @@ RectTransform:
   m_AnchoredPosition: {x: 0.43, y: -10.91}
   m_SizeDelta: {x: 119.06525, y: 14.902611}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &255895369978492441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8812156326584870162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4ae98464b5200c4ba2922e083f12b69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: {fileID: 4040403837312910270}
