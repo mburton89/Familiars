@@ -52,6 +52,8 @@ MonoBehaviour:
   _base: {fileID: 11400000, guid: 034267b9a02e0e74e89a17be3d306173, type: 2}
   level: 1
   isPlayerUnit: 1
+  teamPosition: 0
+  sprite: {fileID: 8118156781707673904}
   x: 0
   y: 0
 --- !u!1 &988961335766550906

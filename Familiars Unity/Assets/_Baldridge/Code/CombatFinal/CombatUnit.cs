@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CombatUnit : MonoBehaviour
 {
@@ -8,6 +9,9 @@ public class CombatUnit : MonoBehaviour
     [SerializeField] int level;
     public bool isPlayerUnit;
     public int teamPosition;
+
+
+    [SerializeField] Image sprite;
 
     [SerializeField] public int x;
     [SerializeField] public int y;
@@ -23,6 +27,8 @@ public class CombatUnit : MonoBehaviour
     public void Setup()
     {
         Familiar = new Familiar(_base, level);
+
+        sprite.sprite = Familiar.Base.FamiliarSprite;
 
         if (isPlayerUnit)
         {
