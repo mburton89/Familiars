@@ -10,6 +10,8 @@ public class CombatHandler : MonoBehaviour
     [HideInInspector] public CombatState combatState = CombatState.Start;
     [HideInInspector] public CombatUnit selectedFamiliar;
 
+    [SerializeField] AudioSource audioSource;
+
     [SerializeField] Field playerField;
     [SerializeField] Field enemyField;
 
@@ -278,7 +280,6 @@ public class CombatHandler : MonoBehaviour
 
     void HandlePlayerAttack()
     {
-        Debug.Log("[CombatHandler] HandlePlayerAttack() navigation");
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             if (currentAttack > 0)
@@ -295,8 +296,7 @@ public class CombatHandler : MonoBehaviour
         }
 
         dialogMenu.UpdateAttackSelection(currentAttack, selectedFamiliar.Familiar.Attacks[currentAttack]);
-
-        Debug.Log("[CombatHandler] HandlePlayerAttack() field updater");
+        
         playerField.SetFieldPattern(selectedFamiliar.Familiar.Attacks[currentAttack].Base.Sources, TileState.Source);
         enemyField.SetFieldPattern(selectedFamiliar.Familiar.Attacks[currentAttack].Base.Targets, TileState.Target);
         
@@ -313,7 +313,6 @@ public class CombatHandler : MonoBehaviour
         //enemyTeam.SetFieldPattern(selectedFamiliar.Familiar.Attacks[currentAttack].Base.Targets, TileState.Target);
         //enemyTeam.SetFieldTargetingRecticle(selectedFamiliar.Familiar.Attacks[currentAttack].Base.TargetingReticle, TileState.TargetReticle);
 
-        Debug.Log("[CombatHandler] HandlePlayerAttack() inputs");
         if (Input.GetKeyDown(KeyCode.Z))
         {
             // If the attack can be used at the current position
@@ -425,11 +424,13 @@ public class CombatHandler : MonoBehaviour
 
         var attack = selectedFamiliar.Familiar.Attacks[currentAttack];
         yield return dialogMenu.TypeDialog($"{selectedFamiliar.Familiar.Base.Name} used {attack.Base.Name}");
+        PlayNoise(selectedFamiliar.Familiar.Base.AttackSound);
         yield return new WaitForSeconds(1f);
 
 
         // Probably replace w/ PerformAttack() when adding multi-targetting (probably)
         bool _isFainted = enemy.Familiar.TakeDamage(attack, selectedFamiliar.Familiar);
+        PlayNoise(enemy.Familiar.Base.AttackSound);
         yield return enemyHUDs[enemy.teamPosition].UpdateHP();
 
         if (_isFainted)
@@ -459,11 +460,13 @@ public class CombatHandler : MonoBehaviour
             // This is when we would have to verify a valid target, attack, and all that such AI decision making and stuff
             var attack = _enemyUnit.Familiar.GetRandomAttack();
             yield return dialogMenu.TypeDialog($"{_enemyUnit.Familiar.Base.Name} used {attack.Base.Name}");
+            PlayNoise(_enemyUnit.Familiar.Base.AttackSound);
             yield return new WaitForSeconds(1f);
 
             CombatUnit _target = playerTeam[Random.Range(0, 3)];
 
             bool isFainted = _target.Familiar.TakeDamage(attack, _enemyUnit.Familiar);
+            PlayNoise(_target.Familiar.Base.AttackSound);
             yield return playerHUDs[_target.teamPosition].UpdateHP();
 
             if (isFainted)
@@ -488,4 +491,9 @@ public class CombatHandler : MonoBehaviour
 
     }
 
+    void PlayNoise(AudioClip audio)
+    {
+        audioSource.clip = audio;
+        audioSource.Play();
+    }
 }

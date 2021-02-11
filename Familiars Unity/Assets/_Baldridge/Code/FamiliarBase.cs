@@ -23,6 +23,9 @@ public class FamiliarBase : ScriptableObject
     [SerializeField] int speed;
     [SerializeField] int movement;
 
+    [SerializeField] AudioClip attackSound;
+    [SerializeField] AudioClip injuredSound;
+
     [SerializeField] List<LearnableAttack> learnableAttacks;
 
 
@@ -76,6 +79,16 @@ public class FamiliarBase : ScriptableObject
         get { return movement; }
     }
 
+    public AudioClip AttackSound
+    {
+        get { return attackSound; }
+    }
+
+    public AudioClip InjuredSound
+    {
+        get { return injuredSound; }
+    }
+    
     public List<LearnableAttack> LearnableAttacks
     {
         get { return learnableAttacks;  }
