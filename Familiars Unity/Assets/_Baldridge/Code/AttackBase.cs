@@ -21,7 +21,7 @@ public class AttackBase : ScriptableObject
     [SerializeField] int accuracy;
     [SerializeField] int range;
     [SerializeField] int uses;
-    [SerializeField] Type type;
+    [SerializeField] Types type;
 
     [SerializeField] AttackStyle attackStyle;
 
@@ -61,7 +61,7 @@ public class AttackBase : ScriptableObject
         get { return uses; }
     }
 
-    public Type Type
+    public Types Type
     {
         get { return type; }
     }

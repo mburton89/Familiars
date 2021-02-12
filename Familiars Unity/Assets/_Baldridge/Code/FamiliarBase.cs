@@ -12,7 +12,7 @@ public class FamiliarBase : ScriptableObject
 
     [SerializeField] Sprite familiarSprite;
 
-    [SerializeField] Type[] types = new Type[2];
+    [SerializeField] Types[] types = new Types[2];
 
     //Base Stats
     [SerializeField] int maxHp;
@@ -41,7 +41,7 @@ public class FamiliarBase : ScriptableObject
         get { return familiarSprite; }
     }
 
-    public Type[] Types
+    public Types[] Types
     {
         get { return types; }
     }
@@ -102,7 +102,7 @@ public class LearnableAttack
 
 
 
-public enum Type
+public enum Types
 {
     None,
     Normal,
