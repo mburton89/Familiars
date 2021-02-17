@@ -59,7 +59,7 @@ public class Familiar
 
     public int MaxHp
     {
-        get { return Mathf.FloorToInt((Base.MaxHp * Level) / 100f) + 10; }
+        get { return Mathf.FloorToInt((Base.MaxHp * Level) / 100f) + 30; }
     }
 
     public bool TakeDamage(int damage)
@@ -75,11 +75,17 @@ public class Familiar
 
     public bool TakeDamage(Attack attack, Familiar attacker)
     {
-        float modifier = Random.Range(0.8f, 1f);
-        float a = (2 * attacker.Level + 10) / 250f;
-        float d = a * attack.Base.Power * ((float)attacker.Attack / Defense) + 2;
-        int damage = Mathf.FloorToInt(d * modifier);
+        //float modifier = Random.Range(0.8f, 1f);
+        //float a = (2 * attacker.Level + 10) / 250f;
+        //float d = a * attack.Base.Power * ((float)attacker.Attack / Defense) + 2;
+        //int damage = Mathf.FloorToInt(d * modifier);
 
+        float mod = Random.Range(0.8f, 1f);
+        float d = ((attack.Base.Power + attacker.Attack) - Defense) + ((attack.Base.Magic + attacker.SpAttack) - SpDefense);
+
+        Debug.Log("Target HP: " + HP + ", Incoming Physical Damage: " + ((attack.Base.Power + attacker.Attack) - Defense)
+                + ", Incoming Special Damage: " + ((attack.Base.Magic + attacker.SpAttack) - SpDefense) + ".");
+        int damage = Mathf.FloorToInt(d * mod);
         HP -= damage;
         if (HP <= 0)
         {

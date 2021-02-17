@@ -14,12 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Ground Pound
   description: 
-  power: 55
+  power: 25
+  magic: 5
   accuracy: 95
   range: 3
   uses: 20
   type: 5
+  originPosition: 4
   attackStyle: 1
   sources: {fileID: 11400000, guid: 657e23ff3bf7a3a49b7572c010a6c9a0, type: 2}
   targets: {fileID: 11400000, guid: dec509fe37e97a9449d52a9c4fad4202, type: 2}
   targetingReticle: {fileID: 11400000, guid: adfbd9d9716edd44888ac690c94389cd, type: 2}
+  projectileOrigin: 1
+  direction: 0
+  upperX: 2
+  upperY: 2
+  lowerX: 0
+  lowerY: 0

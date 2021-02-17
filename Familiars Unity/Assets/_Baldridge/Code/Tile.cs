@@ -60,7 +60,7 @@ public class Tile : MonoBehaviour
                 sprite.color = Color.green;
                 break;
             case TileState.TargetReticle:
-                sprite.color = new Color(0.47f, 0.13f, 0.05f);
+                sprite.color = new Color(0.45f, 0f, 0.02f);
                 break;
             case TileState.AllyTargetReticle:
                 sprite.color = new Color(0.13f, 0.5f, 0.19f);
@@ -70,6 +70,11 @@ public class Tile : MonoBehaviour
                 sprite.color = Color.white;
                 break;
         }
+    }
+
+    public TileState GetState()
+    {
+        return currentState;
     }
 
 

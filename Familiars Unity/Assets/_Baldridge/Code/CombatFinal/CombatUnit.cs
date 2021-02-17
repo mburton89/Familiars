@@ -48,7 +48,10 @@ public class CombatUnit : MonoBehaviour
 
     public void SetCurrentTile(Tile t)
     {
+        if (currentTile != null) currentTile.familiarOccupant = null;
         currentTile = t;
+        this.gameObject.transform.position = currentTile.gameObject.transform.position;
+        currentTile.familiarOccupant = this;
     }
 
     public void FindSelectableTiles(TileState s, int range)
@@ -63,7 +66,6 @@ public class CombatUnit : MonoBehaviour
 
         while (process.Count > 0)
         {
-
             Tile t = process.Dequeue();
 
             selectableTiles.Add(t);

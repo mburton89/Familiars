@@ -14,12 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Vine Whip
   description: 
-  power: 40
+  power: 15
+  magic: 10
   accuracy: 100
   range: 2
   uses: 30
   type: 4
+  originPosition: 4
   attackStyle: 2
   sources: {fileID: 11400000, guid: dec509fe37e97a9449d52a9c4fad4202, type: 2}
   targets: {fileID: 11400000, guid: dec509fe37e97a9449d52a9c4fad4202, type: 2}
   targetingReticle: {fileID: 11400000, guid: adfbd9d9716edd44888ac690c94389cd, type: 2}
+  projectileOrigin: 1
+  direction: 0
+  upperX: 2
+  upperY: 2
+  lowerX: 0
+  lowerY: 0

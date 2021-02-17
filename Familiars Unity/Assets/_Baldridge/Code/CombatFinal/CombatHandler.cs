@@ -30,28 +30,40 @@ public class CombatHandler : MonoBehaviour
 
     #endregion
 
-    public CombatUnit[] playerTeam;
-    public CombatUnit[] enemyTeam;
+    public List<CombatUnit> playerTeam;
+    public List<CombatUnit> enemyTeam;
 
     // Units from both sides
-    public GameObject[] playerActive;
-    public GameObject[] playerBench;
-    public GameObject[] enemyActive;
-    public GameObject[] enemyBench;
+    public List<GameObject> playerActive;
+    public List<GameObject> playerBench;
+    public List<GameObject> enemyActive;
+    public List<GameObject> enemyBench;
 
     CombatState nextState;
 
     int actions = 3;
+    
+    // Targetting Stuffs
 
     int currentPosition;
     int currentTargetPosition;
-    int currentAction;
-    int currentAttack;
+    int currentActionPosition;
+    int currentAttackPosition;
+
+    Attack currentAttack;
+
+    int upperBoundX = 2;
+    int upperBoundY = 2;
+    int lowerBoundX = 0;
+    int lowerBoundY = 0;
+
+    List<CombatUnit> targets;
 
     void Start()
     {
         combatState = CombatState.Start;
 
+        targets = new List<CombatUnit>();
         // Create the UI
         //playerHUDs.SetActive(true);
         //enemyHUDs.SetActive(true);
@@ -59,7 +71,7 @@ public class CombatHandler : MonoBehaviour
 
         // Create the currently used Familiars for both teams
         CombatUnit _curUnit;
-        float _count = (float)playerTeam.Length;
+        float _count = (float)playerTeam.Count;
         Tile _t;
 
         for (int i = 0; i < Mathf.Min(3f, _count); i++)
@@ -76,7 +88,7 @@ public class CombatHandler : MonoBehaviour
             //_fam.GetComponent<CombatUnit>().
         }
 
-        _count = (float)enemyTeam.Length;
+        _count = (float)enemyTeam.Count;
         for (int i = 0; i < Mathf.Min(3f, _count); i++)
         {
             _curUnit = enemyTeam[i];
@@ -90,6 +102,7 @@ public class CombatHandler : MonoBehaviour
         }
 
         playerField.GatherNeighbors();
+        enemyField.GatherNeighbors();
 
         PlayerSelection();
     }
@@ -99,9 +112,13 @@ public class CombatHandler : MonoBehaviour
     {
         combatState = CombatState.PlayerSelection;
 
-        currentAction = 0;
-        currentAttack = 0;
+        currentActionPosition = 0;
+        currentAttackPosition = 0;
+        currentAttack = null;
         selectedFamiliar = null;
+
+        playerField.ClearTiles();
+        enemyField.ClearTiles();
 
         dialogMenu.EnableActionSelector(false);
     }
@@ -123,10 +140,12 @@ public class CombatHandler : MonoBehaviour
     {
         combatState = CombatState.PlayerAttack;
 
+        currentAttack = null;
+
         dialogMenu.EnableActionSelector(false);
         dialogMenu.EnableAttackSelector(true);
 
-        Debug.Log("[CombatHandler] PlayerAttack()");
+        targets.Clear();
     }
 
     void PlayerMove()
@@ -141,24 +160,26 @@ public class CombatHandler : MonoBehaviour
     {
         combatState = CombatState.PlayerTargeting;
 
-        currentTargetPosition = 4;
-        playerField.SetFieldPattern(selectedFamiliar.Familiar.Attacks[currentAttack].Base.Sources, TileState.Source);
-        enemyField.SetFieldPattern(selectedFamiliar.Familiar.Attacks[currentAttack].Base.Targets, TileState.Target);
-        Debug.Log("[CombatHandler] PlayerTargetting()");
+        currentAttack = selectedFamiliar.Familiar.Attacks[currentAttackPosition];
+
+        currentTargetPosition = currentAttack.Base.OriginPosition;
+        playerField.SetFieldPattern(currentAttack.Base.Sources, TileState.Source);
+        enemyField.SetFieldPattern(currentAttack.Base.Targets, TileState.Target);
+
+        upperBoundX = currentAttack.Base.UpperX;
+        upperBoundY = currentAttack.Base.UpperY;
+        lowerBoundX = currentAttack.Base.LowerX;
+        lowerBoundY = currentAttack.Base.LowerY;
     }
 
     void StartPlayerAttack()
     {
-        Debug.Log("[CombatHandler] StartPlayerAttack()");
         playerField.ClearTiles();
         enemyField.ClearTiles();
 
         dialogMenu.EnableAttackSelector(false);
         dialogMenu.EnableDialogText(true);
         StartCoroutine(PerformPlayerAttack());
-
-
-        Debug.Log("[CombatHandler] StartPlayerAttack() End");
     }
 
     void EnemyAttack()
@@ -245,27 +266,27 @@ public class CombatHandler : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            if (currentAction < 3)
-                ++currentAction;
+            if (currentActionPosition < 3)
+                ++currentActionPosition;
 
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            if (currentAction > 0)
-                --currentAction;
+            if (currentActionPosition > 0)
+                --currentActionPosition;
         }
 
-        dialogMenu.UpdateActionSelection(currentAction);
+        dialogMenu.UpdateActionSelection(currentActionPosition);
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            if (currentAction == 0)
+            if (currentActionPosition == 0)
             {
                 // Fight
                 dialogMenu.SetAttackNames(selectedFamiliar.Familiar.Attacks);
                 PlayerAttack();
             }
-            else if (currentAction == 1)
+            else if (currentActionPosition == 1)
             {
                 // Move
                 PlayerMove();
@@ -282,29 +303,38 @@ public class CombatHandler : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            if (currentAttack > 0)
-                currentAttack--;
+            if (currentAttackPosition > 0)
+                currentAttackPosition--;
             else
-                currentAttack = selectedFamiliar.Familiar.Attacks.Count - 1;
+                currentAttackPosition = selectedFamiliar.Familiar.Attacks.Count - 1;
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            if (currentAttack < selectedFamiliar.Familiar.Attacks.Count - 1)
-                currentAttack++;
+            if (currentAttackPosition < selectedFamiliar.Familiar.Attacks.Count - 1)
+                currentAttackPosition++;
             else
-                currentAttack = 0;
+                currentAttackPosition = 0;
         }
 
-        dialogMenu.UpdateAttackSelection(currentAttack, selectedFamiliar.Familiar.Attacks[currentAttack]);
+        currentAttack = selectedFamiliar.Familiar.Attacks[currentAttackPosition];
+        dialogMenu.UpdateAttackSelection(currentAttackPosition, currentAttack);
         
-        playerField.SetFieldPattern(selectedFamiliar.Familiar.Attacks[currentAttack].Base.Sources, TileState.Source);
-        enemyField.SetFieldPattern(selectedFamiliar.Familiar.Attacks[currentAttack].Base.Targets, TileState.Target);
+        playerField.SetFieldPattern(currentAttack.Base.Sources, TileState.Source);
+        enemyField.SetFieldPattern(currentAttack.Base.Targets, TileState.Target);
         
         // Target Display
-        switch(selectedFamiliar.Familiar.Attacks[currentAttack].Base.AttackStyle)
+        switch(currentAttack.Base.AttackStyle)
         {
             case AttackStyle.Target:
-                enemyField.SetFieldTargetingRecticle(selectedFamiliar.Familiar.Attacks[currentAttack].Base.TargetingReticle, TileState.TargetReticle);
+                enemyField.SetFieldTargetingReticle(currentAttack.Base.TargetingReticle, TileState.TargetReticle);
+                break;
+            case AttackStyle.Launch:
+                break;
+            case AttackStyle.Area:
+                enemyField.SetFieldTargetingReticle(currentAttack.Base.TargetingReticle, TileState.TargetReticle);
+                break;
+            case AttackStyle.AreaStatic:
+                enemyField.SetFieldTargetingReticle(currentAttack.Base.Targets, TileState.TargetReticle);
                 break;
         }
 
@@ -316,7 +346,7 @@ public class CombatHandler : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Z))
         {
             // If the attack can be used at the current position
-            if ( selectedFamiliar.Familiar.Attacks[currentAttack].Base.Sources.Active[currentPosition])
+            if (currentAttack.Base.Sources.Active[currentPosition])
             {
                 PlayerTargeting();
             }
@@ -334,44 +364,114 @@ public class CombatHandler : MonoBehaviour
         // Move left (add switching to supp. board later)
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            if (currentTargetPosition < 6)
+            if (currentTargetPosition < (upperBoundX * 3) && selectedFamiliar.Familiar.Attacks[currentAttackPosition].Base.Targets.Active[currentTargetPosition + 3])
             {
                 currentTargetPosition += 3;
             }
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            if (currentTargetPosition > 2)
+            if (currentTargetPosition > (lowerBoundX + 2) && selectedFamiliar.Familiar.Attacks[currentAttackPosition].Base.Targets.Active[currentTargetPosition - 3])
             {
                 currentTargetPosition -= 3;
             }
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            if (currentTargetPosition % 3 != 2)
+            if (currentTargetPosition % 3 < upperBoundY && selectedFamiliar.Familiar.Attacks[currentAttackPosition].Base.Targets.Active[currentTargetPosition + 1])
             {
                 currentTargetPosition++;
             }
         }
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            if (currentTargetPosition % 3 != 0)
+            if (currentTargetPosition % 3 > lowerBoundY && selectedFamiliar.Familiar.Attacks[currentAttackPosition].Base.Targets.Active[currentTargetPosition - 1])
             {
                 currentTargetPosition--;
             }
         }
 
-        navigator.SetLocation(enemyField.GetTile(currentTargetPosition));
+        enemyField.SetFieldPattern(selectedFamiliar.Familiar.Attacks[currentAttackPosition].Base.Targets, TileState.Target);
+        enemyField.SetFieldTargetingReticle(selectedFamiliar.Familiar.Attacks[currentAttackPosition].Base.TargetingReticle, TileState.TargetReticle, currentTargetPosition);
+        //navigator.SetLocation(enemyField.GetTile(currentTargetPosition));
         #endregion
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            // switch based on the attack style (later)
-            if (enemyField.GetTile(currentTargetPosition).familiarOccupant != null && selectedFamiliar.Familiar.Attacks[currentAttack].Base.Targets.Active[currentTargetPosition])
+            bool valid = false;
+            // Assign Targets
+            switch (currentAttack.Base.AttackStyle)
             {
-                nextState = CombatState.PlayerSelection;
-                StartPlayerAttack();
+                case AttackStyle.Target:
+                    if (enemyField.GetTile(currentTargetPosition).familiarOccupant != null && currentAttack.Base.Targets.Active[currentTargetPosition])
+                    {
+                        targets.Add(enemyField.GetTile(currentTargetPosition).familiarOccupant);
+                        valid = true;
+                    }
+                    break;
+                case AttackStyle.Launch:
+                    Tile _checkingTile = enemyField.GetTile(currentAttack.Base.ProjectileOrigin);
+                    int _position = currentAttackPosition;
+                    bool end;
+                    while (_checkingTile != null)
+                    {
+                        end = false;
+                        if (_checkingTile.familiarOccupant != null)
+                        {
+                            targets.Add(_checkingTile.familiarOccupant);
+                            valid = true;
+                            end = true;
+                            break;
+                        }
+
+                        switch (currentAttack.Base.Direction)
+                        {
+                            case 0:
+                                if (_position >= 6)
+                                {
+                                    end = true;
+                                    break;
+                                }
+                                else _position += 3; 
+                                break;
+
+                        }
+                        if (!end)
+                        {
+                            _checkingTile = enemyField.GetTile(_position);
+                        }
+                        else
+                        {
+                            _checkingTile = null;
+                        }
+                    }
+
+                    break;
+                case AttackStyle.Area:
+                    for (int i = 0; i < 9; i++)
+                    {
+                        if (enemyField.GetTile(i).familiarOccupant != null && enemyField.GetTile(i).GetState() == TileState.TargetReticle)
+                        {
+                            valid = true;
+                            targets.Add(enemyField.GetTile(i).familiarOccupant);
+                        }
+                    }
+                    break;
+                case AttackStyle.AreaStatic:
+                    for (int i = 0; i < 9; i++)
+                    {
+                        if (enemyField.GetTile(i).familiarOccupant != null && currentAttack.Base.Targets.Active[i])
+                        {
+                            valid = true;
+                            targets.Add(enemyField.GetTile(i).familiarOccupant);
+                        }
+                    }
+                    break;
             }
+
+            if (valid) StartPlayerAttack();
+
+            
         }
 
         if (Input.GetKeyDown(KeyCode.X))
@@ -382,6 +482,7 @@ public class CombatHandler : MonoBehaviour
 
     void HandlePlayerMove()
     {
+        #region Navigator
         // Move left (add switching to supp. board later)
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
@@ -411,31 +512,56 @@ public class CombatHandler : MonoBehaviour
                 currentPosition--;
             }
         }
-        
+
         navigator.SetLocation(playerField.GetTile(currentPosition));
+        #endregion
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            Tile _temp = playerField.GetTile(currentPosition);
+            if (_temp.GetState() == TileState.Move)
+            {
+                selectedFamiliar.SetCurrentTile(_temp);
+
+                actions--;
+                if (actions > 0)
+                {
+                    PlayerSelection();
+                }
+                else
+                {
+                    EnemyAttack();
+                }
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            PlayerAction();
+        }
     }
 
     IEnumerator PerformPlayerAttack()
     {
         combatState = CombatState.Busy;
 
-        // Will need to adjust to suit multi-target attacks
-        CombatUnit enemy = enemyField.GetTile(currentTargetPosition).familiarOccupant;
-
-        var attack = selectedFamiliar.Familiar.Attacks[currentAttack];
+        var attack = currentAttack;
         yield return dialogMenu.TypeDialog($"{selectedFamiliar.Familiar.Base.Name} used {attack.Base.Name}");
         PlayNoise(selectedFamiliar.Familiar.Base.AttackSound);
         yield return new WaitForSeconds(1f);
 
 
         // Probably replace w/ PerformAttack() when adding multi-targetting (probably)
-        bool _isFainted = enemy.Familiar.TakeDamage(attack, selectedFamiliar.Familiar);
-        PlayNoise(enemy.Familiar.Base.AttackSound);
-        yield return enemyHUDs[enemy.teamPosition].UpdateHP();
-
-        if (_isFainted)
+        for (int i = 0; i < targets.Count; i++)
         {
-            yield return dialogMenu.TypeDialog($"{enemy.Familiar.Base.Name} fainted");
+            bool _isFainted = targets[i].Familiar.TakeDamage(attack, selectedFamiliar.Familiar);
+            PlayNoise(targets[i].Familiar.Base.AttackSound);
+            yield return enemyHUDs[targets[i].teamPosition].UpdateHP();
+
+            if (_isFainted)
+            {
+                yield return dialogMenu.TypeDialog($"{targets[i].Familiar.Base.Name} fainted");
+            }
         }
 
         actions--;
@@ -490,6 +616,7 @@ public class CombatHandler : MonoBehaviour
     {
 
     }
+    
 
     void PlayNoise(AudioClip audio)
     {

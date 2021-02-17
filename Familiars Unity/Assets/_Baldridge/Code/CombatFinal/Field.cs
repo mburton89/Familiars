@@ -87,12 +87,12 @@ public class Field : MonoBehaviour
         }
     }
 
-    public void SetFieldTargetingRecticle(PatternBase pattern, TileState st)
+    public void SetFieldTargetingReticle(PatternBase pattern, TileState st)
     {
-        SetFieldTargetingRecticle(pattern, st, 4);
+        SetFieldTargetingReticle(pattern, st, 4);
     }
 
-    public void SetFieldTargetingRecticle(PatternBase pattern, TileState st, int centerPos)
+    public void SetFieldTargetingReticle(PatternBase pattern, TileState st, int centerPos)
     {
         bool[] _patternSets = pattern.Active;
         for (int _p = 0; _p < _patternSets.Length; _p++)

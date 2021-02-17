@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Tackle
   description: 
-  power: 40
+  power: 20
+  magic: 0
   accuracy: 100
   range: 1
   uses: 30
