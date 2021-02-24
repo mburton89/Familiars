@@ -134,3 +134,39 @@ public enum Types
     Ancient
 }
 
+
+public class TypeChart
+{
+    static float[][] chart =
+    {
+        // Attacker vv  Defender ->  NOR FIR AQA NAT EAR AIR SCK FRC ARC SWT SND LGT DRK ACT
+        /*  Normal   */ new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f,.5f, 1f, 1f, 1f, 1f,.5f},
+        /*  Fire     */ new float[] { 2f,.5f,.5f, 2f,.5f, 2f, 1f, 1f, 1f, 2f, 1f, 1f, 1f, 1f},
+        /*  Aqua     */ new float[] { 1f, 2f,.5f,.5f, 2f, 1f,.5f, 1f, 1f, 2f, 1f, 1f, 1f, 1f},
+        /*  Nature   */ new float[] { 1f,.5f, 2f,.5f, 2f,.5f, 1f, 1f, 2f, 1f, 1f, 1f, 1f, 1f},
+        /*  Earth    */ new float[] { 1f, 1f, 1f, 1f, 2f, 0f, 2f, 1f, 1f, 1f, 1f, 1f, 1f, 1f},
+        /*  Air      */ new float[] { 1f, 2f, 1f, 2f,.5f,.5f, 1f, 2f, 1f, 1f, 1f, 1f, 1f, 1f},
+        /*  Shock    */ new float[] { 1f, 1f, 2f, 1f, 1f, 1f,.5f, 1f, 1f, 1f, 1f, 1f, 1f, 1f},
+        /*  Force    */ new float[] { 1f, 1f, 1f, 2f, 2f, 1f, 1f, 1f,.5f, 2f,.5f, 2f, 2f,.5f},
+        /*  Arcane   */ new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 2f,.5f,.5f, 2f,.5f, 2f,.5f},
+        /*  Sweet    */ new float[] { 1f,.5f,.5f,.5f,.5f,.5f,.5f, 1f,.5f, 1f, 1f, 1f, 2f,.5f},
+        /*  Sound    */ new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f, 2f, 2f, 1f,.5f, 0f, 0f, 1f},
+        /*  Light    */ new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f,.5f, 2f, 1f,.5f,.5f, 2f, 2f},
+        /*  Dark     */ new float[] {.5f, 1f, 1f, 1f, 1f, 1f, 1f, 2f, 2f, 2f,.5f,.5f,.5f, 1f},
+        /*  Ancient  */ new float[] { 2f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f,.5f, 1f, 1f, 1f, 2f}
+    };
+
+    public static float GetEffectiveness(Types attackType, Types defenseType)
+    {
+        if (attackType == Types.None || defenseType == Types.None)
+        {
+            return 1;
+        }
+
+        int row = (int)attackType - 1;
+        int col = (int)defenseType - 1;
+
+        return chart[row][col];
+    }
+}
+

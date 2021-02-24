@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ public enum CombatState { Start, PlayerSelection, PlayerAction, PlayerAttack, Pl
 
 public class CombatHandler : MonoBehaviour
 {
+    public static CombatHandler Instance;
     [HideInInspector] public CombatState combatState = CombatState.Start;
     [HideInInspector] public CombatUnit selectedFamiliar;
 
@@ -29,6 +31,8 @@ public class CombatHandler : MonoBehaviour
     [SerializeField] BattleDialogBox dialogMenu;
 
     #endregion
+
+    public event Action<bool> OnBattleOver;
 
     public List<CombatUnit> playerTeam;
     public List<CombatUnit> enemyTeam;
@@ -59,10 +63,32 @@ public class CombatHandler : MonoBehaviour
 
     List<CombatUnit> targets;
 
-    void Start()
+    FamiliarParty playerParty;
+    List<Familiar> wildFamiliars;
+
+    private void Awake()
+    {
+        Instance = this;
+        //DontDestroyOnLoad(this.gameObject);
+    }
+
+    public void StoreParties(FamiliarParty playerParty, List<Familiar> wildFamiliars)
+    {
+        this.playerParty = playerParty;
+        this.wildFamiliars = wildFamiliars;
+        StartCoroutine(BeginBattle());
+    }
+
+    IEnumerator BeginBattle()
+    {
+        yield return new WaitForSeconds(1f);
+        StartBattle();
+    }
+
+    public void StartBattle()
     {
         combatState = CombatState.Start;
-
+        
         targets = new List<CombatUnit>();
         // Create the UI
         //playerHUDs.SetActive(true);
@@ -123,7 +149,7 @@ public class CombatHandler : MonoBehaviour
         dialogMenu.EnableActionSelector(false);
     }
 
-    void PlayerAction()
+    void ActionSelection()
     {
         combatState = CombatState.PlayerAction;
 
@@ -136,7 +162,7 @@ public class CombatHandler : MonoBehaviour
         
     }
 
-    void PlayerAttack()
+    void AttackSelection()
     {
         combatState = CombatState.PlayerAttack;
 
@@ -179,7 +205,7 @@ public class CombatHandler : MonoBehaviour
 
         dialogMenu.EnableAttackSelector(false);
         dialogMenu.EnableDialogText(true);
-        StartCoroutine(PerformPlayerAttack());
+        StartCoroutine(PlayerAttack());
     }
 
     void EnemyAttack()
@@ -256,7 +282,7 @@ public class CombatHandler : MonoBehaviour
             if (_combatUnit != null)
             {
                 selectedFamiliar = _combatUnit;
-                PlayerAction();
+                ActionSelection();
             }
         }
 
@@ -284,7 +310,7 @@ public class CombatHandler : MonoBehaviour
             {
                 // Fight
                 dialogMenu.SetAttackNames(selectedFamiliar.Familiar.Attacks);
-                PlayerAttack();
+                AttackSelection();
             }
             else if (currentActionPosition == 1)
             {
@@ -328,7 +354,7 @@ public class CombatHandler : MonoBehaviour
             case AttackStyle.Target:
                 enemyField.SetFieldTargetingReticle(currentAttack.Base.TargetingReticle, TileState.TargetReticle);
                 break;
-            case AttackStyle.Launch:
+            case AttackStyle.Projectile:
                 break;
             case AttackStyle.Area:
                 enemyField.SetFieldTargetingReticle(currentAttack.Base.TargetingReticle, TileState.TargetReticle);
@@ -354,7 +380,7 @@ public class CombatHandler : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.X))
         {
-            PlayerAction();
+            ActionSelection();
         }
     }
 
@@ -409,7 +435,7 @@ public class CombatHandler : MonoBehaviour
                         valid = true;
                     }
                     break;
-                case AttackStyle.Launch:
+                case AttackStyle.Projectile:
                     Tile _checkingTile = enemyField.GetTile(currentAttack.Base.ProjectileOrigin);
                     int _position = currentAttackPosition;
                     bool end;
@@ -476,7 +502,7 @@ public class CombatHandler : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.X))
         {
-            PlayerAttack();
+            AttackSelection();
         }
     }
 
@@ -537,30 +563,37 @@ public class CombatHandler : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.X))
         {
-            PlayerAction();
+            ActionSelection();
         }
     }
 
-    IEnumerator PerformPlayerAttack()
+    IEnumerator PlayerAttack()
     {
         combatState = CombatState.Busy;
 
         var attack = currentAttack;
         yield return dialogMenu.TypeDialog($"{selectedFamiliar.Familiar.Base.Name} used {attack.Base.Name}");
         PlayNoise(selectedFamiliar.Familiar.Base.AttackSound);
-        yield return new WaitForSeconds(1f);
 
+        selectedFamiliar.PlayAttackAnimation();
+        yield return new WaitForSeconds(1f);
 
         // Probably replace w/ PerformAttack() when adding multi-targetting (probably)
         for (int i = 0; i < targets.Count; i++)
         {
-            bool _isFainted = targets[i].Familiar.TakeDamage(attack, selectedFamiliar.Familiar);
+            var damageDetails = targets[i].Familiar.TakeDamage(attack, selectedFamiliar.Familiar);
+            targets[i].PlayHitAnimation();
             PlayNoise(targets[i].Familiar.Base.AttackSound);
             yield return enemyHUDs[targets[i].teamPosition].UpdateHP();
+            yield return ShowDamageDetails(damageDetails);
 
-            if (_isFainted)
+            if (damageDetails.Fainted)
             {
                 yield return dialogMenu.TypeDialog($"{targets[i].Familiar.Base.Name} fainted");
+                targets[i].PlayFaintAnimation();
+
+                yield return new WaitForSeconds(2f);
+                OnBattleOver(true);
             }
         }
 
@@ -581,28 +614,64 @@ public class CombatHandler : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
-            CombatUnit _enemyUnit = enemyTeam[Random.Range(0, 3)];
+            CombatUnit _enemyUnit = enemyTeam[UnityEngine.Random.Range(0, 3)];
 
             // This is when we would have to verify a valid target, attack, and all that such AI decision making and stuff
             var attack = _enemyUnit.Familiar.GetRandomAttack();
             yield return dialogMenu.TypeDialog($"{_enemyUnit.Familiar.Base.Name} used {attack.Base.Name}");
             PlayNoise(_enemyUnit.Familiar.Base.AttackSound);
+
+            _enemyUnit.PlayAttackAnimation();
             yield return new WaitForSeconds(1f);
 
-            CombatUnit _target = playerTeam[Random.Range(0, 3)];
+            CombatUnit _target = playerTeam[UnityEngine.Random.Range(0, 3)];
 
-            bool isFainted = _target.Familiar.TakeDamage(attack, _enemyUnit.Familiar);
+            _target.PlayHitAnimation();
+            var damageDetails = _target.Familiar.TakeDamage(attack, _enemyUnit.Familiar);
             PlayNoise(_target.Familiar.Base.AttackSound);
             yield return playerHUDs[_target.teamPosition].UpdateHP();
+            yield return ShowDamageDetails(damageDetails);
 
-            if (isFainted)
+            if (damageDetails.Fainted)
             {
                 yield return dialogMenu.TypeDialog($"{_target.Familiar.Base.Name} fainted");
+                _target.PlayFaintAnimation();
+
+                yield return new WaitForSeconds(2f);
+                var nextFamiliar = playerParty.GetHealthyFamiliar();
+                if (nextFamiliar != null)
+                {
+                    /* playerUnit.Setup(nextFamiliar);
+                     * playerHud.SetData(nextFamiliar);
+                     * 
+                     * dialogBox.SetMoveNames(nextFamiliar.Moves);
+                     * 
+                     * yield return dialogBox.TypeDialog($"Go {nextFamiliar.Base.Name}!");
+                     * 
+                     * */
+                }
+                else
+                {
+                    OnBattleOver(false);
+                }
             }
         }
 
         actions = 3;
         PlayerSelection();
+    }
+
+    IEnumerator ShowDamageDetails(DamageDetails damageDetails)
+    {
+        if (damageDetails.Critical > 1f)
+            yield return dialogMenu.TypeDialog("It's a critical hit!");
+
+        if (damageDetails.TypeEffectiveness > 1f)
+            yield return dialogMenu.TypeDialog("It's super effective!");
+        else if (damageDetails.TypeEffectiveness < 1f)
+            yield return dialogMenu.TypeDialog("It's not very effective!");
+
+
     }
 
     void PerformAttack(Attack attack, CombatUnit user, CombatUnit target)
@@ -617,7 +686,6 @@ public class CombatHandler : MonoBehaviour
 
     }
     
-
     void PlayNoise(AudioClip audio)
     {
         audioSource.clip = audio;

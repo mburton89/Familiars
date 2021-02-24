@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum AttackStyle { None, Target, Launch, Area, AreaStatic }
+public enum AttackStyle { None, Target, Projectile, Area, AreaStatic }
 // None   - doesn't target, can be global or always targets self, or something else
 // Target - Targets a single tile/unit
 // Launch - Starts at an origin point until it reaches a valid target

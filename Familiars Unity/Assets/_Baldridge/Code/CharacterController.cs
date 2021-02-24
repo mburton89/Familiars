@@ -1,12 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterController : MonoBehaviour
 {
-    private const float MOVE_SPEED = 60f;
+    private const float MOVE_SPEED = 6f;
+    public LayerMask grassLayer;
 
     [SerializeField] private LayerMask dashLayerMask;
+
+    public event Action OnEncountered;
 
     private Rigidbody2D rigidbody2D;
     private Vector3 moveDir;
@@ -15,6 +19,7 @@ public class CharacterController : MonoBehaviour
     private void Awake()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
+        DontDestroyOnLoad(this.gameObject);
     }
 
     private void Update()
@@ -56,7 +61,7 @@ public class CharacterController : MonoBehaviour
 
         if(isDashButtonDown)
         {
-            float dashAmount = 40f;
+            float dashAmount = 4f;
             Vector3 dashPosition = transform.position + moveDir * dashAmount;
 
             RaycastHit2D raycastHit2d = Physics2D.Raycast(transform.position, moveDir, dashAmount, dashLayerMask);
@@ -67,6 +72,24 @@ public class CharacterController : MonoBehaviour
 
             rigidbody2D.MovePosition(dashPosition);
             isDashButtonDown = false;
+        }
+
+        CheckForEncounters();
+    }
+
+    private void CheckForEncounters()
+    {
+        if (Physics2D.OverlapCircle(transform.position, 0.2f, grassLayer) != null)
+        {
+            if (UnityEngine.Random.Range(1,101) <= 10)
+            {
+                if (OnEncountered != null)
+                {
+                    OnEncountered();
+                    Debug.Log("Beep");
+                }
+                    
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class CombatUnit : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class CombatUnit : MonoBehaviour
 
 
     [SerializeField] Image sprite;
+
+    Vector3 originalPos;
+    Color originalColor;
 
     [SerializeField] public int x;
     [SerializeField] public int y;
@@ -24,9 +28,14 @@ public class CombatUnit : MonoBehaviour
 
     public Familiar Familiar { get; set; }
 
+    private void Awake()
+    {
+        originalPos = sprite.transform.localPosition;
+    }
+
     public void Setup()
     {
-        Familiar = new Familiar(_base, level);
+        //Familiar = new Familiar(_base, level);
 
         sprite.sprite = Familiar.Base.FamiliarSprite;
 
@@ -38,7 +47,47 @@ public class CombatUnit : MonoBehaviour
         {
             this.transform.localScale = new Vector3(-1, 1, 1);
         }
+
+        sprite.color = originalColor;
+        //PlayerEnterAnimation();
     }
+
+    public void PlayEnterAnimation()
+    {
+        if (isPlayerUnit)
+            sprite.transform.localPosition = new Vector3(100, originalPos.y);
+        else
+            sprite.transform.localPosition = new Vector3(-100, originalPos.y);
+
+        sprite.transform.DOLocalMoveX(originalPos.x, 1f);
+    }
+
+    public void PlayAttackAnimation()
+    {
+        var sequence = DOTween.Sequence();
+        if (isPlayerUnit)
+            sequence.Append(sprite.transform.DOLocalMoveX(originalPos.x + 50f, 0.25f));
+        else
+            sequence.Append(sprite.transform.DOLocalMoveX(originalPos.x - 50f, 0.25f));
+
+        sequence.Append(sprite.transform.DOLocalMoveX(originalPos.x, 0.25f));
+    }
+
+    public void PlayHitAnimation()
+    {
+        var sequence = DOTween.Sequence();
+        sequence.Append(sprite.DOColor(Color.gray, 0.1f));
+        sequence.Append(sprite.DOColor(originalColor, 0.1f));
+    }
+
+    public void PlayFaintAnimation()
+    {
+        var sequence = DOTween.Sequence();
+        sequence.Append(sprite.transform.DOLocalMoveY(originalPos.y - 150f, 0.5f));
+        sequence.Join(sprite.DOFade(0f, 0.5f));
+    }
+
+    // Tile Stuffs
 
     public Tile GetCurrentTile()
     {
