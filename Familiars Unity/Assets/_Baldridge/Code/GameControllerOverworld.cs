@@ -24,7 +24,8 @@ public class GameControllerOverworld : MonoBehaviour
         // worldCamera.gameObject.SetActive(false);
 
         var playerParty = PlayerParty.Instance;
-        var wildFamiliar = FindObjectOfType<MapArea>().GetComponent<MapArea>().GetRandomWildFamiliars();
+        var wildFamiliars = FindObjectOfType<MapArea>().GetComponent<MapArea>().GetRandomWildFamiliars();
+        CurrentFamiliarsController.Instance.UpdateEnemyFamiliars(wildFamiliars);
         playerPosition = playerController.gameObject.transform.position;
 
         SceneManager.LoadScene(battleScreen);
@@ -32,7 +33,7 @@ public class GameControllerOverworld : MonoBehaviour
         //playerController.gameObject.SetActive(false);
         //battleSystem.gameObject.SetActive(true);
 
-        CombatHandler.Instance.StoreParties(playerParty, wildFamiliar);
+        //CombatHandler.Instance.StoreParties(playerParty, wildFamiliar);
     }
 
     void Update()

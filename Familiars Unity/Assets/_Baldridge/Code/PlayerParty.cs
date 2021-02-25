@@ -10,4 +10,9 @@ public class PlayerParty : FamiliarParty
     {
         Instance = this;
     }
+
+    private void Start()
+    {
+        CurrentFamiliarsController.Instance.UpdatePlayerFamiliars(familiars);
+    }
 }

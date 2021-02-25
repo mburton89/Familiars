@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class FamiliarParty : MonoBehaviour
 {
-    [SerializeField] List<Familiar> familiars;
+    [SerializeField] public List<Familiar> familiars;
 
     private void Start()
     {

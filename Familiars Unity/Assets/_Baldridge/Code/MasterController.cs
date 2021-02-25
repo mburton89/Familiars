@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class MasterController : MonoBehaviour
 {
-    public FamiliarParty;
+    public FamiliarParty nah;
 }
