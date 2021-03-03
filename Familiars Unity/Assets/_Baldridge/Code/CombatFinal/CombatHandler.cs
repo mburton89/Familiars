@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public enum CombatState { Start, PlayerSelection, PlayerAction, PlayerAttack, PlayerMove, PlayerTargeting, EnemyAttack, Busy }
@@ -11,13 +12,14 @@ public class CombatHandler : MonoBehaviour
     public static CombatHandler Instance;
     [HideInInspector] public CombatState combatState = CombatState.Start;
     [HideInInspector] public CombatUnit selectedFamiliar;
-
+    
     [SerializeField] AudioSource audioSource;
 
     [SerializeField] Field playerField;
     [SerializeField] Field enemyField;
 
     [SerializeField] GameObject combatUnitPrefab;
+    [SerializeField] Canvas canvas;
 
     #region All of the HUD elements that get turned on/off
     //Health Bars
@@ -79,6 +81,11 @@ public class CombatHandler : MonoBehaviour
         StartCoroutine(BeginBattle());
     }
 
+    private void Start()
+    {
+        StartBattle();
+    }
+
     IEnumerator BeginBattle()
     {
         yield return new WaitForSeconds(1f);
@@ -97,13 +104,33 @@ public class CombatHandler : MonoBehaviour
 
         // Create the currently used Familiars for both teams
         CombatUnit _curUnit;
+        GameObject _fam;
         float _count = (float)playerTeam.Count;
         Tile _t;
+        int _x, _y;
+        int iteration;
 
         for (int i = 0; i < Mathf.Min(3f, _count); i++)
         {
-            _curUnit = playerTeam[i];
-            _t = playerField.GetTile(_curUnit.x, _curUnit.y);
+            _fam = Instantiate(combatUnitPrefab, canvas.gameObject.transform);
+            _curUnit = _fam.GetComponent<CombatUnit>();
+            _curUnit.Familiar = CurrentFamiliarsController.Instance.playerFamiliars[i];
+
+            _x = UnityEngine.Random.Range(0, 3);
+            _y = UnityEngine.Random.Range(0, 3);
+
+            //_curUnit = playerTeam[i];
+            _t = playerField.GetTile(_x, _y);
+            iteration = 0;
+            while (_t.familiarOccupant != null)
+            {
+                iteration++;
+                if ((_x * 3 + _y) + iteration > 8)
+                {
+                    iteration -= 8;
+                }
+                _t = playerField.GetTile((_x * 3 + _y) + iteration);
+            }
             _t.familiarOccupant = _curUnit;
             _curUnit.SetCurrentTile(_t);
             _curUnit.gameObject.transform.position = _t.gameObject.transform.position;
@@ -117,11 +144,29 @@ public class CombatHandler : MonoBehaviour
         _count = (float)enemyTeam.Count;
         for (int i = 0; i < Mathf.Min(3f, _count); i++)
         {
-            _curUnit = enemyTeam[i];
+            _fam = Instantiate(combatUnitPrefab, canvas.gameObject.transform);
+            _curUnit = _fam.GetComponent<CombatUnit>();
+            _curUnit.Familiar = CurrentFamiliarsController.Instance.enemyFamiliars[i];
+
+            _x = UnityEngine.Random.Range(0, 3);
+            _y = UnityEngine.Random.Range(0, 3);
+
+
             _t = enemyField.GetTile(_curUnit.x, _curUnit.y);
+            iteration = 0;
+            while (_t.familiarOccupant != null)
+            {
+                iteration++;
+                if ((_x * 3 + _y) + iteration > 8)
+                {
+                    iteration -= 8;
+                }
+                _t = enemyField.GetTile((_x * 3 + _y) + iteration);
+            }
             _t.familiarOccupant = _curUnit;
             _curUnit.SetCurrentTile(_t);
             _curUnit.gameObject.transform.position = _t.gameObject.transform.position;
+            _curUnit.isPlayerUnit = false;
             _curUnit.Setup();
             _curUnit.teamPosition = i;
             enemyHUDs[i].SetData(_curUnit.Familiar);
@@ -282,6 +327,7 @@ public class CombatHandler : MonoBehaviour
             if (_combatUnit != null)
             {
                 selectedFamiliar = _combatUnit;
+                Debug.Log("[CombatHandler.cs] HandlePlayerSelection, Selected Familiar: " + selectedFamiliar.Familiar.Base.Name);
                 ActionSelection();
             }
         }

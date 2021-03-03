@@ -12,7 +12,7 @@ public class CombatUnit : MonoBehaviour
     public int teamPosition;
 
 
-    [SerializeField] Image sprite;
+    [SerializeField] Image image;
 
     Vector3 originalPos;
     Color originalColor;
@@ -30,14 +30,15 @@ public class CombatUnit : MonoBehaviour
 
     private void Awake()
     {
-        originalPos = sprite.transform.localPosition;
+        originalColor = image.color;
+        originalPos = image.transform.localPosition;
     }
 
     public void Setup()
     {
         //Familiar = new Familiar(_base, level);
 
-        sprite.sprite = Familiar.Base.FamiliarSprite;
+        image.sprite = Familiar.Base.FamiliarSprite;
 
         if (isPlayerUnit)
         {
@@ -48,43 +49,43 @@ public class CombatUnit : MonoBehaviour
             this.transform.localScale = new Vector3(-1, 1, 1);
         }
 
-        sprite.color = originalColor;
+        image.color = originalColor;
         //PlayerEnterAnimation();
     }
 
     public void PlayEnterAnimation()
     {
         if (isPlayerUnit)
-            sprite.transform.localPosition = new Vector3(100, originalPos.y);
+            image.transform.localPosition = new Vector3(100, originalPos.y);
         else
-            sprite.transform.localPosition = new Vector3(-100, originalPos.y);
+            image.transform.localPosition = new Vector3(-100, originalPos.y);
 
-        sprite.transform.DOLocalMoveX(originalPos.x, 1f);
+        image.transform.DOLocalMoveX(originalPos.x, 1f);
     }
 
     public void PlayAttackAnimation()
     {
         var sequence = DOTween.Sequence();
         if (isPlayerUnit)
-            sequence.Append(sprite.transform.DOLocalMoveX(originalPos.x + 50f, 0.25f));
+            sequence.Append(image.transform.DOLocalMoveX(originalPos.x + 50f, 0.25f));
         else
-            sequence.Append(sprite.transform.DOLocalMoveX(originalPos.x - 50f, 0.25f));
+            sequence.Append(image.transform.DOLocalMoveX(originalPos.x - 50f, 0.25f));
 
-        sequence.Append(sprite.transform.DOLocalMoveX(originalPos.x, 0.25f));
+        sequence.Append(image.transform.DOLocalMoveX(originalPos.x, 0.25f));
     }
 
     public void PlayHitAnimation()
     {
         var sequence = DOTween.Sequence();
-        sequence.Append(sprite.DOColor(Color.gray, 0.1f));
-        sequence.Append(sprite.DOColor(originalColor, 0.1f));
+        sequence.Append(image.DOColor(Color.gray, 0.1f));
+        sequence.Append(image.DOColor(originalColor, 0.1f));
     }
 
     public void PlayFaintAnimation()
     {
         var sequence = DOTween.Sequence();
-        sequence.Append(sprite.transform.DOLocalMoveY(originalPos.y - 150f, 0.5f));
-        sequence.Join(sprite.DOFade(0f, 0.5f));
+        sequence.Append(image.transform.DOLocalMoveY(originalPos.y - 150f, 0.5f));
+        sequence.Join(image.DOFade(0f, 0.5f));
     }
 
     // Tile Stuffs

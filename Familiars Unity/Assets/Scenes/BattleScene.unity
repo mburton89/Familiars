@@ -1967,7 +1967,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &237715823
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4765,6 +4765,10 @@ PrefabInstance:
       propertyPath: enemyHUDs.Array.data[2]
       value: 
       objectReference: {fileID: 1125006519}
+    - target: {fileID: 1669771678718885548, guid: a9900b1ca1571034790dd1a5557d1215, type: 3}
+      propertyPath: canvas
+      value: 
+      objectReference: {fileID: 1237778992}
     - target: {fileID: 3836459479903627893, guid: a9900b1ca1571034790dd1a5557d1215, type: 3}
       propertyPath: m_Name
       value: CombatHandler

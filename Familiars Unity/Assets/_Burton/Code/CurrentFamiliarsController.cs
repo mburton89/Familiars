@@ -6,7 +6,7 @@ public class CurrentFamiliarsController : MonoBehaviour
 {
     public static CurrentFamiliarsController Instance;
 
-    public List<Familiar> playerFamilars;
+    public List<Familiar> playerFamiliars;
     public List<Familiar> enemyFamiliars;
     void Awake()
     {
@@ -23,13 +23,21 @@ public class CurrentFamiliarsController : MonoBehaviour
 
     public void UpdatePlayerFamiliars(List<Familiar> newPlayerFamiliars)
     {
-        playerFamilars = new List<Familiar>();
-        playerFamilars = newPlayerFamiliars;
+        playerFamiliars = new List<Familiar>();
+        playerFamiliars = newPlayerFamiliars;
+        for (int i = 0; i < playerFamiliars.Count; i++)
+        {
+            playerFamiliars[i].Init();
+        }
     }
 
     public void UpdateEnemyFamiliars(List<Familiar> newEnemyFamiliars)
     {
         enemyFamiliars = new List<Familiar>();
         enemyFamiliars = newEnemyFamiliars;
+        for (int i = 0; i < enemyFamiliars.Count; i++)
+        {
+            enemyFamiliars[i].Init();
+        }
     }
 }
