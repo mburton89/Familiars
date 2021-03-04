@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fa7157f267b68e4abb637a352e0c721, type: 3}
   m_Name: Arrow
   m_EditorClassIdentifier: 
-  name: 
+  name: Arrow
   description: 
-  power: 0
+  power: 9
   magic: 0
   accuracy: 0
   range: 0
-  uses: 0
+  uses: 10
   type: 1
   attackStyle: 2
   sources: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}

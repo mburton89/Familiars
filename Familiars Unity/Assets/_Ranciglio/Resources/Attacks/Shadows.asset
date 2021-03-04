@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fa7157f267b68e4abb637a352e0c721, type: 3}
   m_Name: Shadows
   m_EditorClassIdentifier: 
-  name: 
+  name: Shadows
   description: 
   power: 0
-  magic: 0
+  magic: 7
   accuracy: 0
   range: 0
   uses: 0
-  type: 0
-  attackStyle: 0
-  sources: {fileID: 0}
-  targets: {fileID: 0}
-  targetingReticle: {fileID: 0}
+  type: 13
+  attackStyle: 3
+  sources: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
+  targets: {fileID: 11400000, guid: 4d9d8085cfaa6684db99eaf98282e27e, type: 2}
+  targetingReticle: {fileID: 11400000, guid: 4d9d8085cfaa6684db99eaf98282e27e, type: 2}

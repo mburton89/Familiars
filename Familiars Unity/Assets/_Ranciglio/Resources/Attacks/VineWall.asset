@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fa7157f267b68e4abb637a352e0c721, type: 3}
-  m_Name: Fireball
+  m_Name: VineWall
   m_EditorClassIdentifier: 
-  name: Fire Ball
+  name: Vine Wall
   description: 
-  power: 2
-  magic: 7
+  power: 3
+  magic: 9
   accuracy: 0
   range: 0
   uses: 0
-  type: 2
-  attackStyle: 2
+  type: 4
+  attackStyle: 3
   sources: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
-  targets: {fileID: 11400000, guid: f7444362d5d79b44ea5d252db01e795d, type: 2}
-  targetingReticle: {fileID: 11400000, guid: f7444362d5d79b44ea5d252db01e795d, type: 2}
+  targets: {fileID: 11400000, guid: 372840c114ac8a14988ba5f74d0eac70, type: 2}
+  targetingReticle: {fileID: 11400000, guid: 372840c114ac8a14988ba5f74d0eac70, type: 2}

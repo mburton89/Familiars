@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Dimmit
   description: 
   familiarSprite: {fileID: 21300000, guid: b7120bfea24a2ae4cb686da30c5a56a4, type: 3}
-  type: 0000000000000000
+  type: 0d00000000000000
   maxHp: 20
   attack: 22
   defense: 15
@@ -26,5 +26,11 @@ MonoBehaviour:
   attackSound: {fileID: 8300000, guid: c5270e899de0eda4da5a5e409d7aefb4, type: 3}
   injuredSound: {fileID: 8300000, guid: fe45d0c62e249194faa398c13aab7b76, type: 3}
   learnableAttacks:
-  - attackBase: {fileID: 11400000, guid: bc3d50a6614e7ff4e8fbfd90e5edc0f4, type: 2}
+  - attackBase: {fileID: 11400000, guid: f43f13c722944e446a8cd969b060e11c, type: 2}
     level: 1
+  - attackBase: {fileID: 11400000, guid: 9ce4cc54ab9e85e4da48f56eb2ec0e8e, type: 2}
+    level: 1
+  - attackBase: {fileID: 11400000, guid: d5f6e12f22c00e0489815f5bcc0bffcf, type: 2}
+    level: 10
+  - attackBase: {fileID: 11400000, guid: 78c39b92e605add4baa3988f321d7a8a, type: 2}
+    level: 15
