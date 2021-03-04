@@ -5,9 +5,9 @@ using UnityEngine;
 public enum AttackStyle { None, Target, Projectile, Area, AreaStatic }
 // None   - doesn't target, can be global or always targets self, or something else
 // Target - Targets a single tile/unit
-// Launch - Starts at an origin point until it reaches a valid target
+// Projectile - Starts at an origin point until it reaches a valid target
 // Area   - Targets a section of targets or all targets
-
+// AreaStatic  - Target an immovable area of targets.
 [CreateAssetMenu(fileName = "New Attack", menuName = "Familiar/Attacks")]
 public class AttackBase : ScriptableObject
 {
@@ -23,9 +23,12 @@ public class AttackBase : ScriptableObject
     [SerializeField] int uses;
     [SerializeField] Types type;
 
-    [SerializeField] int originPosition = 4;
+    [SerializeField] int targetOriginPosition = 4;
+    [SerializeField] int sourceOriginPosition = 4;
 
     [SerializeField] AttackStyle attackStyle;
+
+    [SerializeField] bool relative;
     
     [SerializeField] PatternBase sources; // The places that the familiar can use the attack from
     [SerializeField] PatternBase targets; // The places that the familiar is able to target with the move
@@ -78,11 +81,16 @@ public class AttackBase : ScriptableObject
         get { return type; }
     }
 
-    public int OriginPosition
+    public int TargetOriginPosition
     {
-        get { return originPosition; }
+        get { return targetOriginPosition; }
     }
 
+    public int SourceOriginPosition
+    {
+        get { return sourceOriginPosition; }
+    }
+    
     public int Direction
     {
         get { return direction; }
@@ -93,6 +101,11 @@ public class AttackBase : ScriptableObject
         get { return attackStyle;  }
     }
 
+    public bool Relative
+    {
+        get { return relative; }
+    }
+    
     //
     public PatternBase Sources
     {

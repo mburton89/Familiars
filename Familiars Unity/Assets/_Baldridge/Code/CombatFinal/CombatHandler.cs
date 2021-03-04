@@ -233,7 +233,7 @@ public class CombatHandler : MonoBehaviour
 
         currentAttack = selectedFamiliar.Familiar.Attacks[currentAttackPosition];
 
-        currentTargetPosition = currentAttack.Base.OriginPosition;
+        currentTargetPosition = currentAttack.Base.TargetOriginPosition;
         playerField.SetFieldPattern(currentAttack.Base.Sources, TileState.Source);
         enemyField.SetFieldPattern(currentAttack.Base.Targets, TileState.Target);
 
@@ -392,7 +392,15 @@ public class CombatHandler : MonoBehaviour
         dialogMenu.UpdateAttackSelection(currentAttackPosition, currentAttack);
         
         playerField.SetFieldPattern(currentAttack.Base.Sources, TileState.Source);
-        enemyField.SetFieldPattern(currentAttack.Base.Targets, TileState.Target);
+        if (currentAttack.Base.Relative)
+        {
+            enemyField.SetFieldPattern(currentAttack.Base.Targets, TileState.Target, currentAttack.Base.TargetOriginPosition);
+        }
+        else
+        {
+            enemyField.SetFieldPattern(currentAttack.Base.Targets, TileState.Target);
+        }
+        
         
         // Target Display
         switch(currentAttack.Base.AttackStyle)
