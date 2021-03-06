@@ -68,12 +68,6 @@ public class CombatHandler : MonoBehaviour
     FamiliarParty playerParty;
     List<Familiar> wildFamiliars;
 
-    private void Awake()
-    {
-        Instance = this;
-        //DontDestroyOnLoad(this.gameObject);
-    }
-
     public void StoreParties(FamiliarParty playerParty, List<Familiar> wildFamiliars)
     {
         this.playerParty = playerParty;
@@ -83,6 +77,8 @@ public class CombatHandler : MonoBehaviour
 
     private void Start()
     {
+        Instance = this;
+        GameControllerOverworld.Instance.SetCombat();
         StartBattle();
     }
 

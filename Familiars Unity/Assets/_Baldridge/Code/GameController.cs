@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum GameState { FreeRoam, Battle }
-
 public class GameController : MonoBehaviour
 {
+    public static GameController Instance;
+
     [SerializeField] CombatHandler battleSystem;
     //[SerializeField] Camera worldCamera;
     GameState state;

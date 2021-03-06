@@ -19,7 +19,8 @@ public class CharacterController : MonoBehaviour
     private void Awake()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
-        //DontDestroyOnLoad(this.gameObject);
+        Debug.Log(this);
+        DontDestroyOnLoad(this.gameObject);
     }
 
     private void Update()
