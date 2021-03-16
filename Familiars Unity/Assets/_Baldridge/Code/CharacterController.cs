@@ -16,6 +16,9 @@ public class CharacterController : MonoBehaviour
     private Vector3 moveDir;
     private bool isDashButtonDown;
 
+    [SerializeField] float noEncounterPeriod = 2f;
+    bool noEncounter;
+
     private void Awake()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
@@ -80,17 +83,32 @@ public class CharacterController : MonoBehaviour
 
     private void CheckForEncounters()
     {
-        if (Physics2D.OverlapCircle(transform.position, 0.2f, grassLayer) != null)
+        if (!noEncounter)
         {
-            if (UnityEngine.Random.Range(1,101) <= 10)
+            if (Physics2D.OverlapCircle(transform.position, 0.2f, grassLayer) != null)
             {
-                if (OnEncountered != null)
+                if (UnityEngine.Random.Range(1, 101) <= 5)
                 {
-                    OnEncountered();
-                    Debug.Log("Beep");
+                    if (OnEncountered != null)
+                    {
+                        OnEncountered();
+                    }
+
                 }
-                    
             }
         }
+    }
+
+    public void SetEncounterCooldown()
+    {
+        noEncounter = true;
+
+        StartCoroutine(EncounterCooldown());
+    }
+
+    IEnumerator EncounterCooldown()
+    {
+        yield return new WaitForSeconds(noEncounterPeriod);
+        noEncounter = false;
     }
 }

@@ -29,10 +29,17 @@ public class AttackBase : ScriptableObject
     [SerializeField] AttackStyle attackStyle;
 
     [SerializeField] bool relative;
+    [SerializeField] bool relativePosition;
+    [SerializeField] bool relativeRow;
+    [SerializeField] bool relativeCol;
     
     [SerializeField] PatternBase sources; // The places that the familiar can use the attack from
     [SerializeField] PatternBase targets; // The places that the familiar is able to target with the move
     [SerializeField] PatternBase targetingReticle; // the shape that the attack resolves in (AOE's and such)
+
+    [SerializeField] PatternBase[] sourceArray;
+    [SerializeField] PatternBase[] targetArray;
+    [SerializeField] PatternBase[] targetingReticleArray;
 
     // For Projectile
     [SerializeField] int projectileOrigin = 1;
@@ -100,13 +107,30 @@ public class AttackBase : ScriptableObject
     {
         get { return attackStyle;  }
     }
-
+    #region Relative Targeting
     public bool Relative
     {
         get { return relative; }
     }
     
+    public bool RelativePosition
+    {
+        get { return relativePosition; }
+    }
+
+    public bool RelativeRow
+    {
+        get { return relativeRow; }
+    }
+
+    public bool RelativeCol
+    {
+        get { return relativeCol; }
+    }
+    #endregion
+
     //
+    #region Field Patterns
     public PatternBase Sources
     {
         get { return sources; }
@@ -122,10 +146,28 @@ public class AttackBase : ScriptableObject
         get { return targetingReticle;  }
     }
 
+    public PatternBase[] SourceArray
+    {
+        get { return sourceArray; }
+    }
+
+    public PatternBase[] TargetArray
+    {
+        get { return targetArray; }
+    }
+
+    public PatternBase[] TargetingReticleArray
+    {
+        get { return targetingReticleArray; }
+    }
+    #endregion
+
     public int ProjectileOrigin
     {
         get { return projectileOrigin; }
     }
+
+    #region Area Limits
 
     public int UpperX
     {
@@ -143,6 +185,7 @@ public class AttackBase : ScriptableObject
     {
         get { return lowerY; }
     }
+    #endregion
 
 
 }

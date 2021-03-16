@@ -9,7 +9,11 @@ public class GameControllerOverworld : MonoBehaviour
 {
     public static GameControllerOverworld Instance;
 
-    [SerializeField] CharacterController playerController;
+    [SerializeField] GameObject playerPrefab;
+
+    GameObject player;
+
+    CharacterController playerController;
 
     GameState state;
     Vector3 playerPosition;
@@ -21,10 +25,20 @@ public class GameControllerOverworld : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        //playerController = GameObject.Find("Player").GetComponent<CharacterController>();
         SceneManager.sceneLoaded += OnSceneLoaded;
 
-        playerController.OnEncountered += StartBattle;
+        //playerController.OnEncountered += StartBattle;
     }
 
     void StartBattle()
@@ -38,6 +52,8 @@ public class GameControllerOverworld : MonoBehaviour
         CurrentFamiliarsController.Instance.UpdateEnemyFamiliars(wildFamiliars);
         playerPosition = playerController.gameObject.transform.position;
 
+        Debug.Log("[GameController] start battle position: " + playerPosition);
+        Debug.Log("[GameController] start battle position of player: " + playerController.gameObject.transform.position);
         SceneManager.LoadScene(battleScreen);
 
         //playerController.gameObject.SetActive(false);
@@ -52,6 +68,7 @@ public class GameControllerOverworld : MonoBehaviour
         state = GameState.FreeRoam;
 
         SceneManager.LoadScene(worldScreen);
+        playerController.SetEncounterCooldown();
         
     }
 
@@ -64,7 +81,12 @@ public class GameControllerOverworld : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            SceneManager.LoadScene(battleScreen);
+            Debug.Log("[GameController] Starting game...");
+            SceneManager.LoadScene(worldScreen);
+            player = Instantiate(playerPrefab, new Vector3(0, 0, 1), Quaternion.identity);
+            player.name = "Player";
+            playerController = player.GetComponent<CharacterController>();
+            playerController.OnEncountered += StartBattle;
         }
     }
 
@@ -75,8 +97,11 @@ public class GameControllerOverworld : MonoBehaviour
             GameObject _p = GameObject.Find("Player");
             if (_p != null)
             {
-                playerController.gameObject.transform.position = playerPosition;
+                //_p.transform.position = new Vector3(10, 10, 1);
             }
+
+            Debug.Log("[GameController] end battle playerPosition: " + playerPosition);
+            Debug.Log("[GameController] end battle position of player: " + _p.transform.position);
         }
     }
 

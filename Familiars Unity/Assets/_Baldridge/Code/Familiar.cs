@@ -128,8 +128,8 @@ public class Familiar
         };
         
 
-        Debug.Log("Target HP: " + HP + ", Incoming Physical Damage: " + ((attack.Base.Power + attacker.Attack) - Defense)
-                + ", Incoming Special Damage: " + ((attack.Base.Magic + attacker.SpAttack) - SpDefense) + ".");
+        //Debug.Log("Target HP: " + HP + ", Incoming Physical Damage: " + ((attack.Base.Power + attacker.Attack) - Defense)
+        //        + ", Incoming Special Damage: " + ((attack.Base.Magic + attacker.SpAttack) - SpDefense) + ".");
         int damage = Mathf.FloorToInt(d * mod);
         HP -= damage;
         if (HP <= 0)

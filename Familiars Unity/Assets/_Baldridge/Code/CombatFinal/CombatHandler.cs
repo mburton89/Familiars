@@ -48,6 +48,11 @@ public class CombatHandler : MonoBehaviour
     CombatState nextState;
 
     int actions = 3;
+
+    // Attack Preview Stuff
+
+    int currentAttackPreview;
+    int maxAttackPreview;
     
     // Targetting Stuffs
 
@@ -132,6 +137,8 @@ public class CombatHandler : MonoBehaviour
             _curUnit.gameObject.transform.position = _t.gameObject.transform.position;
             _curUnit.Setup();
             _curUnit.teamPosition = i;
+            _curUnit.x = _t.x;
+            _curUnit.y = _t.y;
             playerHUDs[i].SetData(_curUnit.Familiar);
             //GameObject _fam = Instantiate(combatUnitPrefab, _tileLocation.position, Quaternion.identity);
             //_fam.GetComponent<CombatUnit>().
@@ -208,6 +215,8 @@ public class CombatHandler : MonoBehaviour
         combatState = CombatState.PlayerAttack;
 
         currentAttack = null;
+        currentAttackPreview = 0;
+        maxAttackPreview = 0;
 
         dialogMenu.EnableActionSelector(false);
         dialogMenu.EnableAttackSelector(true);
@@ -230,8 +239,15 @@ public class CombatHandler : MonoBehaviour
         currentAttack = selectedFamiliar.Familiar.Attacks[currentAttackPosition];
 
         currentTargetPosition = currentAttack.Base.TargetOriginPosition;
-        playerField.SetFieldPattern(currentAttack.Base.Sources, TileState.Source);
-        enemyField.SetFieldPattern(currentAttack.Base.Targets, TileState.Target);
+        for (int i = 0; i < currentAttack.Base.SourceArray.Length; i++)
+        {
+            if (currentAttack.Base.SourceArray[i].Active[selectedFamiliar.x * 3 + selectedFamiliar.y])
+            {
+                currentAttackPreview = i;
+            }
+        }
+        playerField.SetFieldPattern(currentAttack.Base.SourceArray[currentAttackPreview], TileState.Source);
+        enemyField.SetFieldPattern(currentAttack.Base.TargetArray[currentAttackPreview], TileState.Target);
 
         upperBoundX = currentAttack.Base.UpperX;
         upperBoundY = currentAttack.Base.UpperY;
@@ -323,7 +339,7 @@ public class CombatHandler : MonoBehaviour
             if (_combatUnit != null)
             {
                 selectedFamiliar = _combatUnit;
-                Debug.Log("[CombatHandler.cs] HandlePlayerSelection, Selected Familiar: " + selectedFamiliar.Familiar.Base.Name);
+                //Debug.Log("[CombatHandler.cs] HandlePlayerSelection, Selected Familiar: " + selectedFamiliar.Familiar.Base.Name);
                 ActionSelection();
             }
         }
@@ -387,38 +403,12 @@ public class CombatHandler : MonoBehaviour
         currentAttack = selectedFamiliar.Familiar.Attacks[currentAttackPosition];
         dialogMenu.UpdateAttackSelection(currentAttackPosition, currentAttack);
         
-        playerField.SetFieldPattern(currentAttack.Base.Sources, TileState.Source);
-        if (currentAttack.Base.Relative)
-        {
-            enemyField.SetFieldPattern(currentAttack.Base.Targets, TileState.Target, currentAttack.Base.TargetOriginPosition);
-        }
-        else
-        {
-            enemyField.SetFieldPattern(currentAttack.Base.Targets, TileState.Target);
-        }
+        playerField.SetFieldPattern(currentAttack.Base.SourceArray[currentAttackPreview], TileState.Source);
+        enemyField.SetFieldPattern(currentAttack.Base.TargetArray[currentAttackPreview], TileState.Target);
+        enemyField.SetFieldTargetingReticle(currentAttack.Base.TargetingReticleArray[currentAttackPreview], TileState.TargetReticle);
+
+        StartCoroutine(AdvanceAttackPreview());
         
-        
-        // Target Display
-        switch(currentAttack.Base.AttackStyle)
-        {
-            case AttackStyle.Target:
-                enemyField.SetFieldTargetingReticle(currentAttack.Base.TargetingReticle, TileState.TargetReticle);
-                break;
-            case AttackStyle.Projectile:
-                break;
-            case AttackStyle.Area:
-                enemyField.SetFieldTargetingReticle(currentAttack.Base.TargetingReticle, TileState.TargetReticle);
-                break;
-            case AttackStyle.AreaStatic:
-                enemyField.SetFieldTargetingReticle(currentAttack.Base.Targets, TileState.TargetReticle);
-                break;
-        }
-
-
-        //playerTeam.SetFieldPattern(selectedFamiliar.Familiar.Attacks[currentAttack].Base.Sources, TileState.Source);
-        //enemyTeam.SetFieldPattern(selectedFamiliar.Familiar.Attacks[currentAttack].Base.Targets, TileState.Target);
-        //enemyTeam.SetFieldTargetingRecticle(selectedFamiliar.Familiar.Attacks[currentAttack].Base.TargetingReticle, TileState.TargetReticle);
-
         if (Input.GetKeyDown(KeyCode.Z))
         {
             // If the attack can be used at the current position
@@ -740,5 +730,19 @@ public class CombatHandler : MonoBehaviour
     {
         audioSource.clip = audio;
         audioSource.Play();
+    }
+
+    IEnumerator AdvanceAttackPreview()
+    {
+        yield return new WaitForSeconds(0.3f);
+        if (combatState == CombatState.PlayerAttack)
+        {
+            if (currentAttackPreview == maxAttackPreview)
+            {
+                currentAttackPreview = 0;
+            }
+            else currentAttackPreview++;
+            StartCoroutine(AdvanceAttackPreview());
+        }
     }
 }

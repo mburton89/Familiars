@@ -89,11 +89,15 @@ public class CombatUnit : MonoBehaviour
     }
 
     // Tile Stuffs
+    public Tile GetCurrentTile(bool setCurrent)
+    {
+        currentTile.current = setCurrent;
+        return currentTile;
+    }
 
     public Tile GetCurrentTile()
     {
-        currentTile.current = true;
-        return currentTile;
+        return GetCurrentTile(true);
     }
 
     public void SetCurrentTile(Tile t)

@@ -97,13 +97,29 @@ public class Field : MonoBehaviour
             {
                 if (_patternSets[_p])
                 {
-                    GetTile(_p).SetState(tileState);
+                    GetTile(_p - (4 - relativePosition)).SetState(tileState);
                 }
                 else
                 {
-                    GetTile(_p).SetState(TileState.Normal);
+                    GetTile(_p - (4 - relativePosition)).SetState(TileState.Normal);
                 }
             }
+        }
+    }
+
+    public void SetFieldRow(TileState tileState, int row)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            GetTile(row + (3 * i)).SetState(tileState);
+        }
+    }
+
+    public void SetFieldColumn(TileState tileState, int col)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            GetTile((col * 3) + i).SetState(tileState);
         }
     }
 
