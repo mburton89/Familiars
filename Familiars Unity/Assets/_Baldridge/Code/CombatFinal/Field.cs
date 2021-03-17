@@ -9,6 +9,8 @@ public class Field : MonoBehaviour
     [SerializeField] Field connectedField;
     [SerializeField] Tile[] board;
 
+    [SerializeField] PatternBase allTiles;
+
     /*      Note - Player side board is as follows vv   |||   Enemy side board is as follows
      *       * ---------*----------*-------- *                    * ---------*----------*--------- *
      *      ||          |          |         ||                  ||          |          |          ||
@@ -72,54 +74,32 @@ public class Field : MonoBehaviour
 
     public void SetFieldPattern(PatternBase pattern, TileState tileState)
     {
-        bool[] _patternSets = pattern.Active;
-        for (int _p = 0; _p < _patternSets.Length; _p++)
+        SetFieldPattern(pattern, tileState, allTiles, TileState.Normal);
+    }
+
+    public void SetFieldPattern(PatternBase foregroundPattern, TileState tileState, PatternBase backgroundPattern, TileState secondaryState)
+    {
+        bool[] _foregroundPatternSets = foregroundPattern.Active;
+        bool[] _backgroundPatternSets = backgroundPattern.Active;
+
+        for (int _p = 0; _p < _backgroundPatternSets.Length; _p++)
         {
-            if (_patternSets[_p])
+            if (_backgroundPatternSets[_p])
             {
-                GetTile(_p).SetState(tileState);
+                GetTile(_p).SetState(secondaryState);
             }
             else
             {
                 GetTile(_p).SetState(TileState.Normal);
             }
-
         }
-    }
 
-    public void SetFieldPattern(PatternBase pattern, TileState tileState, int relativePosition)
-    {
-        bool[] _patternSets = pattern.Active;
-        for (int _p = 0; _p < _patternSets.Length; _p++)
+        for (int _p = 0; _p < _foregroundPatternSets.Length; _p++)
         {
-            // Check to see if the shifted array would go out of bounds
-            if (!(_p - (4 - relativePosition) > _patternSets.Length || _p - (4 - relativePosition) < 0))
+            if (_foregroundPatternSets[_p])
             {
-                if (_patternSets[_p])
-                {
-                    GetTile(_p - (4 - relativePosition)).SetState(tileState);
-                }
-                else
-                {
-                    GetTile(_p - (4 - relativePosition)).SetState(TileState.Normal);
-                }
+                GetTile(_p).SetState(tileState);
             }
-        }
-    }
-
-    public void SetFieldRow(TileState tileState, int row)
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            GetTile(row + (3 * i)).SetState(tileState);
-        }
-    }
-
-    public void SetFieldColumn(TileState tileState, int col)
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            GetTile((col * 3) + i).SetState(tileState);
         }
     }
 
@@ -148,7 +128,7 @@ public class Field : MonoBehaviour
     {
         for (int _i = 0; _i < board.Length; _i++)
         {
-            GetTile(_i).SetState(TileState.Normal);
+            GetTile(_i).Reset();
         }
     }
 }

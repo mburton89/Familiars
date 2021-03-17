@@ -6614,6 +6614,7 @@ MonoBehaviour:
   - {fileID: 81124843}
   - {fileID: 2098876284}
   - {fileID: 98099133}
+  allTiles: {fileID: 11400000, guid: 657e23ff3bf7a3a49b7572c010a6c9a0, type: 2}
 --- !u!1 &1318066204
 GameObject:
   m_ObjectHideFlags: 0
@@ -6939,6 +6940,7 @@ MonoBehaviour:
   - {fileID: 586450876}
   - {fileID: 1706530977}
   - {fileID: 1600352822}
+  allTiles: {fileID: 11400000, guid: 657e23ff3bf7a3a49b7572c010a6c9a0, type: 2}
 --- !u!1 &1459745536
 GameObject:
   m_ObjectHideFlags: 0
@@ -9305,6 +9307,7 @@ MonoBehaviour:
   - {fileID: 1010935223}
   - {fileID: 179813673}
   - {fileID: 881848123}
+  allTiles: {fileID: 11400000, guid: 657e23ff3bf7a3a49b7572c010a6c9a0, type: 2}
 --- !u!1 &2001340768
 GameObject:
   m_ObjectHideFlags: 0
@@ -9896,6 +9899,7 @@ MonoBehaviour:
   - {fileID: 1002521387}
   - {fileID: 1083935598}
   - {fileID: 822429061}
+  allTiles: {fileID: 11400000, guid: 657e23ff3bf7a3a49b7572c010a6c9a0, type: 2}
 --- !u!1001 &2098876282
 PrefabInstance:
   m_ObjectHideFlags: 0

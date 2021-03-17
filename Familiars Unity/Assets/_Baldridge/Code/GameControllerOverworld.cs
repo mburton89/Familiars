@@ -56,6 +56,7 @@ public class GameControllerOverworld : MonoBehaviour
         Debug.Log("[GameController] start battle position of player: " + playerController.gameObject.transform.position);
         SceneManager.LoadScene(battleScreen);
 
+        player.SetActive(false);
         //playerController.gameObject.SetActive(false);
         //battleSystem.gameObject.SetActive(true);
 
@@ -68,7 +69,9 @@ public class GameControllerOverworld : MonoBehaviour
         state = GameState.FreeRoam;
 
         SceneManager.LoadScene(worldScreen);
+        player.SetActive(true);
         playerController.SetEncounterCooldown();
+        
         
     }
 
@@ -84,6 +87,11 @@ public class GameControllerOverworld : MonoBehaviour
             Debug.Log("[GameController] Starting game...");
             SceneManager.LoadScene(worldScreen);
             player = Instantiate(playerPrefab, new Vector3(0, 0, 1), Quaternion.identity);
+            GameObject _p = GameObject.Find("Player");
+            if (_p != null)
+            {
+                Destroy(_p);
+            }
             player.name = "Player";
             playerController = player.GetComponent<CharacterController>();
             playerController.OnEncountered += StartBattle;

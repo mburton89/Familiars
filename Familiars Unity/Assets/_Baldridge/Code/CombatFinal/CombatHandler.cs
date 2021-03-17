@@ -222,12 +222,21 @@ public class CombatHandler : MonoBehaviour
         dialogMenu.EnableAttackSelector(true);
 
         targets.Clear();
+
+        currentAttack = selectedFamiliar.Familiar.Attacks[currentAttackPosition];
+        maxAttackPreview = currentAttack.Base.SourceArray.Length - 1;
+        dialogMenu.UpdateAttackSelection(currentAttackPosition, currentAttack);
+
+        StartCoroutine(AdvanceAttackPreview());
     }
 
     void PlayerMove()
     {
         combatState = CombatState.PlayerMove;
-        
+
+        playerField.ClearTiles();
+        enemyField.ClearTiles();
+
         selectedFamiliar.SetCurrentTile(playerField.GetTile(currentPosition));
         selectedFamiliar.FindSelectableTiles(TileState.Move, selectedFamiliar.Familiar.Base.Movement);
     }
@@ -243,11 +252,12 @@ public class CombatHandler : MonoBehaviour
         {
             if (currentAttack.Base.SourceArray[i].Active[selectedFamiliar.x * 3 + selectedFamiliar.y])
             {
+                Debug.Log("[CombatHandler.cs, PlayerTargeting()] " + i);
                 currentAttackPreview = i;
             }
         }
-        playerField.SetFieldPattern(currentAttack.Base.SourceArray[currentAttackPreview], TileState.Source);
-        enemyField.SetFieldPattern(currentAttack.Base.TargetArray[currentAttackPreview], TileState.Target);
+        playerField.SetFieldPattern(currentAttack.Base.SourceArray[currentAttackPreview], TileState.ActiveSource);
+        enemyField.SetFieldPattern(currentAttack.Base.TargetArray[currentAttackPreview], TileState.ActiveTarget);
 
         upperBoundX = currentAttack.Base.UpperX;
         upperBoundY = currentAttack.Base.UpperY;
@@ -292,10 +302,10 @@ public class CombatHandler : MonoBehaviour
             case CombatState.PlayerTargeting:
                 HandlePlayerTargeting();
                 break;
-
         }
     }
 
+    #region Update Handlers
     void HandlePlayerSelection()
     {
         #region Navigation
@@ -385,29 +395,28 @@ public class CombatHandler : MonoBehaviour
 
     void HandlePlayerAttack()
     {
+        int _button = 0;
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            _button++;
+        }
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            if (currentAttackPosition > 0)
-                currentAttackPosition--;
-            else
-                currentAttackPosition = selectedFamiliar.Familiar.Attacks.Count - 1;
+            _button--;
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        
+        if (CheckButton(_button))
         {
-            if (currentAttackPosition < selectedFamiliar.Familiar.Attacks.Count - 1)
-                currentAttackPosition++;
-            else
-                currentAttackPosition = 0;
+            currentAttack = selectedFamiliar.Familiar.Attacks[currentAttackPosition];
+            maxAttackPreview = currentAttack.Base.SourceArray.Length - 1;
+            dialogMenu.UpdateAttackSelection(currentAttackPosition, currentAttack);
         }
 
-        currentAttack = selectedFamiliar.Familiar.Attacks[currentAttackPosition];
-        dialogMenu.UpdateAttackSelection(currentAttackPosition, currentAttack);
-        
-        playerField.SetFieldPattern(currentAttack.Base.SourceArray[currentAttackPreview], TileState.Source);
-        enemyField.SetFieldPattern(currentAttack.Base.TargetArray[currentAttackPreview], TileState.Target);
+        playerField.SetFieldPattern(currentAttack.Base.SourceArray[currentAttackPreview], TileState.ActiveSource, currentAttack.Base.Sources, TileState.Source);
+        enemyField.SetFieldPattern(currentAttack.Base.TargetArray[currentAttackPreview], TileState.ActiveTarget, currentAttack.Base.Targets, TileState.Target);
         enemyField.SetFieldTargetingReticle(currentAttack.Base.TargetingReticleArray[currentAttackPreview], TileState.TargetReticle);
 
-        StartCoroutine(AdvanceAttackPreview());
+        
         
         if (Input.GetKeyDown(KeyCode.Z))
         {
@@ -428,37 +437,40 @@ public class CombatHandler : MonoBehaviour
     {
         #region Navigation
         // Move left (add switching to supp. board later)
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (currentAttack.Base.AttackStyle == AttackStyle.Area || currentAttack.Base.AttackStyle == AttackStyle.Target)
         {
-            if (currentTargetPosition < (upperBoundX * 3) && selectedFamiliar.Familiar.Attacks[currentAttackPosition].Base.Targets.Active[currentTargetPosition + 3])
+            if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                currentTargetPosition += 3;
+                if (currentTargetPosition < (upperBoundX * 3) && selectedFamiliar.Familiar.Attacks[currentAttackPosition].Base.Targets.Active[currentTargetPosition + 3])
+                {
+                    currentTargetPosition += 3;
+                }
             }
-        }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            if (currentTargetPosition > (lowerBoundX + 2) && selectedFamiliar.Familiar.Attacks[currentAttackPosition].Base.Targets.Active[currentTargetPosition - 3])
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                currentTargetPosition -= 3;
+                if (currentTargetPosition > (lowerBoundX + 2) && selectedFamiliar.Familiar.Attacks[currentAttackPosition].Base.Targets.Active[currentTargetPosition - 3])
+                {
+                    currentTargetPosition -= 3;
+                }
             }
-        }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            if (currentTargetPosition % 3 < upperBoundY && selectedFamiliar.Familiar.Attacks[currentAttackPosition].Base.Targets.Active[currentTargetPosition + 1])
+            if (Input.GetKeyDown(KeyCode.DownArrow))
             {
-                currentTargetPosition++;
+                if (currentTargetPosition % 3 < upperBoundY && selectedFamiliar.Familiar.Attacks[currentAttackPosition].Base.Targets.Active[currentTargetPosition + 1])
+                {
+                    currentTargetPosition++;
+                }
             }
-        }
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            if (currentTargetPosition % 3 > lowerBoundY && selectedFamiliar.Familiar.Attacks[currentAttackPosition].Base.Targets.Active[currentTargetPosition - 1])
+            if (Input.GetKeyDown(KeyCode.UpArrow))
             {
-                currentTargetPosition--;
+                if (currentTargetPosition % 3 > lowerBoundY && selectedFamiliar.Familiar.Attacks[currentAttackPosition].Base.Targets.Active[currentTargetPosition - 1])
+                {
+                    currentTargetPosition--;
+                }
             }
         }
 
-        enemyField.SetFieldPattern(selectedFamiliar.Familiar.Attacks[currentAttackPosition].Base.Targets, TileState.Target);
-        enemyField.SetFieldTargetingReticle(selectedFamiliar.Familiar.Attacks[currentAttackPosition].Base.TargetingReticle, TileState.TargetReticle, currentTargetPosition);
+        enemyField.SetFieldPattern(currentAttack.Base.TargetArray[currentAttackPreview], TileState.ActiveTarget);
+        enemyField.SetFieldTargetingReticle(currentAttack.Base.TargetingReticleArray[currentAttackPreview], TileState.TargetReticle, currentTargetPosition);
         //navigator.SetLocation(enemyField.GetTile(currentTargetPosition));
         #endregion
 
@@ -606,6 +618,7 @@ public class CombatHandler : MonoBehaviour
             ActionSelection();
         }
     }
+    #endregion
 
     IEnumerator PlayerAttack()
     {
@@ -734,7 +747,7 @@ public class CombatHandler : MonoBehaviour
 
     IEnumerator AdvanceAttackPreview()
     {
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(1.2f);
         if (combatState == CombatState.PlayerAttack)
         {
             if (currentAttackPreview == maxAttackPreview)
@@ -742,7 +755,31 @@ public class CombatHandler : MonoBehaviour
                 currentAttackPreview = 0;
             }
             else currentAttackPreview++;
-            StartCoroutine(AdvanceAttackPreview());
+            yield return AdvanceAttackPreview();
         }
+    }
+
+    bool CheckButton(int dir)
+    {
+        if (dir != 0)
+        {
+            if (dir > 0)
+            {
+                if (currentAttackPosition < selectedFamiliar.Familiar.Attacks.Count - 1)
+                    currentAttackPosition++;
+                else
+                    currentAttackPosition = 0;
+            }
+            else if (dir < 0)
+            {
+                if (currentAttackPosition > 0)
+                    currentAttackPosition--;
+                else
+                    currentAttackPosition = selectedFamiliar.Familiar.Attacks.Count - 1;
+            }
+            return true;
+        }
+        
+        return false;
     }
 }

@@ -43,6 +43,7 @@ public class AttackBase : ScriptableObject
 
     // For Projectile
     [SerializeField] int projectileOrigin = 1;
+    [SerializeField] PatternBase eligibleOrigins;
     [SerializeField] int direction; // 0 - back, down, forward, up
 
     // For AOE
@@ -166,6 +167,12 @@ public class AttackBase : ScriptableObject
     {
         get { return projectileOrigin; }
     }
+
+    public PatternBase EligibleOrigins
+    {
+        get { return eligibleOrigins;  }
+    }
+
 
     #region Area Limits
 

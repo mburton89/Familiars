@@ -106,6 +106,8 @@ public class CombatUnit : MonoBehaviour
         currentTile = t;
         this.gameObject.transform.position = currentTile.gameObject.transform.position;
         currentTile.familiarOccupant = this;
+        x = currentTile.x;
+        y = currentTile.y;
     }
 
     public void FindSelectableTiles(TileState s, int range)
