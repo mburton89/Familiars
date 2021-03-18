@@ -57,7 +57,7 @@ public class Tile : MonoBehaviour
                 sprite.color = Color.blue;
                 break;
             case TileState.ActiveTarget:
-                sprite.color = new Color(0.5f, 0f, 0f);
+                sprite.color = new Color(0.81f, 0.01f, 0.01f);
                 break;
             case TileState.Target:
                 sprite.color = Color.red;

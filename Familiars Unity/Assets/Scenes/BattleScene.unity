@@ -4518,6 +4518,10 @@ PrefabInstance:
       propertyPath: playerField
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1452085871743422284, guid: 115fae1ac757e4c409362d4c63d286d3, type: 3}
+      propertyPath: y
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 115fae1ac757e4c409362d4c63d286d3, type: 3}
 --- !u!224 &798743378 stripped
@@ -8348,6 +8352,10 @@ PrefabInstance:
       propertyPath: sprite
       value: 
       objectReference: {fileID: 462974075}
+    - target: {fileID: 1452085871743422284, guid: 115fae1ac757e4c409362d4c63d286d3, type: 3}
+      propertyPath: y
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 115fae1ac757e4c409362d4c63d286d3, type: 3}
 --- !u!224 &1850614720 stripped

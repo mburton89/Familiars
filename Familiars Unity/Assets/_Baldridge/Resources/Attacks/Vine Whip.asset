@@ -43,7 +43,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2abc63732473b404bbbb85b1ac3ce542, type: 2}
   - {fileID: 11400000, guid: cbd90f7a50eff5543b13847238ba08dc, type: 2}
   projectileOrigin: 1
-  eligibleOrigins: {fileID: 0}
+  eligibleOrigins: {fileID: 11400000, guid: 5435527a7e736aa4eb79979dd2972ab6, type: 2}
   direction: 0
   upperX: 2
   upperY: 2

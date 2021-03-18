@@ -488,42 +488,47 @@ public class CombatHandler : MonoBehaviour
                     }
                     break;
                 case AttackStyle.Projectile:
-                    Tile _checkingTile = enemyField.GetTile(currentAttack.Base.ProjectileOrigin);
-                    int _position = currentAttackPosition;
-                    bool end;
-                    while (_checkingTile != null)
+                    List<Tile> _t = MatchingTiles(enemyField, currentAttack.Base.TargetArray[currentAttackPreview], currentAttack.Base.EligibleOrigins);
+                    if (_t.Count == 1)
                     {
-                        end = false;
-                        if (_checkingTile.familiarOccupant != null)
+                        Tile _checkingTile = _t[0];
+                        
+                        int _position = (_checkingTile.x * 3) + _checkingTile.y;
+                        bool end;
+                        while (_checkingTile != null)
                         {
-                            targets.Add(_checkingTile.familiarOccupant);
-                            valid = true;
-                            end = true;
-                            break;
-                        }
-
-                        switch (currentAttack.Base.Direction)
-                        {
-                            case 0:
-                                if (_position >= 6)
-                                {
-                                    end = true;
-                                    break;
-                                }
-                                else _position += 3; 
+                            Debug.Log(_checkingTile.x + " " + _checkingTile.y);
+                            end = false;
+                            if (_checkingTile.familiarOccupant != null)
+                            {
+                                targets.Add(_checkingTile.familiarOccupant);
+                                valid = true;
+                                end = true;
                                 break;
+                            }
 
-                        }
-                        if (!end)
-                        {
-                            _checkingTile = enemyField.GetTile(_position);
-                        }
-                        else
-                        {
-                            _checkingTile = null;
+                            switch (currentAttack.Base.Direction)
+                            {
+                                case 0:
+                                    if (_position >= 6)
+                                    {
+                                        end = true;
+                                        break;
+                                    }
+                                    else _position += 3;
+                                    break;
+
+                            }
+                            if (!end)
+                            {
+                                _checkingTile = enemyField.GetTile(_position);
+                            }
+                            else
+                            {
+                                _checkingTile = null;
+                            }
                         }
                     }
-
                     break;
                 case AttackStyle.Area:
                     for (int i = 0; i < 9; i++)
@@ -781,5 +786,19 @@ public class CombatHandler : MonoBehaviour
         }
         
         return false;
+    }
+
+    List<Tile> MatchingTiles(Field field, PatternBase pattern1, PatternBase pattern2)
+    {
+        List<Tile> tiles = new List<Tile>();
+
+        for (int i = 0; i < pattern1.Active.Length; i++)
+        {
+            if (pattern1.Active[i] && pattern2.Active[i])
+            {
+                tiles.Add(field.GetTile(i));
+            }
+        }
+        return tiles;
     }
 }
