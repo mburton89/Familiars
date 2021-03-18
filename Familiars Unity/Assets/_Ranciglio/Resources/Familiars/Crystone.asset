@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6966b4b74bbd40c44ab2b81e2a3d3836, type: 3}
+  m_Name: Crystone
+  m_EditorClassIdentifier: 
+  name: Crystone
+  description: 
+  familiarSprite: {fileID: 0}
+  type: 050000000e000000
+  maxHp: 0
+  attack: 0
+  defense: 0
+  spAttack: 0
+  spDefense: 0
+  speed: 0
+  movement: 0
+  attackSound: {fileID: 0}
+  injuredSound: {fileID: 0}
+  learnableAttacks:
+  - attackBase: {fileID: 11400000, guid: 9ce4cc54ab9e85e4da48f56eb2ec0e8e, type: 2}
+    level: 0
+  - attackBase: {fileID: 11400000, guid: 0c8f6dd780ed80f4a8e19f7eeede5d25, type: 2}
+    level: 0
+  - attackBase: {fileID: 11400000, guid: a8e9aecbb4a638246a752a4a53bd02e0, type: 2}
+    level: 0
+  - attackBase: {fileID: 11400000, guid: 7506cd3aebd3d0d4a98df6e58b3336a5, type: 2}
+    level: 0
