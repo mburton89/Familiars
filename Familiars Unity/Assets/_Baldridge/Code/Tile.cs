@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum TileState { Normal, ActiveSource, Source, Move, Switch, ActiveTarget, Target, AllyTarget, TargetReticle, AllyTargetReticle }
+public enum TileState { Normal, Source, Move, Switch, Target, AllyTarget, TargetReticle, AllyTargetReticle }
 
 public class Tile : MonoBehaviour
 {
@@ -44,9 +44,6 @@ public class Tile : MonoBehaviour
             case TileState.Normal:
                 sprite.color = Color.white;
                 break;
-            case TileState.ActiveSource:
-                sprite.color = new Color(0f, 0.5f, 1f);
-                break;
             case TileState.Source:
                 sprite.color = Color.cyan;
                 break;
@@ -56,9 +53,6 @@ public class Tile : MonoBehaviour
             case TileState.Switch:
                 sprite.color = Color.blue;
                 break;
-            case TileState.ActiveTarget:
-                sprite.color = new Color(0.81f, 0.01f, 0.01f);
-                break;
             case TileState.Target:
                 sprite.color = Color.red;
                 break;
@@ -66,7 +60,7 @@ public class Tile : MonoBehaviour
                 sprite.color = Color.green;
                 break;
             case TileState.TargetReticle:
-                sprite.color = new Color(0.45f, 0f, 0.02f);
+                sprite.color = new Color(0.47f, 0.13f, 0.05f);
                 break;
             case TileState.AllyTargetReticle:
                 sprite.color = new Color(0.13f, 0.5f, 0.19f);
@@ -76,11 +70,6 @@ public class Tile : MonoBehaviour
                 sprite.color = Color.white;
                 break;
         }
-    }
-
-    public TileState GetState()
-    {
-        return currentState;
     }
 
 

@@ -9,22 +9,20 @@ public class Field : MonoBehaviour
     [SerializeField] Field connectedField;
     [SerializeField] Tile[] board;
 
-    [SerializeField] PatternBase allTiles;
-
     /*      Note - Player side board is as follows vv   |||   Enemy side board is as follows
      *       * ---------*----------*-------- *                    * ---------*----------*--------- *
      *      ||          |          |         ||                  ||          |          |          ||
      *      ||  (2, 0)  |  (1, 0)  |  (0, 0) ||                  ||  (0, 0)  |  (1, 0)  |  (2, 0)  ||      
-     *      ||          |          |    0    ||                  ||          |          |          ||
+     *      ||          |          |         ||                  ||          |          |          ||
      *       *----------|----------|---------*                    * ---------|----------|----------*
      *      ||          |          |         ||                  ||          |          |          ||
      *      ||  (2, 1)  |  (1, 1)  |  (0, 1) ||                  ||  (0, 1)  |  (1, 1)  |  (2, 1)  ||      
-     *      ||          |          |    1    ||                  ||          |          |          ||
+     *      ||          |          |         ||                  ||          |          |          ||
      *       *----------|----------|---------*                    * ---------|----------|----------*
      *      ||          |          |         ||                  ||          |          |          ||
      *      ||  (2, 2)  |  (1, 2)  |  (0, 2) ||                  ||  (0, 2)  |  (1, 2)  |  (2, 2)  ||      
      *      ||          |          |         ||                  ||          |          |          ||
-     *       * ---------*----------*-------- *                    * ---------*----------*--------- *
+     *       * ---------*----------*-------- *                    * ---------|----------|--------- *
      */
 
     public Tile GetTile(int x, int y)
@@ -74,41 +72,27 @@ public class Field : MonoBehaviour
 
     public void SetFieldPattern(PatternBase pattern, TileState tileState)
     {
-        SetFieldPattern(pattern, tileState, allTiles, TileState.Normal);
-    }
-
-    public void SetFieldPattern(PatternBase foregroundPattern, TileState tileState, PatternBase backgroundPattern, TileState secondaryState)
-    {
-        bool[] _foregroundPatternSets = foregroundPattern.Active;
-        bool[] _backgroundPatternSets = backgroundPattern.Active;
-
-        for (int _p = 0; _p < _backgroundPatternSets.Length; _p++)
+        bool[] _patternSets = pattern.Active;
+        for (int _p = 0; _p < _patternSets.Length; _p++)
         {
-            if (_backgroundPatternSets[_p])
+            if (_patternSets[_p])
             {
-                GetTile(_p).SetState(secondaryState);
+                GetTile(_p).SetState(tileState);
             }
             else
             {
                 GetTile(_p).SetState(TileState.Normal);
             }
-        }
 
-        for (int _p = 0; _p < _foregroundPatternSets.Length; _p++)
-        {
-            if (_foregroundPatternSets[_p])
-            {
-                GetTile(_p).SetState(tileState);
-            }
         }
     }
 
-    public void SetFieldTargetingReticle(PatternBase pattern, TileState st)
+    public void SetFieldTargetingRecticle(PatternBase pattern, TileState st)
     {
-        SetFieldTargetingReticle(pattern, st, 4);
+        SetFieldTargetingRecticle(pattern, st, 4);
     }
 
-    public void SetFieldTargetingReticle(PatternBase pattern, TileState st, int centerPos)
+    public void SetFieldTargetingRecticle(PatternBase pattern, TileState st, int centerPos)
     {
         bool[] _patternSets = pattern.Active;
         for (int _p = 0; _p < _patternSets.Length; _p++)
@@ -128,7 +112,7 @@ public class Field : MonoBehaviour
     {
         for (int _i = 0; _i < board.Length; _i++)
         {
-            GetTile(_i).Reset();
+            GetTile(_i).SetState(TileState.Normal);
         }
     }
 }

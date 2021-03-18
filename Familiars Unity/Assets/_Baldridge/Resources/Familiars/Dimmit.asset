@@ -28,9 +28,12 @@ MonoBehaviour:
   learnableAttacks:
   - attackBase: {fileID: 11400000, guid: f43f13c722944e446a8cd969b060e11c, type: 2}
     level: 1
+<<<<<<< HEAD
   - attackBase: {fileID: 11400000, guid: 9ce4cc54ab9e85e4da48f56eb2ec0e8e, type: 2}
     level: 1
   - attackBase: {fileID: 11400000, guid: d5f6e12f22c00e0489815f5bcc0bffcf, type: 2}
     level: 10
   - attackBase: {fileID: 11400000, guid: 78c39b92e605add4baa3988f321d7a8a, type: 2}
     level: 15
+=======
+>>>>>>> parent of 5bf30f92 (Merge branch 'justin-1-30-combat' into main)

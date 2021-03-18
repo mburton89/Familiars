@@ -1,25 +1,21 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 
 public enum CombatState { Start, PlayerSelection, PlayerAction, PlayerAttack, PlayerMove, PlayerTargeting, EnemyAttack, Busy }
 
 public class CombatHandler : MonoBehaviour
 {
-    public static CombatHandler Instance;
     [HideInInspector] public CombatState combatState = CombatState.Start;
     [HideInInspector] public CombatUnit selectedFamiliar;
-    
+
     [SerializeField] AudioSource audioSource;
 
     [SerializeField] Field playerField;
     [SerializeField] Field enemyField;
 
     [SerializeField] GameObject combatUnitPrefab;
-    [SerializeField] Canvas canvas;
 
     #region All of the HUD elements that get turned on/off
     //Health Bars
@@ -34,70 +30,28 @@ public class CombatHandler : MonoBehaviour
 
     #endregion
 
-    public event Action<bool> OnBattleOver;
-
-    public List<CombatUnit> playerTeam;
-    public List<CombatUnit> enemyTeam;
+    public CombatUnit[] playerTeam;
+    public CombatUnit[] enemyTeam;
 
     // Units from both sides
-    public List<GameObject> playerActive;
-    public List<GameObject> playerBench;
-    public List<GameObject> enemyActive;
-    public List<GameObject> enemyBench;
+    public GameObject[] playerActive;
+    public GameObject[] playerBench;
+    public GameObject[] enemyActive;
+    public GameObject[] enemyBench;
 
     CombatState nextState;
 
     int actions = 3;
 
-    // Attack Preview Stuff
-
-    int currentAttackPreview;
-    int maxAttackPreview;
-    
-    // Targetting Stuffs
-
     int currentPosition;
     int currentTargetPosition;
-    int currentActionPosition;
-    int currentAttackPosition;
+    int currentAction;
+    int currentAttack;
 
-    Attack currentAttack;
-
-    int upperBoundX = 2;
-    int upperBoundY = 2;
-    int lowerBoundX = 0;
-    int lowerBoundY = 0;
-
-    List<CombatUnit> targets;
-
-    FamiliarParty playerParty;
-    List<Familiar> wildFamiliars;
-
-    public void StoreParties(FamiliarParty playerParty, List<Familiar> wildFamiliars)
-    {
-        this.playerParty = playerParty;
-        this.wildFamiliars = wildFamiliars;
-        StartCoroutine(BeginBattle());
-    }
-
-    private void Start()
-    {
-        Instance = this;
-        GameControllerOverworld.Instance.SetCombat();
-        StartBattle();
-    }
-
-    IEnumerator BeginBattle()
-    {
-        yield return new WaitForSeconds(1f);
-        StartBattle();
-    }
-
-    public void StartBattle()
+    void Start()
     {
         combatState = CombatState.Start;
-        
-        targets = new List<CombatUnit>();
+
         // Create the UI
         //playerHUDs.SetActive(true);
         //enemyHUDs.SetActive(true);
@@ -105,78 +59,37 @@ public class CombatHandler : MonoBehaviour
 
         // Create the currently used Familiars for both teams
         CombatUnit _curUnit;
-        GameObject _fam;
-        float _count = (float)playerTeam.Count;
+        float _count = (float)playerTeam.Length;
         Tile _t;
-        int _x, _y;
-        int iteration;
 
         for (int i = 0; i < Mathf.Min(3f, _count); i++)
         {
-            _fam = Instantiate(combatUnitPrefab, canvas.gameObject.transform);
-            _curUnit = _fam.GetComponent<CombatUnit>();
-            _curUnit.Familiar = CurrentFamiliarsController.Instance.playerFamiliars[i];
-
-            _x = UnityEngine.Random.Range(0, 3);
-            _y = UnityEngine.Random.Range(0, 3);
-
-            //_curUnit = playerTeam[i];
-            _t = playerField.GetTile(_x, _y);
-            iteration = 0;
-            while (_t.familiarOccupant != null)
-            {
-                iteration++;
-                if ((_x * 3 + _y) + iteration > 8)
-                {
-                    iteration -= 8;
-                }
-                _t = playerField.GetTile((_x * 3 + _y) + iteration);
-            }
+            _curUnit = playerTeam[i];
+            _t = playerField.GetTile(_curUnit.x, _curUnit.y);
             _t.familiarOccupant = _curUnit;
             _curUnit.SetCurrentTile(_t);
             _curUnit.gameObject.transform.position = _t.gameObject.transform.position;
             _curUnit.Setup();
             _curUnit.teamPosition = i;
-            _curUnit.x = _t.x;
-            _curUnit.y = _t.y;
             playerHUDs[i].SetData(_curUnit.Familiar);
             //GameObject _fam = Instantiate(combatUnitPrefab, _tileLocation.position, Quaternion.identity);
             //_fam.GetComponent<CombatUnit>().
         }
 
-        _count = (float)enemyTeam.Count;
+        _count = (float)enemyTeam.Length;
         for (int i = 0; i < Mathf.Min(3f, _count); i++)
         {
-            _fam = Instantiate(combatUnitPrefab, canvas.gameObject.transform);
-            _curUnit = _fam.GetComponent<CombatUnit>();
-            _curUnit.Familiar = CurrentFamiliarsController.Instance.enemyFamiliars[i];
-
-            _x = UnityEngine.Random.Range(0, 3);
-            _y = UnityEngine.Random.Range(0, 3);
-
-
+            _curUnit = enemyTeam[i];
             _t = enemyField.GetTile(_curUnit.x, _curUnit.y);
-            iteration = 0;
-            while (_t.familiarOccupant != null)
-            {
-                iteration++;
-                if ((_x * 3 + _y) + iteration > 8)
-                {
-                    iteration -= 8;
-                }
-                _t = enemyField.GetTile((_x * 3 + _y) + iteration);
-            }
             _t.familiarOccupant = _curUnit;
             _curUnit.SetCurrentTile(_t);
             _curUnit.gameObject.transform.position = _t.gameObject.transform.position;
-            _curUnit.isPlayerUnit = false;
             _curUnit.Setup();
             _curUnit.teamPosition = i;
             enemyHUDs[i].SetData(_curUnit.Familiar);
         }
 
         playerField.GatherNeighbors();
-        enemyField.GatherNeighbors();
 
         PlayerSelection();
     }
@@ -186,18 +99,14 @@ public class CombatHandler : MonoBehaviour
     {
         combatState = CombatState.PlayerSelection;
 
-        currentActionPosition = 0;
-        currentAttackPosition = 0;
-        currentAttack = null;
+        currentAction = 0;
+        currentAttack = 0;
         selectedFamiliar = null;
-
-        playerField.ClearTiles();
-        enemyField.ClearTiles();
 
         dialogMenu.EnableActionSelector(false);
     }
 
-    void ActionSelection()
+    void PlayerAction()
     {
         combatState = CombatState.PlayerAction;
 
@@ -210,33 +119,20 @@ public class CombatHandler : MonoBehaviour
         
     }
 
-    void AttackSelection()
+    void PlayerAttack()
     {
         combatState = CombatState.PlayerAttack;
-
-        currentAttack = null;
-        currentAttackPreview = 0;
-        maxAttackPreview = 0;
 
         dialogMenu.EnableActionSelector(false);
         dialogMenu.EnableAttackSelector(true);
 
-        targets.Clear();
-
-        currentAttack = selectedFamiliar.Familiar.Attacks[currentAttackPosition];
-        maxAttackPreview = currentAttack.Base.SourceArray.Length - 1;
-        dialogMenu.UpdateAttackSelection(currentAttackPosition, currentAttack);
-
-        StartCoroutine(AdvanceAttackPreview());
+        Debug.Log("[CombatHandler] PlayerAttack()");
     }
 
     void PlayerMove()
     {
         combatState = CombatState.PlayerMove;
-
-        playerField.ClearTiles();
-        enemyField.ClearTiles();
-
+        
         selectedFamiliar.SetCurrentTile(playerField.GetTile(currentPosition));
         selectedFamiliar.FindSelectableTiles(TileState.Move, selectedFamiliar.Familiar.Base.Movement);
     }
@@ -245,34 +141,24 @@ public class CombatHandler : MonoBehaviour
     {
         combatState = CombatState.PlayerTargeting;
 
-        currentAttack = selectedFamiliar.Familiar.Attacks[currentAttackPosition];
-
-        currentTargetPosition = currentAttack.Base.TargetOriginPosition;
-        for (int i = 0; i < currentAttack.Base.SourceArray.Length; i++)
-        {
-            if (currentAttack.Base.SourceArray[i].Active[selectedFamiliar.x * 3 + selectedFamiliar.y])
-            {
-                Debug.Log("[CombatHandler.cs, PlayerTargeting()] " + i);
-                currentAttackPreview = i;
-            }
-        }
-        playerField.SetFieldPattern(currentAttack.Base.SourceArray[currentAttackPreview], TileState.ActiveSource);
-        enemyField.SetFieldPattern(currentAttack.Base.TargetArray[currentAttackPreview], TileState.ActiveTarget);
-
-        upperBoundX = currentAttack.Base.UpperX;
-        upperBoundY = currentAttack.Base.UpperY;
-        lowerBoundX = currentAttack.Base.LowerX;
-        lowerBoundY = currentAttack.Base.LowerY;
+        currentTargetPosition = 4;
+        playerField.SetFieldPattern(selectedFamiliar.Familiar.Attacks[currentAttack].Base.Sources, TileState.Source);
+        enemyField.SetFieldPattern(selectedFamiliar.Familiar.Attacks[currentAttack].Base.Targets, TileState.Target);
+        Debug.Log("[CombatHandler] PlayerTargetting()");
     }
 
     void StartPlayerAttack()
     {
+        Debug.Log("[CombatHandler] StartPlayerAttack()");
         playerField.ClearTiles();
         enemyField.ClearTiles();
 
         dialogMenu.EnableAttackSelector(false);
         dialogMenu.EnableDialogText(true);
-        StartCoroutine(PlayerAttack());
+        StartCoroutine(PerformPlayerAttack());
+
+
+        Debug.Log("[CombatHandler] StartPlayerAttack() End");
     }
 
     void EnemyAttack()
@@ -302,10 +188,10 @@ public class CombatHandler : MonoBehaviour
             case CombatState.PlayerTargeting:
                 HandlePlayerTargeting();
                 break;
+
         }
     }
 
-    #region Update Handlers
     void HandlePlayerSelection()
     {
         #region Navigation
@@ -349,8 +235,7 @@ public class CombatHandler : MonoBehaviour
             if (_combatUnit != null)
             {
                 selectedFamiliar = _combatUnit;
-                //Debug.Log("[CombatHandler.cs] HandlePlayerSelection, Selected Familiar: " + selectedFamiliar.Familiar.Base.Name);
-                ActionSelection();
+                PlayerAction();
             }
         }
 
@@ -360,27 +245,27 @@ public class CombatHandler : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            if (currentActionPosition < 3)
-                ++currentActionPosition;
+            if (currentAction < 3)
+                ++currentAction;
 
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            if (currentActionPosition > 0)
-                --currentActionPosition;
+            if (currentAction > 0)
+                --currentAction;
         }
 
-        dialogMenu.UpdateActionSelection(currentActionPosition);
+        dialogMenu.UpdateActionSelection(currentAction);
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            if (currentActionPosition == 0)
+            if (currentAction == 0)
             {
                 // Fight
                 dialogMenu.SetAttackNames(selectedFamiliar.Familiar.Attacks);
-                AttackSelection();
+                PlayerAttack();
             }
-            else if (currentActionPosition == 1)
+            else if (currentAction == 1)
             {
                 // Move
                 PlayerMove();
@@ -395,33 +280,43 @@ public class CombatHandler : MonoBehaviour
 
     void HandlePlayerAttack()
     {
-        int _button = 0;
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            _button++;
-        }
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            _button--;
+            if (currentAttack > 0)
+                currentAttack--;
+            else
+                currentAttack = selectedFamiliar.Familiar.Attacks.Count - 1;
         }
-        
-        if (CheckButton(_button))
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            currentAttack = selectedFamiliar.Familiar.Attacks[currentAttackPosition];
-            maxAttackPreview = currentAttack.Base.SourceArray.Length - 1;
-            dialogMenu.UpdateAttackSelection(currentAttackPosition, currentAttack);
+            if (currentAttack < selectedFamiliar.Familiar.Attacks.Count - 1)
+                currentAttack++;
+            else
+                currentAttack = 0;
         }
 
-        playerField.SetFieldPattern(currentAttack.Base.SourceArray[currentAttackPreview], TileState.ActiveSource, currentAttack.Base.Sources, TileState.Source);
-        enemyField.SetFieldPattern(currentAttack.Base.TargetArray[currentAttackPreview], TileState.ActiveTarget, currentAttack.Base.Targets, TileState.Target);
-        enemyField.SetFieldTargetingReticle(currentAttack.Base.TargetingReticleArray[currentAttackPreview], TileState.TargetReticle);
+        dialogMenu.UpdateAttackSelection(currentAttack, selectedFamiliar.Familiar.Attacks[currentAttack]);
+        
+        playerField.SetFieldPattern(selectedFamiliar.Familiar.Attacks[currentAttack].Base.Sources, TileState.Source);
+        enemyField.SetFieldPattern(selectedFamiliar.Familiar.Attacks[currentAttack].Base.Targets, TileState.Target);
+        
+        // Target Display
+        switch(selectedFamiliar.Familiar.Attacks[currentAttack].Base.AttackStyle)
+        {
+            case AttackStyle.Target:
+                enemyField.SetFieldTargetingRecticle(selectedFamiliar.Familiar.Attacks[currentAttack].Base.TargetingReticle, TileState.TargetReticle);
+                break;
+        }
 
-        
-        
+
+        //playerTeam.SetFieldPattern(selectedFamiliar.Familiar.Attacks[currentAttack].Base.Sources, TileState.Source);
+        //enemyTeam.SetFieldPattern(selectedFamiliar.Familiar.Attacks[currentAttack].Base.Targets, TileState.Target);
+        //enemyTeam.SetFieldTargetingRecticle(selectedFamiliar.Familiar.Attacks[currentAttack].Base.TargetingReticle, TileState.TargetReticle);
+
         if (Input.GetKeyDown(KeyCode.Z))
         {
             // If the attack can be used at the current position
-            if (currentAttack.Base.Sources.Active[currentPosition])
+            if ( selectedFamiliar.Familiar.Attacks[currentAttack].Base.Sources.Active[currentPosition])
             {
                 PlayerTargeting();
             }
@@ -429,7 +324,7 @@ public class CombatHandler : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.X))
         {
-            ActionSelection();
+            PlayerAction();
         }
     }
 
@@ -437,135 +332,56 @@ public class CombatHandler : MonoBehaviour
     {
         #region Navigation
         // Move left (add switching to supp. board later)
-        if (currentAttack.Base.AttackStyle == AttackStyle.Area || currentAttack.Base.AttackStyle == AttackStyle.Target)
+        if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            if (Input.GetKeyDown(KeyCode.RightArrow))
+            if (currentTargetPosition < 6)
             {
-                if (currentTargetPosition < (upperBoundX * 3) && selectedFamiliar.Familiar.Attacks[currentAttackPosition].Base.Targets.Active[currentTargetPosition + 3])
-                {
-                    currentTargetPosition += 3;
-                }
+                currentTargetPosition += 3;
             }
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
+        }
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            if (currentTargetPosition > 2)
             {
-                if (currentTargetPosition > (lowerBoundX + 2) && selectedFamiliar.Familiar.Attacks[currentAttackPosition].Base.Targets.Active[currentTargetPosition - 3])
-                {
-                    currentTargetPosition -= 3;
-                }
+                currentTargetPosition -= 3;
             }
-            if (Input.GetKeyDown(KeyCode.DownArrow))
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            if (currentTargetPosition % 3 != 2)
             {
-                if (currentTargetPosition % 3 < upperBoundY && selectedFamiliar.Familiar.Attacks[currentAttackPosition].Base.Targets.Active[currentTargetPosition + 1])
-                {
-                    currentTargetPosition++;
-                }
+                currentTargetPosition++;
             }
-            if (Input.GetKeyDown(KeyCode.UpArrow))
+        }
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            if (currentTargetPosition % 3 != 0)
             {
-                if (currentTargetPosition % 3 > lowerBoundY && selectedFamiliar.Familiar.Attacks[currentAttackPosition].Base.Targets.Active[currentTargetPosition - 1])
-                {
-                    currentTargetPosition--;
-                }
+                currentTargetPosition--;
             }
         }
 
-        enemyField.SetFieldPattern(currentAttack.Base.TargetArray[currentAttackPreview], TileState.ActiveTarget);
-        enemyField.SetFieldTargetingReticle(currentAttack.Base.TargetingReticleArray[currentAttackPreview], TileState.TargetReticle, currentTargetPosition);
-        //navigator.SetLocation(enemyField.GetTile(currentTargetPosition));
+        navigator.SetLocation(enemyField.GetTile(currentTargetPosition));
         #endregion
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            bool valid = false;
-            // Assign Targets
-            switch (currentAttack.Base.AttackStyle)
+            // switch based on the attack style (later)
+            if (enemyField.GetTile(currentTargetPosition).familiarOccupant != null && selectedFamiliar.Familiar.Attacks[currentAttack].Base.Targets.Active[currentTargetPosition])
             {
-                case AttackStyle.Target:
-                    if (enemyField.GetTile(currentTargetPosition).familiarOccupant != null && currentAttack.Base.Targets.Active[currentTargetPosition])
-                    {
-                        targets.Add(enemyField.GetTile(currentTargetPosition).familiarOccupant);
-                        valid = true;
-                    }
-                    break;
-                case AttackStyle.Projectile:
-                    List<Tile> _t = MatchingTiles(enemyField, currentAttack.Base.TargetArray[currentAttackPreview], currentAttack.Base.EligibleOrigins);
-                    if (_t.Count == 1)
-                    {
-                        Tile _checkingTile = _t[0];
-                        
-                        int _position = (_checkingTile.x * 3) + _checkingTile.y;
-                        bool end;
-                        while (_checkingTile != null)
-                        {
-                            Debug.Log(_checkingTile.x + " " + _checkingTile.y);
-                            end = false;
-                            if (_checkingTile.familiarOccupant != null)
-                            {
-                                targets.Add(_checkingTile.familiarOccupant);
-                                valid = true;
-                                end = true;
-                                break;
-                            }
-
-                            switch (currentAttack.Base.Direction)
-                            {
-                                case 0:
-                                    if (_position >= 6)
-                                    {
-                                        end = true;
-                                        break;
-                                    }
-                                    else _position += 3;
-                                    break;
-
-                            }
-                            if (!end)
-                            {
-                                _checkingTile = enemyField.GetTile(_position);
-                            }
-                            else
-                            {
-                                _checkingTile = null;
-                            }
-                        }
-                    }
-                    break;
-                case AttackStyle.Area:
-                    for (int i = 0; i < 9; i++)
-                    {
-                        if (enemyField.GetTile(i).familiarOccupant != null && enemyField.GetTile(i).GetState() == TileState.TargetReticle)
-                        {
-                            valid = true;
-                            targets.Add(enemyField.GetTile(i).familiarOccupant);
-                        }
-                    }
-                    break;
-                case AttackStyle.AreaStatic:
-                    for (int i = 0; i < 9; i++)
-                    {
-                        if (enemyField.GetTile(i).familiarOccupant != null && currentAttack.Base.Targets.Active[i])
-                        {
-                            valid = true;
-                            targets.Add(enemyField.GetTile(i).familiarOccupant);
-                        }
-                    }
-                    break;
+                nextState = CombatState.PlayerSelection;
+                StartPlayerAttack();
             }
-
-            if (valid) StartPlayerAttack();
-
-            
         }
 
         if (Input.GetKeyDown(KeyCode.X))
         {
-            AttackSelection();
+            PlayerAttack();
         }
     }
 
     void HandlePlayerMove()
     {
-        #region Navigator
         // Move left (add switching to supp. board later)
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
@@ -595,64 +411,31 @@ public class CombatHandler : MonoBehaviour
                 currentPosition--;
             }
         }
-
+        
         navigator.SetLocation(playerField.GetTile(currentPosition));
-        #endregion
-
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            Tile _temp = playerField.GetTile(currentPosition);
-            if (_temp.GetState() == TileState.Move)
-            {
-                selectedFamiliar.SetCurrentTile(_temp);
-
-                actions--;
-                if (actions > 0)
-                {
-                    PlayerSelection();
-                }
-                else
-                {
-                    EnemyAttack();
-                }
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            ActionSelection();
-        }
     }
-    #endregion
 
-    IEnumerator PlayerAttack()
+    IEnumerator PerformPlayerAttack()
     {
         combatState = CombatState.Busy;
 
-        var attack = currentAttack;
+        // Will need to adjust to suit multi-target attacks
+        CombatUnit enemy = enemyField.GetTile(currentTargetPosition).familiarOccupant;
+
+        var attack = selectedFamiliar.Familiar.Attacks[currentAttack];
         yield return dialogMenu.TypeDialog($"{selectedFamiliar.Familiar.Base.Name} used {attack.Base.Name}");
         PlayNoise(selectedFamiliar.Familiar.Base.AttackSound);
-
-        selectedFamiliar.PlayAttackAnimation();
         yield return new WaitForSeconds(1f);
 
+
         // Probably replace w/ PerformAttack() when adding multi-targetting (probably)
-        for (int i = 0; i < targets.Count; i++)
+        bool _isFainted = enemy.Familiar.TakeDamage(attack, selectedFamiliar.Familiar);
+        PlayNoise(enemy.Familiar.Base.AttackSound);
+        yield return enemyHUDs[enemy.teamPosition].UpdateHP();
+
+        if (_isFainted)
         {
-            var damageDetails = targets[i].Familiar.TakeDamage(attack, selectedFamiliar.Familiar);
-            targets[i].PlayHitAnimation();
-            PlayNoise(targets[i].Familiar.Base.AttackSound);
-            yield return enemyHUDs[targets[i].teamPosition].UpdateHP();
-            yield return ShowDamageDetails(damageDetails);
-
-            if (damageDetails.Fainted)
-            {
-                yield return dialogMenu.TypeDialog($"{targets[i].Familiar.Base.Name} fainted");
-                targets[i].PlayFaintAnimation();
-
-                yield return new WaitForSeconds(2f);
-                OnBattleOver(true);
-            }
+            yield return dialogMenu.TypeDialog($"{enemy.Familiar.Base.Name} fainted");
         }
 
         actions--;
@@ -672,64 +455,28 @@ public class CombatHandler : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
-            CombatUnit _enemyUnit = enemyTeam[UnityEngine.Random.Range(0, 3)];
+            CombatUnit _enemyUnit = enemyTeam[Random.Range(0, 3)];
 
             // This is when we would have to verify a valid target, attack, and all that such AI decision making and stuff
             var attack = _enemyUnit.Familiar.GetRandomAttack();
             yield return dialogMenu.TypeDialog($"{_enemyUnit.Familiar.Base.Name} used {attack.Base.Name}");
             PlayNoise(_enemyUnit.Familiar.Base.AttackSound);
-
-            _enemyUnit.PlayAttackAnimation();
             yield return new WaitForSeconds(1f);
 
-            CombatUnit _target = playerTeam[UnityEngine.Random.Range(0, 3)];
+            CombatUnit _target = playerTeam[Random.Range(0, 3)];
 
-            _target.PlayHitAnimation();
-            var damageDetails = _target.Familiar.TakeDamage(attack, _enemyUnit.Familiar);
+            bool isFainted = _target.Familiar.TakeDamage(attack, _enemyUnit.Familiar);
             PlayNoise(_target.Familiar.Base.AttackSound);
             yield return playerHUDs[_target.teamPosition].UpdateHP();
-            yield return ShowDamageDetails(damageDetails);
 
-            if (damageDetails.Fainted)
+            if (isFainted)
             {
                 yield return dialogMenu.TypeDialog($"{_target.Familiar.Base.Name} fainted");
-                _target.PlayFaintAnimation();
-
-                yield return new WaitForSeconds(2f);
-                var nextFamiliar = playerParty.GetHealthyFamiliar();
-                if (nextFamiliar != null)
-                {
-                    /* playerUnit.Setup(nextFamiliar);
-                     * playerHud.SetData(nextFamiliar);
-                     * 
-                     * dialogBox.SetMoveNames(nextFamiliar.Moves);
-                     * 
-                     * yield return dialogBox.TypeDialog($"Go {nextFamiliar.Base.Name}!");
-                     * 
-                     * */
-                }
-                else
-                {
-                    OnBattleOver(false);
-                }
             }
         }
 
         actions = 3;
         PlayerSelection();
-    }
-
-    IEnumerator ShowDamageDetails(DamageDetails damageDetails)
-    {
-        if (damageDetails.Critical > 1f)
-            yield return dialogMenu.TypeDialog("It's a critical hit!");
-
-        if (damageDetails.TypeEffectiveness > 1f)
-            yield return dialogMenu.TypeDialog("It's super effective!");
-        else if (damageDetails.TypeEffectiveness < 1f)
-            yield return dialogMenu.TypeDialog("It's not very effective!");
-
-
     }
 
     void PerformAttack(Attack attack, CombatUnit user, CombatUnit target)
@@ -743,62 +490,10 @@ public class CombatHandler : MonoBehaviour
     {
 
     }
-    
+
     void PlayNoise(AudioClip audio)
     {
         audioSource.clip = audio;
         audioSource.Play();
-    }
-
-    IEnumerator AdvanceAttackPreview()
-    {
-        yield return new WaitForSeconds(1.2f);
-        if (combatState == CombatState.PlayerAttack)
-        {
-            if (currentAttackPreview == maxAttackPreview)
-            {
-                currentAttackPreview = 0;
-            }
-            else currentAttackPreview++;
-            yield return AdvanceAttackPreview();
-        }
-    }
-
-    bool CheckButton(int dir)
-    {
-        if (dir != 0)
-        {
-            if (dir > 0)
-            {
-                if (currentAttackPosition < selectedFamiliar.Familiar.Attacks.Count - 1)
-                    currentAttackPosition++;
-                else
-                    currentAttackPosition = 0;
-            }
-            else if (dir < 0)
-            {
-                if (currentAttackPosition > 0)
-                    currentAttackPosition--;
-                else
-                    currentAttackPosition = selectedFamiliar.Familiar.Attacks.Count - 1;
-            }
-            return true;
-        }
-        
-        return false;
-    }
-
-    List<Tile> MatchingTiles(Field field, PatternBase pattern1, PatternBase pattern2)
-    {
-        List<Tile> tiles = new List<Tile>();
-
-        for (int i = 0; i < pattern1.Active.Length; i++)
-        {
-            if (pattern1.Active[i] && pattern2.Active[i])
-            {
-                tiles.Add(field.GetTile(i));
-            }
-        }
-        return tiles;
     }
 }
