@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6966b4b74bbd40c44ab2b81e2a3d3836, type: 3}
+  m_Name: Leverus
+  m_EditorClassIdentifier: 
+  name: Leverus
+  description: 
+  familiarSprite: {fileID: 0}
+  type: 0100000000000000
+  maxHp: 0
+  attack: 0
+  defense: 0
+  spAttack: 0
+  spDefense: 0
+  speed: 0
+  movement: 0
+  attackSound: {fileID: 0}
+  injuredSound: {fileID: 0}
+  learnableAttacks:
+  - attackBase: {fileID: 11400000, guid: dd209db60c234f04e83f26ab8e7922d4, type: 2}
+    level: 0
+  - attackBase: {fileID: 11400000, guid: 9ce4cc54ab9e85e4da48f56eb2ec0e8e, type: 2}
+    level: 0
+  - attackBase: {fileID: 11400000, guid: e06297fdb86ec47478e050e3d17dd935, type: 2}
+    level: 0
+  - attackBase: {fileID: 11400000, guid: f43f13c722944e446a8cd969b060e11c, type: 2}
+    level: 0

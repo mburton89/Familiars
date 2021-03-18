@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6966b4b74bbd40c44ab2b81e2a3d3836, type: 3}
+  m_Name: Elephantom
+  m_EditorClassIdentifier: 
+  name: Elephantom
+  description: 
+  familiarSprite: {fileID: 0}
+  type: 050000000d000000
+  maxHp: 0
+  attack: 0
+  defense: 0
+  spAttack: 0
+  spDefense: 0
+  speed: 0
+  movement: 0
+  attackSound: {fileID: 0}
+  injuredSound: {fileID: 0}
+  learnableAttacks:
+  - attackBase: {fileID: 11400000, guid: bc3d50a6614e7ff4e8fbfd90e5edc0f4, type: 2}
+    level: 0
+  - attackBase: {fileID: 11400000, guid: d5f6e12f22c00e0489815f5bcc0bffcf, type: 2}
+    level: 0
+  - attackBase: {fileID: 11400000, guid: a8e9aecbb4a638246a752a4a53bd02e0, type: 2}
+    level: 0
+  - attackBase: {fileID: 11400000, guid: 78c39b92e605add4baa3988f321d7a8a, type: 2}
+    level: 0

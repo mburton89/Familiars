@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fa7157f267b68e4abb637a352e0c721, type: 3}
+  m_Name: VineWall
+  m_EditorClassIdentifier: 
+  name: Vine Wall
+  description: 
+  power: 3
+  magic: 9
+  accuracy: 0
+  range: 0
+  uses: 0
+  type: 4
+  attackStyle: 3
+  sources: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
+  targets: {fileID: 11400000, guid: 372840c114ac8a14988ba5f74d0eac70, type: 2}
+  targetingReticle: {fileID: 11400000, guid: 372840c114ac8a14988ba5f74d0eac70, type: 2}

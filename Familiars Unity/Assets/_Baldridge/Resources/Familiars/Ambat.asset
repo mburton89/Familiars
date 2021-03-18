@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Ambat
   description: 
   familiarSprite: {fileID: 21300000, guid: a3397443a838ffe4aad5b70eefeae756, type: 3}
-  type: 0000000000000000
+  type: 060000000b000000
   maxHp: 30
   attack: 30
   defense: 40
@@ -23,8 +23,14 @@ MonoBehaviour:
   spDefense: 45
   speed: 45
   movement: 2
+  attackSound: {fileID: 0}
+  injuredSound: {fileID: 0}
   learnableAttacks:
   - attackBase: {fileID: 11400000, guid: 2a6f611a764dabf4d808537653682f68, type: 2}
     level: 1
-  - attackBase: {fileID: 11400000, guid: b587a5a13a0963544844016bb29c37b2, type: 2}
+  - attackBase: {fileID: 11400000, guid: bc3d50a6614e7ff4e8fbfd90e5edc0f4, type: 2}
     level: 5
+  - attackBase: {fileID: 11400000, guid: b587a5a13a0963544844016bb29c37b2, type: 2}
+    level: 10
+  - attackBase: {fileID: 11400000, guid: c9eaecb4102824a4ebfb9c8dcaf40b1c, type: 2}
+    level: 15
