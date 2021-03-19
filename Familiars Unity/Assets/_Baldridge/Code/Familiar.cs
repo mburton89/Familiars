@@ -146,6 +146,7 @@ public class Familiar
     public Attack GetRandomAttack()
     {
         int _r = Random.Range(0, Attacks.Count);
+        Debug.Log("[Familiar.cs/GetRandomAttack()]");
         return Attacks[_r];
     }
 }

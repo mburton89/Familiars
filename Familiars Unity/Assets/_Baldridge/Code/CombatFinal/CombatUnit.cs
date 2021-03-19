@@ -53,6 +53,7 @@ public class CombatUnit : MonoBehaviour
         //PlayerEnterAnimation();
     }
 
+    #region Animations
     public void PlayEnterAnimation()
     {
         if (isPlayerUnit)
@@ -66,10 +67,8 @@ public class CombatUnit : MonoBehaviour
     public void PlayAttackAnimation()
     {
         var sequence = DOTween.Sequence();
-        if (isPlayerUnit)
-            sequence.Append(image.transform.DOLocalMoveX(originalPos.x + 50f, 0.25f));
-        else
-            sequence.Append(image.transform.DOLocalMoveX(originalPos.x - 50f, 0.25f));
+        sequence.Append(image.transform.DOLocalMoveX(originalPos.x + (30f * this.transform.localScale.x), 0.25f));
+        //sequence.Append(image.transform.DOLocalMoveX(originalPos.x - 50f, 0.25f));
 
         sequence.Append(image.transform.DOLocalMoveX(originalPos.x, 0.25f));
     }
@@ -87,6 +86,7 @@ public class CombatUnit : MonoBehaviour
         sequence.Append(image.transform.DOLocalMoveY(originalPos.y - 150f, 0.5f));
         sequence.Join(image.DOFade(0f, 0.5f));
     }
+    #endregion
 
     // Tile Stuffs
     public Tile GetCurrentTile(bool setCurrent)

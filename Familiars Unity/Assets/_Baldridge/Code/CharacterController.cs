@@ -78,7 +78,10 @@ public class CharacterController : MonoBehaviour
             isDashButtonDown = false;
         }
 
-        CheckForEncounters();
+        if (rigidbody2D.velocity.magnitude > 0)
+        {
+            CheckForEncounters();
+        }
     }
 
     private void CheckForEncounters()
@@ -93,7 +96,6 @@ public class CharacterController : MonoBehaviour
                     {
                         OnEncountered();
                     }
-
                 }
             }
         }

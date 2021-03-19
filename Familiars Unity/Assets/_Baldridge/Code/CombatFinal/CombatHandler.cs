@@ -140,6 +140,10 @@ public class CombatHandler : MonoBehaviour
             _curUnit.x = _t.x;
             _curUnit.y = _t.y;
             playerHUDs[i].SetData(_curUnit.Familiar);
+
+            playerTeam[i] = _curUnit;
+            //playerTeam.Add(_curUnit);
+            //Debug.Log("[CombatHandler/StartBattle()]" + playerTeam.Count);// + " " + playerTeam[i].Familiar.Base.Name);
             //GameObject _fam = Instantiate(combatUnitPrefab, _tileLocation.position, Quaternion.identity);
             //_fam.GetComponent<CombatUnit>().
         }
@@ -150,6 +154,8 @@ public class CombatHandler : MonoBehaviour
             _fam = Instantiate(combatUnitPrefab, canvas.gameObject.transform);
             _curUnit = _fam.GetComponent<CombatUnit>();
             _curUnit.Familiar = CurrentFamiliarsController.Instance.enemyFamiliars[i];
+
+            Debug.Log("blip " + _curUnit.Familiar.Base.Name);
 
             _x = UnityEngine.Random.Range(0, 3);
             _y = UnityEngine.Random.Range(0, 3);
@@ -173,6 +179,10 @@ public class CombatHandler : MonoBehaviour
             _curUnit.Setup();
             _curUnit.teamPosition = i;
             enemyHUDs[i].SetData(_curUnit.Familiar);
+
+            enemyTeam[i] = _curUnit;
+            //enemyTeam.Add(_curUnit);
+            //Debug.Log("[CombatHandler/StartBattle()]" + enemyTeam.Count + " " + enemyTeam[i].Familiar.Base.Name);
         }
 
         playerField.GatherNeighbors();
@@ -252,7 +262,6 @@ public class CombatHandler : MonoBehaviour
         {
             if (currentAttack.Base.SourceArray[i].Active[selectedFamiliar.x * 3 + selectedFamiliar.y])
             {
-                Debug.Log("[CombatHandler.cs, PlayerTargeting()] " + i);
                 currentAttackPreview = i;
             }
         }
@@ -408,6 +417,7 @@ public class CombatHandler : MonoBehaviour
         if (CheckButton(_button))
         {
             currentAttack = selectedFamiliar.Familiar.Attacks[currentAttackPosition];
+            currentAttackPreview = 0;
             maxAttackPreview = currentAttack.Base.SourceArray.Length - 1;
             dialogMenu.UpdateAttackSelection(currentAttackPosition, currentAttack);
         }
@@ -497,7 +507,6 @@ public class CombatHandler : MonoBehaviour
                         bool end;
                         while (_checkingTile != null)
                         {
-                            Debug.Log(_checkingTile.x + " " + _checkingTile.y);
                             end = false;
                             if (_checkingTile.familiarOccupant != null)
                             {
@@ -670,12 +679,15 @@ public class CombatHandler : MonoBehaviour
     {
         combatState = CombatState.EnemyAttack;
 
+        Debug.Log("[CombatHandler.cs/PerformEnemyAttack()] enemyTeam Count: " + enemyTeam.Count);
         for (int i = 0; i < 3; i++)
         {
             CombatUnit _enemyUnit = enemyTeam[UnityEngine.Random.Range(0, 3)];
 
+            Debug.Log(_enemyUnit);
+            Debug.Log(_enemyUnit.Familiar);
             // This is when we would have to verify a valid target, attack, and all that such AI decision making and stuff
-            var attack = _enemyUnit.Familiar.GetRandomAttack();
+            Attack attack = _enemyUnit.Familiar.GetRandomAttack();
             yield return dialogMenu.TypeDialog($"{_enemyUnit.Familiar.Base.Name} used {attack.Base.Name}");
             PlayNoise(_enemyUnit.Familiar.Base.AttackSound);
 
