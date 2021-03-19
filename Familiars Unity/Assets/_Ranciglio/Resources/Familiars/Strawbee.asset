@@ -14,23 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Starbee
   description: 
-  familiarSprite: {fileID: 0}
+  familiarSprite: {fileID: 21300000, guid: ca30d0ae68dd124448fb1deda8c296d9, type: 3}
   type: 0700000000000000
-  maxHp: 0
-  attack: 0
-  defense: 0
-  spAttack: 0
-  spDefense: 0
-  speed: 0
-  movement: 0
+  maxHp: 15
+  attack: 10
+  defense: 10
+  spAttack: 15
+  spDefense: 25
+  speed: 20
+  movement: 2
   attackSound: {fileID: 0}
   injuredSound: {fileID: 0}
   learnableAttacks:
-  - attackBase: {fileID: 0}
-    level: 0
-  - attackBase: {fileID: 0}
-    level: 0
-  - attackBase: {fileID: 0}
-    level: 0
-  - attackBase: {fileID: 0}
-    level: 0
+  - attackBase: {fileID: 11400000, guid: bc3d50a6614e7ff4e8fbfd90e5edc0f4, type: 2}
+    level: 1
+  - attackBase: {fileID: 11400000, guid: 0dd66a0f578fbcb4c950193dfb4c3788, type: 2}
+    level: 5

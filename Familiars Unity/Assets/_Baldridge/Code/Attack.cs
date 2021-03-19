@@ -11,6 +11,7 @@ public class Attack
 
     public Attack(AttackBase fBase)
     {
+        Debug.Log(fBase.Name);
         Base = fBase;
         Uses = fBase.Uses;
     }

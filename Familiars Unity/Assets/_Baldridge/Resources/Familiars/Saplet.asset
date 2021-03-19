@@ -15,13 +15,13 @@ MonoBehaviour:
   name: Saplet
   description: 
   familiarSprite: {fileID: 21300000, guid: e1e74f3213bc46340800dcd78475bcca, type: 3}
-  type: 0000000000000000
-  maxHp: 30
-  attack: 17
-  defense: 23
-  spAttack: 17
+  type: 0400000000000000
+  maxHp: 10
+  attack: 18
+  defense: 13
+  spAttack: 13
   spDefense: 20
-  speed: 20
+  speed: 16
   movement: 2
   attackSound: {fileID: 8300000, guid: 99102bf6810765048ad4346837609c44, type: 3}
   injuredSound: {fileID: 8300000, guid: e2c84d7f596c15444b52fc4a87c5abbe, type: 3}
@@ -29,4 +29,4 @@ MonoBehaviour:
   - attackBase: {fileID: 11400000, guid: bc3d50a6614e7ff4e8fbfd90e5edc0f4, type: 2}
     level: 1
   - attackBase: {fileID: 11400000, guid: 4e1f979664f3b444db04dc4362038b96, type: 2}
-    level: 2
+    level: 5

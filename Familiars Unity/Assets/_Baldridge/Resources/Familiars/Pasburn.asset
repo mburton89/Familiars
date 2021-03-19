@@ -15,16 +15,18 @@ MonoBehaviour:
   name: Pasburn
   description: 
   familiarSprite: {fileID: 21300000, guid: b7801cac9c76a2b4cb3936c193b61087, type: 3}
-  type: 0000000000000000
+  type: 0200000000000000
   maxHp: 20
-  attack: 22
-  defense: 23
-  spAttack: 20
-  spDefense: 23
-  speed: 15
+  attack: 20
+  defense: 22
+  spAttack: 10
+  spDefense: 12
+  speed: 5
   movement: 2
   attackSound: {fileID: 8300000, guid: b9b48c19587a0664ab06187be870d599, type: 3}
   injuredSound: {fileID: 8300000, guid: 5a71fbe8234cb844989780b46a5ff1b9, type: 3}
   learnableAttacks:
   - attackBase: {fileID: 11400000, guid: bc3d50a6614e7ff4e8fbfd90e5edc0f4, type: 2}
     level: 1
+  - attackBase: {fileID: 11400000, guid: 80fd6e66fbeedd242ba78aa8daaa35d3, type: 2}
+    level: 5

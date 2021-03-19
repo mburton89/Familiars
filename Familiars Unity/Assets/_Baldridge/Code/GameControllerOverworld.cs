@@ -51,9 +51,7 @@ public class GameControllerOverworld : MonoBehaviour
         var wildFamiliars = FindObjectOfType<MapArea>().GetComponent<MapArea>().GetRandomWildFamiliars();
         CurrentFamiliarsController.Instance.UpdateEnemyFamiliars(wildFamiliars);
         playerPosition = playerController.gameObject.transform.position;
-
-        Debug.Log("[GameController] start battle position: " + playerPosition);
-        Debug.Log("[GameController] start battle position of player: " + playerController.gameObject.transform.position);
+        
         SceneManager.LoadScene(battleScreen);
 
         player.SetActive(false);
@@ -84,7 +82,6 @@ public class GameControllerOverworld : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            Debug.Log("[GameController] Starting game...");
             SceneManager.LoadScene(worldScreen);
             player = Instantiate(playerPrefab, new Vector3(0, 0, 1), Quaternion.identity);
             GameObject _p = GameObject.Find("Player");
@@ -108,8 +105,6 @@ public class GameControllerOverworld : MonoBehaviour
                 //_p.transform.position = new Vector3(10, 10, 1);
             }
 
-            Debug.Log("[GameController] end battle playerPosition: " + playerPosition);
-            Debug.Log("[GameController] end battle position of player: " + _p.transform.position);
         }
     }
 

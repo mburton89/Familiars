@@ -18,9 +18,25 @@ MonoBehaviour:
   magic: 7
   accuracy: 0
   range: 0
-  uses: 0
+  uses: 10
   type: 13
+  targetOriginPosition: 4
+  sourceOriginPosition: 4
   attackStyle: 3
+  relative: 0
+  relativePosition: 0
+  relativeRow: 0
+  relativeCol: 0
   sources: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
   targets: {fileID: 11400000, guid: 4d9d8085cfaa6684db99eaf98282e27e, type: 2}
   targetingReticle: {fileID: 11400000, guid: 4d9d8085cfaa6684db99eaf98282e27e, type: 2}
+  sourceArray: []
+  targetArray: []
+  targetingReticleArray: []
+  projectileOrigin: 1
+  eligibleOrigins: {fileID: 0}
+  direction: 0
+  upperX: 2
+  upperY: 2
+  lowerX: 0
+  lowerY: 0
