@@ -20,7 +20,50 @@ MonoBehaviour:
   range: 0
   uses: 10
   type: 1
-  attackStyle: 3
+  targetOriginPosition: 4
+  sourceOriginPosition: 4
+  attackStyle: 1
+  relative: 0
+  relativePosition: 0
+  relativeRow: 0
+  relativeCol: 0
   sources: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
-  targets: {fileID: 11400000, guid: adfbd9d9716edd44888ac690c94389cd, type: 2}
-  targetingReticle: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
+  targets: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
+  targetingReticle: {fileID: 11400000, guid: adfbd9d9716edd44888ac690c94389cd, type: 2}
+  sourceArray:
+  - {fileID: 11400000, guid: 4680b16356c050042b9ab3144a64eb69, type: 2}
+  - {fileID: 11400000, guid: c55b409955b26064694efcca5f2472d4, type: 2}
+  - {fileID: 11400000, guid: d835b331ea246654699aa9f55414b5dc, type: 2}
+  - {fileID: 11400000, guid: b8d5f29439bfbaf468e3cf3457f1e9db, type: 2}
+  - {fileID: 11400000, guid: adfbd9d9716edd44888ac690c94389cd, type: 2}
+  - {fileID: 11400000, guid: d9de8f5ce861bd44da3ae415362dbdcd, type: 2}
+  - {fileID: 11400000, guid: cab82cf2c35fc60468bf8dc8fe780ef5, type: 2}
+  - {fileID: 11400000, guid: b9cc0b3c801260a4c86f92df6ffdab0b, type: 2}
+  - {fileID: 11400000, guid: 158860bf137b6114887d10415c755653, type: 2}
+  targetArray:
+  - {fileID: 11400000, guid: 4680b16356c050042b9ab3144a64eb69, type: 2}
+  - {fileID: 11400000, guid: c55b409955b26064694efcca5f2472d4, type: 2}
+  - {fileID: 11400000, guid: d835b331ea246654699aa9f55414b5dc, type: 2}
+  - {fileID: 11400000, guid: b8d5f29439bfbaf468e3cf3457f1e9db, type: 2}
+  - {fileID: 11400000, guid: adfbd9d9716edd44888ac690c94389cd, type: 2}
+  - {fileID: 11400000, guid: d9de8f5ce861bd44da3ae415362dbdcd, type: 2}
+  - {fileID: 11400000, guid: cab82cf2c35fc60468bf8dc8fe780ef5, type: 2}
+  - {fileID: 11400000, guid: b9cc0b3c801260a4c86f92df6ffdab0b, type: 2}
+  - {fileID: 11400000, guid: 158860bf137b6114887d10415c755653, type: 2}
+  targetingReticleArray:
+  - {fileID: 11400000, guid: 4680b16356c050042b9ab3144a64eb69, type: 2}
+  - {fileID: 11400000, guid: c55b409955b26064694efcca5f2472d4, type: 2}
+  - {fileID: 11400000, guid: d835b331ea246654699aa9f55414b5dc, type: 2}
+  - {fileID: 11400000, guid: b8d5f29439bfbaf468e3cf3457f1e9db, type: 2}
+  - {fileID: 11400000, guid: adfbd9d9716edd44888ac690c94389cd, type: 2}
+  - {fileID: 11400000, guid: d9de8f5ce861bd44da3ae415362dbdcd, type: 2}
+  - {fileID: 11400000, guid: cab82cf2c35fc60468bf8dc8fe780ef5, type: 2}
+  - {fileID: 11400000, guid: b9cc0b3c801260a4c86f92df6ffdab0b, type: 2}
+  - {fileID: 11400000, guid: 158860bf137b6114887d10415c755653, type: 2}
+  projectileOrigin: 1
+  eligibleOrigins: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
+  direction: 0
+  upperX: 2
+  upperY: 2
+  lowerX: 0
+  lowerY: 0

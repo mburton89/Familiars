@@ -34,18 +34,13 @@ public class GameControllerOverworld : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        //playerController = GameObject.Find("Player").GetComponent<CharacterController>();
         SceneManager.sceneLoaded += OnSceneLoaded;
-
-        //playerController.OnEncountered += StartBattle;
+        
     }
 
     void StartBattle()
     {
         state = GameState.Battle;
-        // battleSystem.gameObject.SetActive(true);
-        // worldCamera.gameObject.SetActive(false);
 
         var playerParty = PlayerParty.Instance;
         var wildFamiliars = FindObjectOfType<MapArea>().GetComponent<MapArea>().GetRandomWildFamiliars();
@@ -55,10 +50,6 @@ public class GameControllerOverworld : MonoBehaviour
         SceneManager.LoadScene(battleScreen);
 
         player.SetActive(false);
-        //playerController.gameObject.SetActive(false);
-        //battleSystem.gameObject.SetActive(true);
-
-        //CombatHandler.Instance.StoreParties(playerParty, wildFamiliar);
     }
 
     void EndBattle(bool win)
@@ -69,8 +60,6 @@ public class GameControllerOverworld : MonoBehaviour
         SceneManager.LoadScene(worldScreen);
         player.SetActive(true);
         playerController.SetEncounterCooldown();
-        
-        
     }
 
     public void SetCombat()

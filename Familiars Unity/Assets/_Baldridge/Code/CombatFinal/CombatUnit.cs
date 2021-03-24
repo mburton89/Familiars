@@ -10,8 +10,7 @@ public class CombatUnit : MonoBehaviour
     [SerializeField] int level;
     public bool isPlayerUnit;
     public int teamPosition;
-
-
+    
     [SerializeField] Image image;
 
     Vector3 originalPos;
@@ -36,8 +35,6 @@ public class CombatUnit : MonoBehaviour
 
     public void Setup()
     {
-        //Familiar = new Familiar(_base, level);
-
         image.sprite = Familiar.Base.FamiliarSprite;
 
         if (isPlayerUnit)
@@ -67,9 +64,7 @@ public class CombatUnit : MonoBehaviour
     public void PlayAttackAnimation()
     {
         var sequence = DOTween.Sequence();
-        sequence.Append(image.transform.DOLocalMoveX(originalPos.x + (30f * this.transform.localScale.x), 0.25f));
-        //sequence.Append(image.transform.DOLocalMoveX(originalPos.x - 50f, 0.25f));
-
+        sequence.Append(image.transform.DOLocalMoveX(originalPos.x + 30f, 0.25f));
         sequence.Append(image.transform.DOLocalMoveX(originalPos.x, 0.25f));
     }
 
@@ -110,12 +105,13 @@ public class CombatUnit : MonoBehaviour
         y = currentTile.y;
     }
 
-    public void FindSelectableTiles(TileState s, int range)
+    public List<Tile> FindSelectableTiles(TileState s, int range)
     {
         GetCurrentTile();
 
         Queue<Tile> process = new Queue<Tile>();
-        
+        List<Tile> closed = new List<Tile>();
+
         process.Enqueue(currentTile);
         currentTile.visited = true;
         // currentNode.parent = null;
@@ -127,11 +123,10 @@ public class CombatUnit : MonoBehaviour
             selectableTiles.Add(t);
             t.selectable = true;
 
-            t.SetState(s);
+            closed.Add(t);
 
             if (t.distance < range)
             {
-                //Tile[] _additions = new Node[4];
                 List<Tile> _additions = t.GetNeighbors();
 
                 foreach (Tile _t in _additions)
@@ -149,5 +144,7 @@ public class CombatUnit : MonoBehaviour
                 }
             }
         }
+        
+        return closed;
     }
 }

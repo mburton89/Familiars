@@ -134,6 +134,16 @@ public enum Types
     Ancient
 }
 
+public enum Stat
+{
+    Attack,
+    Defense,
+    SpAttack,
+    SpDefense,
+    Speed,
+    Movement
+}
+
 
 public class TypeChart
 {

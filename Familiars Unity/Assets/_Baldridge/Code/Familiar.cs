@@ -21,11 +21,11 @@ public class Familiar
     public int HP { get; set; }
 
     public List<Attack> Attacks { get; set; }
+    public Dictionary<Stat, int> Stats { get; private set; }
+    public Dictionary<Stat, int> StatBoosts { get; private set; }
 
     public void Init()
     {
-        HP = MaxHp;
-
         // Generate Attacks
         Attacks = new List<Attack>();
         foreach (var attack in Base.LearnableAttacks)
@@ -38,58 +38,107 @@ public class Familiar
             if (Attacks.Count >= 4)
                 break;
         }
-    }
 
-    /*public Familiar(FamiliarBase fBase, int fLevel)
-    {
-        //Base = fBase;
-        //Level = fLevel;
+        CalculateStats();
         HP = MaxHp;
 
-        // Generate Attacks
-        Attacks = new List<Attack>();
-        foreach (var attack in Base.LearnableAttacks)
+        StatBoosts = new Dictionary<Stat, int>()
         {
-            if(attack.Level <= Level)
-            {
-                Attacks.Add(new Attack(attack.Base));
-            }
+            {Stat.Attack, 0},
+            {Stat.Defense, 0},
+            {Stat.SpAttack, 0},
+            {Stat.SpDefense, 0},
+            {Stat.Speed, 0},
+            {Stat.Movement, 2}
+        };
 
-            if (Attacks.Count >= 4)
-                break;
+    }
+
+    void CalculateStats()
+    {
+        Stats = new Dictionary<Stat, int>();
+        Stats.Add(Stat.Attack, Mathf.FloorToInt((Base.Attack * Level) / 100f) + 5);
+        Stats.Add(Stat.Defense, Mathf.FloorToInt((Base.Defense * Level) / 100f) + 5);
+        Stats.Add(Stat.SpAttack, Mathf.FloorToInt((Base.SpAttack * Level) / 100f) + 5);
+        Stats.Add(Stat.SpDefense, Mathf.FloorToInt((Base.SpDefense * Level) / 100f) + 5);
+        Stats.Add(Stat.Speed, Mathf.FloorToInt((Base.Speed * Level) / 100f) + 5);
+        Stats.Add(Stat.Movement, Base.Movement);
+
+        MaxHp = Mathf.FloorToInt((Base.MaxHp * Level) / 100f) + 30;
+    }
+
+    int GetStat(Stat stat)
+    {
+        int statVal = Stats[stat];
+
+        // Apply stat boosts;
+        int boost = StatBoosts[stat];
+
+        if (stat != Stat.Movement)
+        {
+            var boostValues = new float[] { 1f, 1.5f, 2f, 2.5f, 3f, 3.5f, 4f };
+
+            if (boost >= 0)
+            {
+                statVal = Mathf.FloorToInt(statVal * boostValues[boost]);
+            }
+            else
+            {
+                statVal = Mathf.FloorToInt(statVal / boostValues[-boost]);
+            }
+        }
+        else
+        {
+            statVal = boost; 
         }
 
-    } */
+        return statVal;
+    }
+
+    public void ApplyBoosts(List<StatBoost> statBoosts)
+    {
+        foreach (var statBoost in statBoosts)
+        {
+            var stat = statBoost.stat;
+            var boost = statBoost.boost;
+
+            StatBoosts[stat] = Mathf.Clamp(StatBoosts[stat] + boost, -6, 6);
+            Debug.Log($"{stat} has been boosted to {StatBoosts[stat]}");
+        }
+    }
 
     public int Attack
     {
-        get { return Mathf.FloorToInt((Base.Attack * Level) / 100f) + 5; }
+        get { return GetStat(Stat.Attack); }
     }
 
     public int Defense
     {
-        get { return Mathf.FloorToInt((Base.Defense * Level) / 100f) + 5; }
+        get { return GetStat(Stat.Defense); }
     }
 
     public int SpAttack
     {
-        get { return Mathf.FloorToInt((Base.SpAttack * Level) / 100f) + 5; }
+        get { return GetStat(Stat.SpAttack); }
     }
 
     public int SpDefense
     {
-        get { return Mathf.FloorToInt((Base.SpDefense * Level) / 100f) + 5; }
+        get { return GetStat(Stat.SpDefense); }
     }
 
     public int Speed
     {
-        get { return Mathf.FloorToInt((Base.Speed * Level) / 100f) + 5; }
+        get { return GetStat(Stat.Speed); }
     }
 
-    public int MaxHp
+    public int Movement
     {
-        get { return Mathf.FloorToInt((Base.MaxHp * Level) / 100f) + 30; }
+        get { return GetStat(Stat.Movement); }
     }
+
+
+    public int MaxHp { get; private set; }
 
     public bool TakeDamage(int damage)
     {
@@ -127,9 +176,6 @@ public class Familiar
             Fainted = false
         };
         
-
-        //Debug.Log("Target HP: " + HP + ", Incoming Physical Damage: " + ((attack.Base.Power + attacker.Attack) - Defense)
-        //        + ", Incoming Special Damage: " + ((attack.Base.Magic + attacker.SpAttack) - SpDefense) + ".");
         int damage = Mathf.FloorToInt(d * mod);
         HP -= damage;
         if (HP <= 0)
@@ -146,7 +192,6 @@ public class Familiar
     public Attack GetRandomAttack()
     {
         int _r = Random.Range(0, Attacks.Count);
-        Debug.Log("[Familiar.cs/GetRandomAttack()]");
         return Attacks[_r];
     }
 }
