@@ -10,26 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fa7157f267b68e4abb637a352e0c721, type: 3}
-  m_Name: AncientStrike
+  m_Name: New Attack 15
   m_EditorClassIdentifier: 
-  name: Anicent Assualt
+  name: 
   description: 
-  power: 5
-  magic: 5
+  power: 0
+  magic: 0
   accuracy: 0
   range: 0
-  uses: 10
-  type: 14
+  uses: 0
+  type: 0
   targetOriginPosition: 4
   sourceOriginPosition: 4
-  attackStyle: 1
+  attackStyle: 0
   relative: 0
   relativePosition: 0
   relativeRow: 0
   relativeCol: 0
-  sources: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
-  targets: {fileID: 11400000, guid: a6fc489ef923a8d4a883ae9398df9b02, type: 2}
-  targetingReticle: {fileID: 11400000, guid: adfbd9d9716edd44888ac690c94389cd, type: 2}
+  sources: {fileID: 0}
+  targets: {fileID: 0}
+  targetingReticle: {fileID: 0}
   sourceArray: []
   targetArray: []
   targetingReticleArray: []
