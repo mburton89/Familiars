@@ -14,3 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapMusic: {fileID: 8300000, guid: db3b368f113db444ea1ea3b16a988054, type: 3}
   mapMusic2: {fileID: 8300000, guid: 29d9a6f9c45549c458d47f81138221f9, type: 3}
+  menuMusic1: {fileID: 8300000, guid: 6a7325361344e3947b9065ae31323802, type: 3}
+  menuMusic2: {fileID: 8300000, guid: bf1d0ad756257d841bc5af4ddd4a1630, type: 3}
+  menuMusic3: {fileID: 8300000, guid: 7b0934eca2f25584299c053b81c65dd6, type: 3}
+  angeredmcSFX: {fileID: 8300000, guid: 97e219e8724f6bf4cb99e93dbdb67c00, type: 3}
+  curiousmcSFX: {fileID: 8300000, guid: e8fae14ddf504a74eaa708ed05f5ce84, type: 3}
+  hmmmcSFX: {fileID: 8300000, guid: cb4fa98145135ff4bb7a141671e31e97, type: 3}
+  huhmcSFX: {fileID: 8300000, guid: bc5877986aab1374ab98ffe11a442e37, type: 3}
+  scaredmcSFX: {fileID: 8300000, guid: 14038b48acbad61468f3d8d9c2835125, type: 3}
+  attackmvSFX: {fileID: 8300000, guid: 046ab5f53e3d42e4882c29f2f0e58d1d, type: 3}
+  evilchucklemvSFX: {fileID: 8300000, guid: 8fea1a1639b424a44b50853427d3fa04, type: 3}
+  hmmmvSFX: {fileID: 8300000, guid: bccc0868ad48c6343ac5746a4a922866, type: 3}
+  injuredshockmvSFX: {fileID: 8300000, guid: 11ce8114ea6afce4aa9dced4fb71fbc1, type: 3}
+  injuredmvSFX: {fileID: 8300000, guid: 596ccce6a31c5954c949522ec520530f, type: 3}
+  shockmvSFX: {fileID: 8300000, guid: d0b3b83d9f1b7de4f8aa235d35c91bdd, type: 3}
+  sighmvSFX: {fileID: 8300000, guid: 7e08289cd12cd4947a82bf3ce1f067ba, type: 3}
+  smirkmvSFX: {fileID: 8300000, guid: be7a5181e11d7e746812a738bf822ae6, type: 3}
+  injuredgvSFX: {fileID: 8300000, guid: 8180be00ffcd398488170d6461fba816, type: 3}
+  injured2gvSFX: {fileID: 8300000, guid: cdac79c86778d8641a7b9b981c4e50fe, type: 3}
+  evilchucklegvSFX: {fileID: 8300000, guid: b3ca277357de72e4abf1be8c095ca1d5, type: 3}
+  attackfrSFX: {fileID: 8300000, guid: d772486969290ed4f94fbdebd694b2c1, type: 3}
+  laughfrSFX: {fileID: 8300000, guid: 6b814abaf3ae6a34ca6f01aa723c8a56, type: 3}
+  shockfrSFX: {fileID: 8300000, guid: 25efa2c8c193281489be9da59e4e3575, type: 3}
+  hmmfrSFX: {fileID: 8300000, guid: c438c416e2f1c0743b9ecacab0d6107d, type: 3}
+  injuredfrSFX: {fileID: 8300000, guid: fe5ea974f628d4f478f24197440c51ab, type: 3}
