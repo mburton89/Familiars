@@ -39,6 +39,14 @@ public class GameMusic : ScriptableObject
     public AudioClip hmmfrSFX;
     public AudioClip injuredfrSFX;
 
+    public AudioClip buttonClickMetalSFX;
+    public AudioClip buttonClick1SFX;
+    public AudioClip buttonClick2SFX;
+    public AudioClip buttonClick3SFX;
+    public AudioClip menuNotificationSFX;
+    public AudioClip transition1SFX;
+    public AudioClip transitionSFX2;
+
     void Awake()
     {
         Instance = this;
