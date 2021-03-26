@@ -88,15 +88,18 @@ public class CombatHandler : MonoBehaviour
         // Create the currently used Familiars for both teams
         CombatUnit _curUnit;
         GameObject _fam;
-        float _count = (float)playerTeam.Count;
+
+        
         Tile _t;
         int _x, _y, iteration;
 
+        List<Familiar> _aliveParty = CurrentFamiliarsController.Instance.GetHealthyFamiliars(CurrentFamiliarsController.Instance.playerFamiliars);
+        float _count = (float)_aliveParty.Count;
         for (int i = 0; i < Mathf.Min(3f, _count); i++)
         {
             _fam = Instantiate(combatUnitPrefab, canvas.gameObject.transform);
             _curUnit = _fam.GetComponent<CombatUnit>();
-            _curUnit.Familiar = CurrentFamiliarsController.Instance.playerFamiliars[i];
+            _curUnit.Familiar = _aliveParty[i];
 
             _x = UnityEngine.Random.Range(0, 3);
             _y = UnityEngine.Random.Range(0, 3);
@@ -121,6 +124,7 @@ public class CombatHandler : MonoBehaviour
             _curUnit.x = _t.x;
             _curUnit.y = _t.y;
             playerHUDs[i].SetData(_curUnit.Familiar);
+            playerHUDs[i].Display(HUDDisplay.Active);
 
             playerTeam[i] = _curUnit;
             //playerTeam.Add(_curUnit);

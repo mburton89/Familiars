@@ -22,11 +22,12 @@ MonoBehaviour:
   type: 13
   targetOriginPosition: 4
   sourceOriginPosition: 4
-  attackStyle: 3
+  attackStyle: 4
+  category: 0
+  effects:
+    boosts: []
+  target: 0
   relative: 0
-  relativePosition: 0
-  relativeRow: 0
-  relativeCol: 0
   sources: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
   targets: {fileID: 11400000, guid: a6fc489ef923a8d4a883ae9398df9b02, type: 2}
   targetingReticle: {fileID: 11400000, guid: a6fc489ef923a8d4a883ae9398df9b02, type: 2}
