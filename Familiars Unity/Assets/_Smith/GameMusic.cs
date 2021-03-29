@@ -9,6 +9,7 @@ public class GameMusic : ScriptableObject
 
     public AudioClip mapMusic;
     public AudioClip mapMusic2;
+    public AudioClip mapMusic3;
 
     public AudioClip menuMusic1;
     public AudioClip menuMusic2;
@@ -46,6 +47,15 @@ public class GameMusic : ScriptableObject
     public AudioClip menuNotificationSFX;
     public AudioClip transition1SFX;
     public AudioClip transitionSFX2;
+
+    public AudioClip commonFight;
+    public AudioClip commonFight2;
+
+    public AudioClip rivaltwoTheme;
+    public AudioClip rivaltwoTheme2;
+
+    public AudioClip gameOverTheme;
+
 
     void Awake()
     {

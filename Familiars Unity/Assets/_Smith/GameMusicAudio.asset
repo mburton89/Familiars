@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapMusic: {fileID: 8300000, guid: db3b368f113db444ea1ea3b16a988054, type: 3}
   mapMusic2: {fileID: 8300000, guid: 29d9a6f9c45549c458d47f81138221f9, type: 3}
+  mapMusic3: {fileID: 8300000, guid: 0589b5432e70fe940a27ec6feb4f1202, type: 3}
   menuMusic1: {fileID: 8300000, guid: 6a7325361344e3947b9065ae31323802, type: 3}
   menuMusic2: {fileID: 8300000, guid: bf1d0ad756257d841bc5af4ddd4a1630, type: 3}
   menuMusic3: {fileID: 8300000, guid: 7b0934eca2f25584299c053b81c65dd6, type: 3}
@@ -45,3 +46,8 @@ MonoBehaviour:
   menuNotificationSFX: {fileID: 8300000, guid: 59c05cc523f4fcf4988afe7d67e5523c, type: 3}
   transition1SFX: {fileID: 8300000, guid: 7ed21279c40bddc4783042a37aec140a, type: 3}
   transitionSFX2: {fileID: 8300000, guid: c348359a6539b30409b29c63db6c10f9, type: 3}
+  commonFight: {fileID: 8300000, guid: 4294f9d6f70dbfb469ec21e58f16a2ee, type: 3}
+  commonFight2: {fileID: 8300000, guid: 7cd04cea93356b041878464ab548ba61, type: 3}
+  rivaltwoTheme: {fileID: 8300000, guid: dad2766898b199845a9aa006adcfe6c1, type: 3}
+  rivaltwoTheme2: {fileID: 8300000, guid: 8e65366ed0f396f41b866c99ad93ec73, type: 3}
+  gameOverTheme: {fileID: 8300000, guid: af10b8cacd4399d438a5491eaf0a2ed9, type: 3}
