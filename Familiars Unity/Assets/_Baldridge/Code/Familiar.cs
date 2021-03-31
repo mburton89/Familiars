@@ -18,7 +18,15 @@ public class Familiar
         get { return level; }
     } 
 
+    public Familiar (FamiliarBase fBase, int level)
+    {
+        _base = fBase;
+        this.level = level;
+    }
+
     public int HP { get; set; }
+
+    public int RandomID { get; set; }
 
     public List<Attack> Attacks { get; set; }
     public Dictionary<Stat, int> Stats { get; private set; }
@@ -39,8 +47,10 @@ public class Familiar
                 break;
         }
 
+
         CalculateStats();
         HP = MaxHp;
+        RandomID = Random.Range(100000, 999999);
 
         StatBoosts = new Dictionary<Stat, int>()
         {

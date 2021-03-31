@@ -88,15 +88,17 @@ public class CombatHandler : MonoBehaviour
         // Create the currently used Familiars for both teams
         CombatUnit _curUnit;
         GameObject _fam;
-        float _count = (float)playerTeam.Count;
+        
         Tile _t;
         int _x, _y, iteration;
 
+        List<Familiar> _aliveParty = CurrentFamiliarsController.Instance.GetHealthyFamiliars(CurrentFamiliarsController.Instance.playerFamiliars);
+        float _count = (float)_aliveParty.Count;
         for (int i = 0; i < Mathf.Min(3f, _count); i++)
         {
             _fam = Instantiate(combatUnitPrefab, canvas.gameObject.transform);
             _curUnit = _fam.GetComponent<CombatUnit>();
-            _curUnit.Familiar = CurrentFamiliarsController.Instance.playerFamiliars[i];
+            _curUnit.Familiar = _aliveParty[i];
 
             _x = UnityEngine.Random.Range(0, 3);
             _y = UnityEngine.Random.Range(0, 3);
@@ -121,8 +123,11 @@ public class CombatHandler : MonoBehaviour
             _curUnit.x = _t.x;
             _curUnit.y = _t.y;
             playerHUDs[i].SetData(_curUnit.Familiar);
+            playerHUDs[i].Active(true);
+            //playerHUDs[i].Display(HUDDisplay.Active);
 
             playerTeam[i] = _curUnit;
+            Debug.Log("Player Initial -- Name: " + _curUnit.Familiar.Base.Name + " ID: " + _curUnit.Familiar.RandomID);
             //playerTeam.Add(_curUnit);
         }
 
@@ -155,8 +160,10 @@ public class CombatHandler : MonoBehaviour
             _curUnit.Setup();
             _curUnit.teamPosition = i;
             enemyHUDs[i].SetData(_curUnit.Familiar);
+            enemyHUDs[i].Active(true);
 
             enemyTeam[i] = _curUnit;
+            Debug.Log("Enemy Initial -- Name: " + _curUnit.Familiar.Base.Name + " ID: " + _curUnit.Familiar.RandomID);
             //enemyTeam.Add(_curUnit);
         }
 
@@ -743,11 +750,32 @@ public class CombatHandler : MonoBehaviour
         {
             _tile = playerField.GetTile(unit.x * 3 + unit.y);
             _tile.familiarOccupant = null;
+            
             playerTeam.Remove(unit);
 
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i < playerTeam.Count; i++)
             {
-                Debug.Log("[CombatHandler.cs/ResolveFainted()] Player Field position " + i + ": " + playerField.GetTile(i).familiarOccupant);
+                playerTeam[i].teamPosition = i;
+            }
+
+            Debug.Log(playerTeam.Count);
+            for (int i = 0; i < playerTeam.Count; i++)
+            {
+                Debug.Log("[CombatHandler.cs/ResolveFainting] " + playerTeam[i].Familiar.Base.Name + "-" + playerTeam[i].Familiar.RandomID + " position is " + playerTeam[i].teamPosition);
+            }
+
+            Debug.Log("Passed for loop.");
+            for (int  i = 0; i < 3; i++)
+            {
+                if (i < playerTeam.Count)
+                {
+                    playerHUDs[i].SetData(playerTeam[i].Familiar);
+                    playerHUDs[i].Active(true);
+                }
+                else
+                {
+                    playerHUDs[i].Active(false);
+                }
             }
         }
         else
@@ -756,9 +784,29 @@ public class CombatHandler : MonoBehaviour
             _tile.familiarOccupant = null;
             enemyTeam.Remove(unit);
 
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i < enemyTeam.Count; i++)
             {
-                Debug.Log("[CombatHandler.cs/ResolveFainted()] Enemy Field position " + i + ": " + enemyField.GetTile(i).familiarOccupant);
+                enemyTeam[i].teamPosition = i;
+            }
+
+            Debug.Log(enemyTeam.Count);
+            for (int i = 0; i < enemyTeam.Count; i++)
+            {
+                Debug.Log("[CombatHandler.cs/ResolveFainting] " + enemyTeam[i].Familiar.Base.Name + "-" + enemyTeam[i].Familiar.RandomID + " position is " + enemyTeam[i].teamPosition);
+            }
+            Debug.Log("Passed for loop.");
+
+            for (int i = 0; i < 3; i++)
+            {
+                if (i < enemyTeam.Count)
+                {
+                    enemyHUDs[i].SetData(enemyTeam[i].Familiar);
+                    enemyHUDs[i].Active(true);
+                }
+                else
+                {
+                    enemyHUDs[i].Active(false);
+                }
             }
         }
         

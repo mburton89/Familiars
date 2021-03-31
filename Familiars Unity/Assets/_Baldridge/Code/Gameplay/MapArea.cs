@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MapArea : MonoBehaviour
 {
-    [SerializeField] List<Familiar> wildFamiliars;
+    [SerializeField] List<Encounter> wildFamiliars;
 
     public List<Familiar> GetRandomWildFamiliars()
     {
@@ -12,9 +12,27 @@ public class MapArea : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             var wildFamiliar = wildFamiliars[Random.Range(0, wildFamiliars.Count)];
-            wildFamiliar.Init();
-            encounter.Add(wildFamiliar);
+            Familiar newFamiliar = new Familiar(wildFamiliar.Base, wildFamiliar.Level);
+            newFamiliar.Init();
+            encounter.Add(newFamiliar);
         }
         return encounter;
+    }
+}
+
+[System.Serializable]
+public class Encounter
+{
+    [SerializeField] FamiliarBase fBase;
+    [SerializeField] int level;
+
+    public FamiliarBase Base
+    {
+        get { return fBase; }
+    }
+
+    public int Level
+    {
+        get { return level; }
     }
 }

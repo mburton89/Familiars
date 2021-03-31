@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Wave
   description: 
-  power: 10
-  magic: 15
+  power: 4
+  magic: 5
   accuracy: 100
   range: 0
   uses: 10
@@ -23,10 +23,11 @@ MonoBehaviour:
   targetOriginPosition: 4
   sourceOriginPosition: 4
   attackStyle: 3
+  category: 0
+  effects:
+    boosts: []
+  target: 0
   relative: 0
-  relativePosition: 0
-  relativeRow: 0
-  relativeCol: 0
   sources: {fileID: 11400000, guid: 657e23ff3bf7a3a49b7572c010a6c9a0, type: 2}
   targets: {fileID: 11400000, guid: dec509fe37e97a9449d52a9c4fad4202, type: 2}
   targetingReticle: {fileID: 11400000, guid: e2d0a19162cbdfe48aa4ddd5d69ac849, type: 2}
@@ -37,6 +38,7 @@ MonoBehaviour:
   targetingReticleArray:
   - {fileID: 11400000, guid: e2d0a19162cbdfe48aa4ddd5d69ac849, type: 2}
   projectileOrigin: 1
+  eligibleOrigins: {fileID: 0}
   direction: 0
   upperX: 2
   upperY: 2
