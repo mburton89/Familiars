@@ -19,12 +19,15 @@ public class BattleHUD : MonoBehaviour
     float hiddenY;
     float activeY;
 
+    RectTransform rTransform;
+
     private void Start()
     {
-        visibleY = this.gameObject.transform.position.y;
-        hiddenY = visibleY - 20f;
-        activeY = visibleY + 5f;
-        Display(HUDDisplay.Hidden);
+        rTransform = this.gameObject.GetComponent<RectTransform>();
+        visibleY = rTransform.localPosition.y;
+        hiddenY = visibleY;
+        activeY = visibleY;
+        //Display(HUDDisplay.Hidden);
     }
 
     public void SetData(Familiar familiar)
@@ -41,6 +44,12 @@ public class BattleHUD : MonoBehaviour
         yield return hpBar.SetHPSmooth((float) _familiar.HP / _familiar.MaxHp);
     }
 
+    public void Active(bool active)
+    {
+        this.gameObject.SetActive(active);
+    }
+
+    /*
     public void Display(HUDDisplay display)
     {
         StartCoroutine(ShowHUD(display));
@@ -48,7 +57,7 @@ public class BattleHUD : MonoBehaviour
 
     IEnumerator ShowHUD(HUDDisplay display)
     {
-        float currentPos = this.gameObject.transform.position.y;
+        float currentPos = rTransform.localPosition.y;
         float newPos = hiddenY;
         
         switch (display)
@@ -73,4 +82,5 @@ public class BattleHUD : MonoBehaviour
         }
         gameObject.transform.position = new Vector3(gameObject.transform.position.x, newPos);
     }
+    */
 }
