@@ -163,11 +163,11 @@ public class CombatHandler : MonoBehaviour
         playerField.GatherNeighbors();
         enemyField.GatherNeighbors();
 
-        PlayerSelection();
+        FamiliarSelection();
     }
 
     #region State Shifters
-    void PlayerSelection()
+    void FamiliarSelection()
     {
         combatState = CombatState.PlayerSelection;
 
@@ -215,7 +215,7 @@ public class CombatHandler : MonoBehaviour
         StartCoroutine(AdvanceAttackPreview());
     }
 
-    void PlayerMove()
+    void MoveSelection()
     {
         combatState = CombatState.PlayerMove;
 
@@ -233,7 +233,7 @@ public class CombatHandler : MonoBehaviour
         }
     }
 
-    void PlayerTargeting()
+    void TargetSelection()
     {
         combatState = CombatState.PlayerTargeting;
 
@@ -376,13 +376,13 @@ public class CombatHandler : MonoBehaviour
             else if (currentActionPosition == 1)
             {
                 // Move
-                PlayerMove();
+                MoveSelection();
             }
         }
 
         if (Input.GetKeyDown(KeyCode.X))
         {
-            PlayerSelection();
+            FamiliarSelection();
         }
     }
 
@@ -417,7 +417,7 @@ public class CombatHandler : MonoBehaviour
             // If the attack can be used at the current position
             if (currentAttack.Base.Sources.Active[currentPosition])
             {
-                PlayerTargeting();
+                TargetSelection();
             }
         }
 
@@ -620,7 +620,7 @@ public class CombatHandler : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         if (actions > 0)
         {
-            PlayerSelection();
+            FamiliarSelection();
         }
         else
         {
@@ -678,7 +678,7 @@ public class CombatHandler : MonoBehaviour
         yield return new WaitForSeconds(1f);
         if (actions > 0)
         {
-            PlayerSelection();
+            FamiliarSelection();
         }
         else
         {
@@ -730,7 +730,7 @@ public class CombatHandler : MonoBehaviour
         }
 
         actions = 3;
-        PlayerSelection();
+        FamiliarSelection();
     }
 
     IEnumerator ResolveFainting(CombatUnit unit)
