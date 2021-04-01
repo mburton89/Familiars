@@ -113,7 +113,7 @@ public class Familiar
             var boost = statBoost.boost;
 
             StatBoosts[stat] = Mathf.Clamp(StatBoosts[stat] + boost, -6, 6);
-            Debug.Log($"{stat} has been boosted to {StatBoosts[stat]}");
+            Debug.Log($"{Base.Name} - {RandomID}'s {stat} has been boosted to {StatBoosts[stat]}");
         }
     }
 
@@ -178,6 +178,8 @@ public class Familiar
         float type = TypeChart.GetEffectiveness(attack.Base.Type, this.Base.Type[0]) * TypeChart.GetEffectiveness(attack.Base.Type, this.Base.Type[1]);
         float mod = Random.Range(0.8f, 1f);
         float d = ((attack.Base.Power + attacker.Attack) - Defense) + (((attack.Base.Magic + attacker.SpAttack) - SpDefense) * type);
+
+        Debug.Log("[Familiar.cs/TakeDamage()] Damage: " + d);
 
         var damageDetails = new DamageDetails()
         {

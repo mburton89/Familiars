@@ -5,9 +5,9 @@ using UnityEngine.SceneManagement;
 
 public enum GameState { FreeRoam, Battle }
 
-public class GameControllerOverworld : MonoBehaviour
+public class GameController : MonoBehaviour
 {
-    public static GameControllerOverworld Instance;
+    public static GameController Instance;
 
     [SerializeField] GameObject playerPrefab;
 
@@ -66,21 +66,26 @@ public class GameControllerOverworld : MonoBehaviour
     {
         CombatHandler.Instance.OnBattleOver += EndBattle;
     }
-    
+
+    public void StartGame()
+    {
+        SceneManager.LoadScene(worldScreen);
+        player = Instantiate(playerPrefab, new Vector3(0, 0, 1), Quaternion.identity);
+        GameObject _p = GameObject.Find("Player");
+        if (_p != null)
+        {
+            Destroy(_p);
+        }
+        player.name = "Player";
+        playerController = player.GetComponent<CharacterController>();
+        playerController.OnEncountered += StartBattle;
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            SceneManager.LoadScene(worldScreen);
-            player = Instantiate(playerPrefab, new Vector3(0, 0, 1), Quaternion.identity);
-            GameObject _p = GameObject.Find("Player");
-            if (_p != null)
-            {
-                Destroy(_p);
-            }
-            player.name = "Player";
-            playerController = player.GetComponent<CharacterController>();
-            playerController.OnEncountered += StartBattle;
+            StartGame();
         }
     }
 

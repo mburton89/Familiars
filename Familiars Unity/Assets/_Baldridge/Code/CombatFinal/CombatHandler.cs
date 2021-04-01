@@ -76,7 +76,7 @@ public class CombatHandler : MonoBehaviour
     private void Start()
     {
         Instance = this;
-        GameControllerOverworld.Instance.SetCombat();
+        GameController.Instance.SetCombat();
         StartBattle();
     }
 
@@ -263,8 +263,16 @@ public class CombatHandler : MonoBehaviour
                 currentAttackPreview = i;
             }
         }
-        playerField.SetFieldPattern(currentAttack.Base.SourceArray[currentAttackPreview], TileState.ActiveSource);
-        enemyField.SetFieldPattern(currentAttack.Base.TargetArray[currentAttackPreview], TileState.ActiveTarget);
+        if (currentAttack.Base.Target == AttackTarget.Ally)
+        {
+            playerField.SetFieldPattern(currentAttack.Base.TargetArray[currentAttackPreview], TileState.AllyTarget);
+        }
+        else if (currentAttack.Base.Target == AttackTarget.Enemy)
+        {
+            playerField.SetFieldPattern(currentAttack.Base.SourceArray[currentAttackPreview], TileState.ActiveSource);
+            enemyField.SetFieldPattern(currentAttack.Base.TargetArray[currentAttackPreview], TileState.ActiveTarget);
+        }
+        
 
         upperBoundX = currentAttack.Base.UpperX;
         upperBoundY = currentAttack.Base.UpperY;
@@ -530,14 +538,22 @@ public class CombatHandler : MonoBehaviour
             switch (currentAttack.Base.AttackStyle)
             {
                 case AttackStyle.Target:
-                    if (enemyField.GetTile(currentTargetPosition).familiarOccupant != null && currentAttack.Base.Targets.Active[currentTargetPosition])
+                    if(currentField == playerField)
                     {
-                        targets.Add(enemyField.GetTile(currentTargetPosition).familiarOccupant);
+                        Debug.Log("[CombatHandler.cs/HandlePlayerTargeting()] It's the player field");
+                    }
+                    else if (currentField == enemyField)
+                    {
+                        Debug.Log("[CombatHandler.cs/HandlePlayerTargeting()] It's the enemy field");
+                    }
+                    if (currentField.GetTile(currentTargetPosition).familiarOccupant != null && currentAttack.Base.Targets.Active[currentTargetPosition])
+                    {
+                        targets.Add(currentField.GetTile(currentTargetPosition).familiarOccupant);
                         valid = true;
                     }
                     break;
                 case AttackStyle.Projectile:
-                    List<Tile> _t = MatchingTiles(enemyField, currentAttack.Base.TargetArray[currentAttackPreview], currentAttack.Base.EligibleOrigins);
+                    List<Tile> _t = MatchingTiles(currentField, currentAttack.Base.TargetArray[currentAttackPreview], currentAttack.Base.EligibleOrigins);
                     if (_t.Count == 1)
                     {
                         Tile _checkingTile = _t[0];
@@ -569,7 +585,7 @@ public class CombatHandler : MonoBehaviour
                             }
                             if (!end)
                             {
-                                _checkingTile = enemyField.GetTile(_position);
+                                _checkingTile = currentField.GetTile(_position);
                             }
                             else
                             {
@@ -581,20 +597,20 @@ public class CombatHandler : MonoBehaviour
                 case AttackStyle.Area:
                     for (int i = 0; i < 9; i++)
                     {
-                        if (enemyField.GetTile(i).familiarOccupant != null && enemyField.GetTile(i).GetState() == TileState.TargetReticle)
+                        if (currentField.GetTile(i).familiarOccupant != null && currentField.GetTile(i).GetState() == TileState.TargetReticle)
                         {
                             valid = true;
-                            targets.Add(enemyField.GetTile(i).familiarOccupant);
+                            targets.Add(currentField.GetTile(i).familiarOccupant);
                         }
                     }
                     break;
                 case AttackStyle.AreaStatic:
                     for (int i = 0; i < 9; i++)
                     {
-                        if (enemyField.GetTile(i).familiarOccupant != null && currentAttack.Base.Targets.Active[i])
+                        if (currentField.GetTile(i).familiarOccupant != null && currentAttack.Base.Targets.Active[i])
                         {
                             valid = true;
-                            targets.Add(enemyField.GetTile(i).familiarOccupant);
+                            targets.Add(currentField.GetTile(i).familiarOccupant);
                         }
                     }
                     break;
@@ -702,14 +718,7 @@ public class CombatHandler : MonoBehaviour
                 var effects = attack.Base.Effects;
                 if (effects.Boosts != null)
                 {
-                    if (attack.Base.Target == AttackTarget.Ally)
-                    {
-                        selectedFamiliar.Familiar.ApplyBoosts(effects.Boosts);
-                    }
-                    else if (attack.Base.Target == AttackTarget.Enemy)
-                    {
-                        targets[i].Familiar.ApplyBoosts(effects.Boosts);
-                    }
+                    targets[i].Familiar.ApplyBoosts(effects.Boosts);
                 }
             }
             else
