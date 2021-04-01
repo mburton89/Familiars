@@ -10,34 +10,35 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fa7157f267b68e4abb637a352e0c721, type: 3}
-  m_Name: New Attack 1
+  m_Name: HistoricHit
   m_EditorClassIdentifier: 
-  name: 
+  name: Historic Hit
   description: 
-  power: 0
-  magic: 0
+  power: 4
+  magic: 8
   accuracy: 0
   range: 0
-  uses: 0
-  type: 0
+  uses: 10
+  type: 14
   targetOriginPosition: 4
   sourceOriginPosition: 4
-  attackStyle: 0
+  attackStyle: 4
   relative: 0
   relativePosition: 0
   relativeRow: 0
   relativeCol: 0
-  sources: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
-  targets: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
+  sources: {fileID: 11400000, guid: a4cc5d9ea8c858d4cb9bc1ea0af9bade, type: 2}
+  targets: {fileID: 11400000, guid: a4cc5d9ea8c858d4cb9bc1ea0af9bade, type: 2}
   targetingReticle: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
   sourceArray:
-  - {fileID: 11400000, guid: 77e2c8fd8bf2dbe49bf2105784aab922, type: 2}
-  - {fileID: 11400000, guid: f7444362d5d79b44ea5d252db01e795d, type: 2}
+  - {fileID: 11400000, guid: 95377d7e29851fd4f9b00419fdcc25cb, type: 2}
+  - {fileID: 11400000, guid: 372840c114ac8a14988ba5f74d0eac70, type: 2}
   targetArray:
-  - {fileID: 11400000, guid: 77e2c8fd8bf2dbe49bf2105784aab922, type: 2}
-  - {fileID: 11400000, guid: f7444362d5d79b44ea5d252db01e795d, type: 2}
+  - {fileID: 11400000, guid: 372840c114ac8a14988ba5f74d0eac70, type: 2}
+  - {fileID: 11400000, guid: 95377d7e29851fd4f9b00419fdcc25cb, type: 2}
   targetingReticleArray:
-  - {fileID: 11400000, guid: 77e2c8fd8bf2dbe49bf2105784aab922, type: 2}
+  - {fileID: 11400000, guid: 372840c114ac8a14988ba5f74d0eac70, type: 2}
+  - {fileID: 11400000, guid: 95377d7e29851fd4f9b00419fdcc25cb, type: 2}
   projectileOrigin: 1
   eligibleOrigins: {fileID: 0}
   direction: 0

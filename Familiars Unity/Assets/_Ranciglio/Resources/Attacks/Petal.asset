@@ -30,11 +30,13 @@ MonoBehaviour:
   sources: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
   targets: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
   targetingReticle: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
-  sourceArray: []
-  targetArray: []
+  sourceArray:
+  - {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
+  targetArray:
+  - {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
   targetingReticleArray: []
   projectileOrigin: 1
-  eligibleOrigins: {fileID: 0}
+  eligibleOrigins: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
   direction: 0
   upperX: 2
   upperY: 2

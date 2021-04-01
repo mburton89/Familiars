@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fa7157f267b68e4abb637a352e0c721, type: 3}
+  m_Name: SacredSlash
+  m_EditorClassIdentifier: 
+  name: Sacred  Slash
+  description: 
+  power: 3
+  magic: 5
+  accuracy: 0
+  range: 0
+  uses: 4
+  type: 14
+  targetOriginPosition: 4
+  sourceOriginPosition: 4
+  attackStyle: 4
+  relative: 0
+  relativePosition: 0
+  relativeRow: 0
+  relativeCol: 0
+  sources: {fileID: 11400000, guid: e9add13a2a0a1914a837bc0b27b97d60, type: 2}
+  targets: {fileID: 11400000, guid: 656c26439547d6d418f97e7a1b62b5ab, type: 2}
+  targetingReticle: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
+  sourceArray:
+  - {fileID: 11400000, guid: ff9a6f11df69ff1439c2c6258da6b663, type: 2}
+  - {fileID: 11400000, guid: 66b91b76630576244962617c5d174294, type: 2}
+  - {fileID: 11400000, guid: c4d208ea0da15324f9b78e1320000f17, type: 2}
+  targetArray:
+  - {fileID: 11400000, guid: b60527efb21ab004ab3f43b67b26fbc6, type: 2}
+  - {fileID: 11400000, guid: 04b445a37c927474abceb4129483fecc, type: 2}
+  - {fileID: 11400000, guid: 0864e9a2b36d28746820f6f408557138, type: 2}
+  targetingReticleArray:
+  - {fileID: 11400000, guid: b60527efb21ab004ab3f43b67b26fbc6, type: 2}
+  - {fileID: 11400000, guid: 04b445a37c927474abceb4129483fecc, type: 2}
+  - {fileID: 11400000, guid: 0864e9a2b36d28746820f6f408557138, type: 2}
+  projectileOrigin: 1
+  eligibleOrigins: {fileID: 0}
+  direction: 0
+  upperX: 2
+  upperY: 2
+  lowerX: 0
+  lowerY: 0

@@ -10,29 +10,32 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fa7157f267b68e4abb637a352e0c721, type: 3}
-  m_Name: New Attack 2
+  m_Name: MysticRoots
   m_EditorClassIdentifier: 
-  name: 
+  name: Mystic Roots
   description: 
-  power: 0
-  magic: 0
+  power: 3
+  magic: 6
   accuracy: 0
   range: 0
   uses: 0
-  type: 0
+  type: 4
   targetOriginPosition: 4
   sourceOriginPosition: 4
-  attackStyle: 0
+  attackStyle: 1
   relative: 0
   relativePosition: 0
   relativeRow: 0
   relativeCol: 0
-  sources: {fileID: 0}
-  targets: {fileID: 0}
+  sources: {fileID: 11400000, guid: 66b91b76630576244962617c5d174294, type: 2}
+  targets: {fileID: 11400000, guid: a1fb837b8ae670e4abf85b9c89e13c48, type: 2}
   targetingReticle: {fileID: 0}
-  sourceArray: []
-  targetArray: []
-  targetingReticleArray: []
+  sourceArray:
+  - {fileID: 11400000, guid: 66b91b76630576244962617c5d174294, type: 2}
+  targetArray:
+  - {fileID: 11400000, guid: a1fb837b8ae670e4abf85b9c89e13c48, type: 2}
+  targetingReticleArray:
+  - {fileID: 11400000, guid: a1fb837b8ae670e4abf85b9c89e13c48, type: 2}
   projectileOrigin: 1
   eligibleOrigins: {fileID: 0}
   direction: 0

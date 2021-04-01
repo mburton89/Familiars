@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fa7157f267b68e4abb637a352e0c721, type: 3}
-  m_Name: CritcalStrike
+  m_Name: Dart
   m_EditorClassIdentifier: 
-  name: Critical Strike
+  name: 'Dart '
   description: 
   power: 8
   magic: 9
   accuracy: 0
   range: 0
   uses: 10
-  type: 1
+  type: 14
   targetOriginPosition: 4
   sourceOriginPosition: 4
   attackStyle: 4

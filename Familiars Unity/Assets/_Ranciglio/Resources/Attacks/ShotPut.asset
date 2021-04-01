@@ -14,24 +14,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Shot Put
   description: 
-  power: 7
-  magic: 0
+  power: 0
+  magic: 7
   accuracy: 0
   range: 0
   uses: 10
   type: 1
   targetOriginPosition: 4
   sourceOriginPosition: 4
-  attackStyle: 3
+  attackStyle: 4
   relative: 0
   relativePosition: 0
   relativeRow: 0
   relativeCol: 0
   sources: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
-  targets: {fileID: 11400000, guid: 4d9d8085cfaa6684db99eaf98282e27e, type: 2}
-  targetingReticle: {fileID: 11400000, guid: 4d9d8085cfaa6684db99eaf98282e27e, type: 2}
-  sourceArray: []
-  targetArray: []
+  targets: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
+  targetingReticle: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
+  sourceArray:
+  - {fileID: 11400000, guid: b7b9ef9b9e2c8274481625952fc383bc, type: 2}
+  - {fileID: 11400000, guid: 3c70aaceff02d8d488c6b6852e071712, type: 2}
+  - {fileID: 11400000, guid: ff9a6f11df69ff1439c2c6258da6b663, type: 2}
+  - {fileID: 11400000, guid: 97f6cc9458998b244ab94232bb65abc0, type: 2}
+  - {fileID: 11400000, guid: 66b91b76630576244962617c5d174294, type: 2}
+  - {fileID: 11400000, guid: 535f1c869291c7f49b11ee3a671be5bc, type: 2}
+  - {fileID: 11400000, guid: c4d208ea0da15324f9b78e1320000f17, type: 2}
+  - {fileID: 11400000, guid: 47eb00bc63707e74d9fc3938464982ec, type: 2}
+  - {fileID: 11400000, guid: edae934b5a479ee4c9f2f8b6a6e5b142, type: 2}
+  targetArray:
+  - {fileID: 11400000, guid: 627a9d9f32e241249acc25adb3d8e814, type: 2}
+  - {fileID: 11400000, guid: 45fd1a229f04a984497dc49e845eef2f, type: 2}
+  - {fileID: 11400000, guid: 6e4aba790549dfd448ea60267061df53, type: 2}
+  - {fileID: 11400000, guid: 5f25563bf4cee9245a538b4a0dc85f19, type: 2}
+  - {fileID: 11400000, guid: 4d9d8085cfaa6684db99eaf98282e27e, type: 2}
+  - {fileID: 11400000, guid: f4543eb97dabdd74589adf681173f7c4, type: 2}
+  - {fileID: 11400000, guid: 95377d7e29851fd4f9b00419fdcc25cb, type: 2}
+  - {fileID: 11400000, guid: 779e004b1cf504c458469af76293c2b7, type: 2}
+  - {fileID: 11400000, guid: b2948bd8ddc3c234cb2f5f4ec041e575, type: 2}
   targetingReticleArray: []
   projectileOrigin: 1
   eligibleOrigins: {fileID: 0}
