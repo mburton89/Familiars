@@ -21,6 +21,23 @@ public class CurrentFamiliarsController : MonoBehaviour
         }
     }
 
+    public List<Familiar> GetHealthyFamiliars(List<Familiar> familiars)
+    {
+        List<Familiar> healthy = new List<Familiar>();
+        Familiar _fam;
+
+        for (int i = 0; i < familiars.Count; i++)
+        {
+            _fam = familiars[i];
+            if (_fam.HP > 0)
+            {
+                healthy.Add(_fam);
+            }
+        }
+
+        return healthy;
+    }
+
     public void UpdatePlayerFamiliars(List<Familiar> newPlayerFamiliars)
     {
         playerFamiliars = new List<Familiar>();

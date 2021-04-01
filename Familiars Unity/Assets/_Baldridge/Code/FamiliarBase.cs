@@ -28,7 +28,6 @@ public class FamiliarBase : ScriptableObject
 
     [SerializeField] List<LearnableAttack> learnableAttacks;
 
-
     public string Name
     {
         get { return name; }
@@ -93,7 +92,6 @@ public class FamiliarBase : ScriptableObject
     {
         get { return learnableAttacks;  }
     }
-
 }
 
 [System.Serializable]
@@ -132,6 +130,16 @@ public enum Types
     Light,
     Dark,
     Ancient
+}
+
+public enum Stat
+{
+    Attack,
+    Defense,
+    SpAttack,
+    SpDefense,
+    Speed,
+    Movement
 }
 
 

@@ -21,17 +21,18 @@ public class AttackBase : ScriptableObject
     [SerializeField] int accuracy;
     [SerializeField] int range;
     [SerializeField] int uses;
+    
     [SerializeField] Types type;
 
     [SerializeField] int targetOriginPosition = 4;
     [SerializeField] int sourceOriginPosition = 4;
 
     [SerializeField] AttackStyle attackStyle;
+    [SerializeField] AttackCategory category;
+    [SerializeField] AttackEffects effects;
+    [SerializeField] AttackTarget target;
 
     [SerializeField] bool relative;
-    [SerializeField] bool relativePosition;
-    [SerializeField] bool relativeRow;
-    [SerializeField] bool relativeCol;
     
     [SerializeField] PatternBase sources; // The places that the familiar can use the attack from
     [SerializeField] PatternBase targets; // The places that the familiar is able to target with the move
@@ -108,25 +109,28 @@ public class AttackBase : ScriptableObject
     {
         get { return attackStyle;  }
     }
+
+    public AttackCategory Category
+    {
+        get { return category; }
+    }
+
+    public AttackEffects Effects
+    {
+        get { return effects; }
+    }
+
+    public AttackTarget Target
+    {
+        get { return target; }
+    }
+
+
+
     #region Relative Targeting
     public bool Relative
     {
         get { return relative; }
-    }
-    
-    public bool RelativePosition
-    {
-        get { return relativePosition; }
-    }
-
-    public bool RelativeRow
-    {
-        get { return relativeRow; }
-    }
-
-    public bool RelativeCol
-    {
-        get { return relativeCol; }
     }
     #endregion
 
@@ -195,4 +199,33 @@ public class AttackBase : ScriptableObject
     #endregion
 
 
+}
+
+[System.Serializable]
+public class AttackEffects
+{
+    [SerializeField] List<StatBoost> boosts;
+
+    public List<StatBoost> Boosts
+    {
+        get { return boosts; }
+    }
+}
+
+[System.Serializable]
+public class StatBoost
+{
+    public Stat stat;
+    public int boost;
+}
+
+
+public enum AttackCategory
+{
+    Attack, Status
+}
+
+public enum AttackTarget
+{
+    Enemy, Ally
 }
