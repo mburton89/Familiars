@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fa7157f267b68e4abb637a352e0c721, type: 3}
-  m_Name: QuickSlash
+  m_Name: SoringChop
   m_EditorClassIdentifier: 
-  name: Quick Slash
+  name: Soring Chop
   description: 
-  power: 6
-  magic: 0
+  power: 4
+  magic: 2
   accuracy: 0
   range: 0
   uses: 10
-  type: 1
+  type: 8
   targetOriginPosition: 4
   sourceOriginPosition: 4
   attackStyle: 1

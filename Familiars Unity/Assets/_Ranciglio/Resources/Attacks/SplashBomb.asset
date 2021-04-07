@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Splash Bomb
   description: 
-  power: 0
-  magic: 7
+  power: 3
+  magic: 4
   accuracy: 0
   range: 0
   uses: 10

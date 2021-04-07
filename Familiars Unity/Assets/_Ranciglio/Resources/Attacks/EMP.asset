@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fa7157f267b68e4abb637a352e0c721, type: 3}
-  m_Name: ShotPut
+  m_Name: EMP
   m_EditorClassIdentifier: 
-  name: Shot Put
+  name: EMP
   description: 
-  power: 6
-  magic: 0
+  power: 1
+  magic: 6
   accuracy: 0
   range: 0
   uses: 10
-  type: 1
+  type: 7
   targetOriginPosition: 4
   sourceOriginPosition: 4
   attackStyle: 4
@@ -50,8 +50,17 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 95377d7e29851fd4f9b00419fdcc25cb, type: 2}
   - {fileID: 11400000, guid: 779e004b1cf504c458469af76293c2b7, type: 2}
   - {fileID: 11400000, guid: b2948bd8ddc3c234cb2f5f4ec041e575, type: 2}
-  targetingReticleArray: []
-  projectileOrigin: 1
+  targetingReticleArray:
+  - {fileID: 11400000, guid: 627a9d9f32e241249acc25adb3d8e814, type: 2}
+  - {fileID: 11400000, guid: 45fd1a229f04a984497dc49e845eef2f, type: 2}
+  - {fileID: 11400000, guid: 6e4aba790549dfd448ea60267061df53, type: 2}
+  - {fileID: 11400000, guid: 5f25563bf4cee9245a538b4a0dc85f19, type: 2}
+  - {fileID: 11400000, guid: 4d9d8085cfaa6684db99eaf98282e27e, type: 2}
+  - {fileID: 11400000, guid: f4543eb97dabdd74589adf681173f7c4, type: 2}
+  - {fileID: 11400000, guid: 95377d7e29851fd4f9b00419fdcc25cb, type: 2}
+  - {fileID: 11400000, guid: 779e004b1cf504c458469af76293c2b7, type: 2}
+  - {fileID: 11400000, guid: b2948bd8ddc3c234cb2f5f4ec041e575, type: 2}
+  projectileOrigin: 9
   eligibleOrigins: {fileID: 0}
   direction: 0
   upperX: 2

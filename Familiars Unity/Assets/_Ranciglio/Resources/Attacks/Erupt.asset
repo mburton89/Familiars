@@ -10,26 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fa7157f267b68e4abb637a352e0c721, type: 3}
-  m_Name: QuickSlash
+  m_Name: Erupt
   m_EditorClassIdentifier: 
-  name: Quick Slash
+  name: Erupt
   description: 
-  power: 6
-  magic: 0
+  power: 1
+  magic: 4
   accuracy: 0
   range: 0
   uses: 10
-  type: 1
+  type: 9
   targetOriginPosition: 4
   sourceOriginPosition: 4
-  attackStyle: 1
+  attackStyle: 4
   relative: 0
   relativePosition: 0
   relativeRow: 0
   relativeCol: 0
   sources: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
   targets: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
-  targetingReticle: {fileID: 11400000, guid: adfbd9d9716edd44888ac690c94389cd, type: 2}
+  targetingReticle: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
   sourceArray:
   - {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
   targetArray:
