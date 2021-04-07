@@ -16,17 +16,25 @@ MonoBehaviour:
   description: 
   power: 3
   magic: 6
-  accuracy: 0
+  accuracy: 100
+  alwaysHits: 0
   range: 0
   uses: 0
   type: 4
   targetOriginPosition: 4
   sourceOriginPosition: 4
   attackStyle: 1
+  category: 0
+  effects:
+    boosts: []
+    status: 0
+    volatileStatus: 0
+    movement:
+      direction: 0
+      squares: 0
+  secondaries: []
+  target: 0
   relative: 0
-  relativePosition: 0
-  relativeRow: 0
-  relativeCol: 0
   sources: {fileID: 11400000, guid: 66b91b76630576244962617c5d174294, type: 2}
   targets: {fileID: 11400000, guid: a1fb837b8ae670e4abf85b9c89e13c48, type: 2}
   targetingReticle: {fileID: 0}

@@ -6,6 +6,7 @@ using UnityEngine;
 public class CharacterController : MonoBehaviour
 {
     private const float MOVE_SPEED = 6f;
+    public LayerMask barrierLayer;
     public LayerMask grassLayer;
 
     [SerializeField] private LayerMask dashLayerMask;
@@ -53,6 +54,8 @@ public class CharacterController : MonoBehaviour
 
         moveDir = new Vector3(moveX, moveY).normalized;
 
+        
+
         if(Input.GetKeyDown(KeyCode.Space))
         {
             isDashButtonDown = true;
@@ -78,7 +81,10 @@ public class CharacterController : MonoBehaviour
             isDashButtonDown = false;
         }
 
-        CheckForEncounters();
+        if (rigidbody2D.velocity.magnitude > 0)
+        {
+            CheckForEncounters();
+        }
     }
 
     private void CheckForEncounters()
@@ -93,7 +99,6 @@ public class CharacterController : MonoBehaviour
                     {
                         OnEncountered();
                     }
-
                 }
             }
         }

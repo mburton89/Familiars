@@ -15,17 +15,30 @@ MonoBehaviour:
   name: Echo
   description: 
   power: 0
-  magic: 15
+  magic: 4
   accuracy: 100
   range: 3
   uses: 20
   type: 11
-  originPosition: 4
+  targetOriginPosition: 4
+  sourceOriginPosition: 4
   attackStyle: 1
+  category: 0
+  effects:
+    boosts: []
+  target: 0
+  relative: 0
   sources: {fileID: 11400000, guid: 657e23ff3bf7a3a49b7572c010a6c9a0, type: 2}
   targets: {fileID: 11400000, guid: 657e23ff3bf7a3a49b7572c010a6c9a0, type: 2}
   targetingReticle: {fileID: 11400000, guid: adfbd9d9716edd44888ac690c94389cd, type: 2}
+  sourceArray:
+  - {fileID: 11400000, guid: 657e23ff3bf7a3a49b7572c010a6c9a0, type: 2}
+  targetArray:
+  - {fileID: 11400000, guid: 657e23ff3bf7a3a49b7572c010a6c9a0, type: 2}
+  targetingReticleArray:
+  - {fileID: 11400000, guid: adfbd9d9716edd44888ac690c94389cd, type: 2}
   projectileOrigin: 1
+  eligibleOrigins: {fileID: 0}
   direction: 0
   upperX: 2
   upperY: 2

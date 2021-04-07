@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6966b4b74bbd40c44ab2b81e2a3d3836, type: 3}
   m_Name: Strawbee
   m_EditorClassIdentifier: 
-  name: Starbee
+  name: Strawbee
   description: 
   familiarSprite: {fileID: 21300000, guid: ca30d0ae68dd124448fb1deda8c296d9, type: 3}
   type: 0700000000000000
@@ -30,3 +30,5 @@ MonoBehaviour:
     level: 1
   - attackBase: {fileID: 11400000, guid: 0dd66a0f578fbcb4c950193dfb4c3788, type: 2}
     level: 5
+  - attackBase: {fileID: 11400000, guid: 7ef8f7ad75823a141bec8eab681e6201, type: 2}
+    level: 6

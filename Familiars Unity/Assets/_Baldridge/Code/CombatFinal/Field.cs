@@ -131,4 +131,22 @@ public class Field : MonoBehaviour
             GetTile(_i).Reset();
         }
     }
+
+    public List<CombatUnit> AICheckAreaAttack(int position, PatternBase tiles)
+    {
+        List<CombatUnit> _targets = new List<CombatUnit>();
+
+        for (int _p = 0; _p < 9; _p++)
+        {
+            if (!(_p - (4 - position) > 9 || _p - (4 - position) < 0))
+            {
+                if (tiles.Active[_p] && GetTile(_p).familiarOccupant != null)
+                {
+                    _targets.Add(GetTile(_p).familiarOccupant);
+                }
+            }
+        }
+
+        return _targets;
+    }
 }

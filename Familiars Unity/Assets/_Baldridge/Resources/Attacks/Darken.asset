@@ -14,18 +14,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Darken
   description: 
-  power: 5
-  magic: 10
+  power: 1
+  magic: 4
   accuracy: 100
   range: 0
   uses: 20
   type: 13
-  originPosition: 4
+  targetOriginPosition: 4
+  sourceOriginPosition: 4
   attackStyle: 3
+  category: 0
+  effects:
+    boosts: []
+  target: 0
+  relative: 0
   sources: {fileID: 11400000, guid: 657e23ff3bf7a3a49b7572c010a6c9a0, type: 2}
   targets: {fileID: 11400000, guid: 657e23ff3bf7a3a49b7572c010a6c9a0, type: 2}
   targetingReticle: {fileID: 11400000, guid: 948132b92fa318b44b743d5f3c9d1bb1, type: 2}
+  sourceArray: []
+  targetArray: []
+  targetingReticleArray: []
   projectileOrigin: 1
+  eligibleOrigins: {fileID: 0}
   direction: 0
   upperX: 1
   upperY: 2
