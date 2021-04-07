@@ -30,10 +30,19 @@ MonoBehaviour:
     status: 0
     volatileStatus: 0
     movement:
+      move: 0
+      direction: 0
+      squares: 0
+  secondaries:
+  - boosts: []
+    status: 0
+    volatileStatus: 0
+    movement:
       move: 1
       direction: 0
       squares: 1
-  secondaries: []
+    chance: 100
+    target: 0
   target: 0
   relative: 0
   sources: {fileID: 11400000, guid: 95377d7e29851fd4f9b00419fdcc25cb, type: 2}

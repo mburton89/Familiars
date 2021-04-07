@@ -822,6 +822,8 @@ public class CombatHandler : MonoBehaviour
     IEnumerator RunAttackEffects(CombatUnit source, CombatUnit target, AttackEffects effects, AttackTarget attackTarget)
     {
         Debug.Log("[CombatHandler.cs/RunAttackEffects()] Running Attack Effects.");
+
+        
         // Stat Boosting
         if (effects.Boosts != null)
         {
@@ -840,6 +842,7 @@ public class CombatHandler : MonoBehaviour
             target.Familiar.SetVolatileStatus(effects.VolatileStatus);
         }
 
+        Debug.Log("[CombatHandler.cs/RunAttackEffects()] Move: " + effects.Movement.move);
         if (effects.Movement.move)
         {
             Debug.Log("[CombatHandler.cs/RunAttackEffects()] Trying to push");
@@ -854,8 +857,8 @@ public class CombatHandler : MonoBehaviour
             if (effects.Movement.direction == 0)
             {
                 int cur = 1;
-                int max = effects.Movement.squares;
-                for (cur = 1; cur > max; cur++)
+                int max = effects.Movement.squares + 1;
+                for (cur = 1; cur < max; cur++)
                 {
                     Debug.Log("Checking " + cur + " behind.");
                     if (_field.GetTile((target.x + cur) * 3 + target.y).familiarOccupant != null)
