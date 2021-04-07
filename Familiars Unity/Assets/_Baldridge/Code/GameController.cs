@@ -35,6 +35,8 @@ public class GameController : MonoBehaviour
             Destroy(gameObject);
         }
         SceneManager.sceneLoaded += OnSceneLoaded;
+
+        ConditionsDB.Init();
         
     }
 
@@ -78,6 +80,7 @@ public class GameController : MonoBehaviour
         }
         player.name = "Player";
         playerController = player.GetComponent<CharacterController>();
+        player.transform.position = new Vector3(0, -2, 0);
         playerController.OnEncountered += StartBattle;
     }
 

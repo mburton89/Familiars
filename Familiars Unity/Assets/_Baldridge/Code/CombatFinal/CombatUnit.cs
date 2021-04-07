@@ -25,6 +25,8 @@ public class CombatUnit : MonoBehaviour
 
     Tile currentTile;
 
+    public BattleHUD Hud { get; set; }
+
     public Familiar Familiar { get; set; }
 
     private void Awake()

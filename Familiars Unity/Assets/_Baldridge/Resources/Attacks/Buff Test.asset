@@ -16,7 +16,8 @@ MonoBehaviour:
   description: 
   power: 0
   magic: 0
-  accuracy: 0
+  accuracy: 100
+  alwaysHits: 0
   range: 0
   uses: 0
   type: 1
@@ -28,6 +29,12 @@ MonoBehaviour:
     boosts:
     - stat: 0
       boost: 2
+    status: 0
+    volatileStatus: 0
+    movement:
+      direction: 0
+      squares: 0
+  secondaries: []
   target: 1
   relative: 0
   sources: {fileID: 11400000, guid: 657e23ff3bf7a3a49b7572c010a6c9a0, type: 2}

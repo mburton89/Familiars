@@ -25,6 +25,22 @@ public class EnemyAI : MonoBehaviour
         Instance = this;
     }
 
+    public CombatUnit FindUnit(List<CombatUnit> team, AILevel aiLevel)
+    {
+        switch (aiLevel)
+        {
+            case AILevel.Wild:
+                return WildAISelection(team);
+            case AILevel.Amateur:
+                return WildAISelection(team);
+            case AILevel.Talented:
+                return WildAISelection(team);
+            case AILevel.Professional:
+                return WildAISelection(team);
+        }
+        return null;
+    }
+
     public AttackAction FindAttack(CombatUnit user, Field field, AILevel aiLevel)
     {
         switch (aiLevel)
@@ -40,6 +56,26 @@ public class EnemyAI : MonoBehaviour
         }
         return new AttackAction(user, new List<CombatUnit>(), null);
 
+    }
+
+    CombatUnit WildAISelection (List<CombatUnit> team)
+    {
+        //enemyTeam[UnityEngine.Random.Range(0, enemyTeam.Count)]
+        List<CombatUnit> ableToAct = new List<CombatUnit>();
+
+        for (int i = 0; i < team.Count; i++)
+        {
+            if (team[i].Familiar.CanAct)
+            {
+                ableToAct.Add(team[i]);
+            }
+        }
+
+        if (ableToAct.Count > 0)
+        {
+            return ableToAct[Random.Range(0, ableToAct.Count)];
+        }
+        return null;
     }
 
     AttackAction WildAI(CombatUnit user, Field field)
@@ -139,7 +175,7 @@ public class EnemyAI : MonoBehaviour
                     case AttackStyle.AreaStatic:
                         for (int i = 0; i < 9; i++)
                         {
-                            if (field.GetTile(i).familiarOccupant != null && _attack.Base.Targets.Active[i])
+                            if (field.GetTile(i).familiarOccupant != null && _attack.Base.TargetArray[_preview].Active[i])
                             {
                                 _possibleTargets.Add(field.GetTile(i).familiarOccupant);
                             }

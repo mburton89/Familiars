@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum CombatState { Start, PlayerSelection, PlayerAction, PlayerAttack, PlayerMove, PlayerTargeting, EnemyAttack, Busy }
+public enum CombatState { Start, FamiliarSelection, ActionSelection, AttackSelection, MoveSelection, TargetSelection, PerformAttack, Busy }
 
 public class CombatHandler : MonoBehaviour
 {
@@ -123,9 +123,9 @@ public class CombatHandler : MonoBehaviour
             _curUnit.teamPosition = i;
             _curUnit.x = _t.x;
             _curUnit.y = _t.y;
-            playerHUDs[i].SetData(_curUnit.Familiar);
-            playerHUDs[i].Active(true);
-            //playerHUDs[i].Display(HUDDisplay.Active);
+            _curUnit.Hud = playerHUDs[i];
+            _curUnit.Hud.SetData(_curUnit.Familiar);
+            _curUnit.Hud.Active(true);
 
             playerTeam[i] = _curUnit;
             Debug.Log("Player Initial -- Name: " + _curUnit.Familiar.Base.Name + " ID: " + _curUnit.Familiar.RandomID);
@@ -160,8 +160,9 @@ public class CombatHandler : MonoBehaviour
             _curUnit.isPlayerUnit = false;
             _curUnit.Setup();
             _curUnit.teamPosition = i;
-            enemyHUDs[i].SetData(_curUnit.Familiar);
-            enemyHUDs[i].Active(true);
+            _curUnit.Hud = enemyHUDs[i];
+            _curUnit.Hud.SetData(_curUnit.Familiar);
+            _curUnit.Hud.Active(true);
 
             enemyTeam[i] = _curUnit;
             Debug.Log("Enemy Initial -- Name: " + _curUnit.Familiar.Base.Name + " ID: " + _curUnit.Familiar.RandomID);
@@ -177,7 +178,7 @@ public class CombatHandler : MonoBehaviour
     #region State Shifters
     void FamiliarSelection()
     {
-        combatState = CombatState.PlayerSelection;
+        combatState = CombatState.FamiliarSelection;
 
         currentActionPosition = 0;
         currentAttackPosition = 0;
@@ -192,7 +193,7 @@ public class CombatHandler : MonoBehaviour
 
     void ActionSelection()
     {
-        combatState = CombatState.PlayerAction;
+        combatState = CombatState.ActionSelection;
 
         playerField.ClearTiles();
         enemyField.ClearTiles();
@@ -205,7 +206,7 @@ public class CombatHandler : MonoBehaviour
 
     void AttackSelection()
     {
-        combatState = CombatState.PlayerAttack;
+        combatState = CombatState.AttackSelection;
 
         currentAttack = null;
         currentAttackPreview = 0;
@@ -233,7 +234,7 @@ public class CombatHandler : MonoBehaviour
 
     void MoveSelection()
     {
-        combatState = CombatState.PlayerMove;
+        combatState = CombatState.MoveSelection;
 
         playerField.ClearTiles();
         enemyField.ClearTiles();
@@ -251,7 +252,7 @@ public class CombatHandler : MonoBehaviour
 
     void TargetSelection()
     {
-        combatState = CombatState.PlayerTargeting;
+        combatState = CombatState.TargetSelection;
 
         currentAttack = selectedFamiliar.Familiar.Attacks[currentAttackPosition];
 
@@ -292,7 +293,7 @@ public class CombatHandler : MonoBehaviour
 
     void EnemyAttack()
     {
-        combatState = CombatState.EnemyAttack;
+        combatState = CombatState.PerformAttack;
 
         playerField.ClearTiles();
         enemyField.ClearTiles();
@@ -305,19 +306,19 @@ public class CombatHandler : MonoBehaviour
     {
         switch (combatState)
         {
-            case CombatState.PlayerSelection:
+            case CombatState.FamiliarSelection:
                 HandlePlayerSelection();
                 break;
-            case CombatState.PlayerAction:
+            case CombatState.ActionSelection:
                 HandlePlayerAction();
                 break;
-            case CombatState.PlayerAttack:
+            case CombatState.AttackSelection:
                 HandlePlayerAttack();
                 break;
-            case CombatState.PlayerMove:
+            case CombatState.MoveSelection:
                 HandlePlayerMove();
                 break;
-            case CombatState.PlayerTargeting:
+            case CombatState.TargetSelection:
                 HandlePlayerTargeting();
                 break;
         }
@@ -366,9 +367,12 @@ public class CombatHandler : MonoBehaviour
             CombatUnit _combatUnit = playerField.GetTile(currentPosition).familiarOccupant;
             if (_combatUnit != null)
             {
-                selectedFamiliar = _combatUnit;
-                ActionSelection();
-            }
+                if (_combatUnit.Familiar.CanAct)
+                {
+                    selectedFamiliar = _combatUnit;
+                    ActionSelection();
+                }
+             }
         }
 
     }
@@ -683,7 +687,7 @@ public class CombatHandler : MonoBehaviour
 
     IEnumerator PlayerMoving()
     {
-        combatState = CombatState.Busy;
+        combatState = CombatState.PerformAttack;
 
         yield return dialogMenu.TypeDialog($"{selectedFamiliar.Familiar.Base.Name} has moved!");
 
@@ -701,42 +705,10 @@ public class CombatHandler : MonoBehaviour
 
     IEnumerator PlayerAttack()
     {
-        combatState = CombatState.Busy;
+        combatState = CombatState.PerformAttack;
 
         var attack = currentAttack;
-        yield return dialogMenu.TypeDialog($"{selectedFamiliar.Familiar.Base.Name} used {attack.Base.Name}");
-        PlayNoise(selectedFamiliar.Familiar.Base.AttackSound);
-
-        selectedFamiliar.PlayAttackAnimation();
-        yield return new WaitForSeconds(1f);
-
-        // Probably replace w/ PerformAttack() when adding multi-targetting (probably)
-        for (int i = 0; i < targets.Count; i++)
-        {
-            if (attack.Base.Category == AttackCategory.Status)
-            {
-                var effects = attack.Base.Effects;
-                if (effects.Boosts != null)
-                {
-                    targets[i].Familiar.ApplyBoosts(effects.Boosts);
-                }
-            }
-            else
-            {
-                var damageDetails = targets[i].Familiar.TakeDamage(attack, selectedFamiliar.Familiar);
-                targets[i].PlayHitAnimation();
-
-                PlayNoise(targets[i].Familiar.Base.AttackSound);
-                yield return enemyHUDs[targets[i].teamPosition].UpdateHP();
-                yield return ShowDamageDetails(damageDetails);
-            }
-            
-
-            if (targets[i].Familiar.HP <= 0)
-            {
-                yield return ResolveFainting(targets[i]);
-            }
-        }
+        yield return RunAttack(selectedFamiliar, targets, attack);
 
         actions--;
         yield return new WaitForSeconds(1f);
@@ -752,39 +724,24 @@ public class CombatHandler : MonoBehaviour
 
     IEnumerator PerformEnemyAttack()
     {
-        combatState = CombatState.EnemyAttack;
+        combatState = CombatState.PerformAttack;
 
         for (int i = 0; i < 3; i++)
         {
-            CombatUnit _enemyUnit = enemyTeam[UnityEngine.Random.Range(0, enemyTeam.Count)];
+            CombatUnit _enemyUnit = EnemyAI.Instance.FindUnit(enemyTeam, AILevel.Wild);//enemyTeam[UnityEngine.Random.Range(0, enemyTeam.Count)];
+
+            if (_enemyUnit == null)
+            {
+                break;
+            }
 
             // This is when we would have to verify a valid target, attack, and all that such AI decision making and stuff
             AttackAction action = EnemyAI.Instance.FindAttack(_enemyUnit, playerField, AILevel.Wild);
             Attack attack = action.Attack;
             if (attack != null)
             {
-                yield return dialogMenu.TypeDialog($"{_enemyUnit.Familiar.Base.Name} used {attack.Base.Name}");
-                PlayNoise(_enemyUnit.Familiar.Base.AttackSound);
-
-                _enemyUnit.PlayAttackAnimation();
-                yield return new WaitForSeconds(1f);
-
-                //CombatUnit _target = playerTeam[UnityEngine.Random.Range(0, 3)];
-                List<CombatUnit> _targets = action.Targets;
-
-                for (int j = 0; j < _targets.Count; j++)
-                {
-                    _targets[j].PlayHitAnimation();
-                    var damageDetails = _targets[j].Familiar.TakeDamage(attack, _enemyUnit.Familiar);
-                    PlayNoise(_targets[j].Familiar.Base.AttackSound);
-                    yield return playerHUDs[_targets[j].teamPosition].UpdateHP();
-                    yield return ShowDamageDetails(damageDetails);
-
-                    if (damageDetails.Fainted)
-                    {
-                        yield return ResolveFainting(_targets[j]);
-                    }
-                }
+                Debug.Log(action.Targets.Count);
+                yield return RunAttack(_enemyUnit, action.Targets, attack);
             }
             else
             {
@@ -793,8 +750,174 @@ public class CombatHandler : MonoBehaviour
             }
         }
 
-        actions = 3;
-        FamiliarSelection();
+        yield return EndOfTurn();
+    }
+
+    IEnumerator RunAttack(CombatUnit sourceUnit, List<CombatUnit> targetUnit, Attack attack)
+    {
+        bool canRunMove = sourceUnit.Familiar.OnBeforeAttack();
+        if (!canRunMove)
+        {
+            yield return ShowStatusChanges(sourceUnit.Familiar);
+            yield break;
+        }
+        yield return ShowStatusChanges(sourceUnit.Familiar);
+
+        yield return dialogMenu.TypeDialog($"{sourceUnit.Familiar.Base.Name} used {attack.Base.Name}");
+        PlayNoise(sourceUnit.Familiar.Base.AttackSound);
+
+        List<CombatUnit> hitTargets = CheckIfAttackHits(attack, sourceUnit, targetUnit);
+        if (hitTargets.Count > 0)
+        {
+            if (hitTargets.Count < targetUnit.Count)
+            {
+                yield return dialogMenu.TypeDialog($"Some targets dodged {sourceUnit.Familiar.Base.Name}'s attack.");
+            }
+            sourceUnit.PlayAttackAnimation();
+            yield return new WaitForSeconds(1f);
+
+            // Probably replace w/ PerformAttack() when adding multi-targetting (probably)
+            for (int i = 0; i < hitTargets.Count; i++)
+            {
+                if (attack.Base.Category == AttackCategory.Status)
+                {
+                    yield return RunAttackEffects(sourceUnit, hitTargets[i], attack.Base.Effects, attack.Base.Target);
+                }
+                else
+                {
+                    var damageDetails = hitTargets[i].Familiar.TakeDamage(attack, sourceUnit.Familiar);
+                    hitTargets[i].PlayHitAnimation();
+
+                    PlayNoise(hitTargets[i].Familiar.Base.AttackSound);
+                    yield return hitTargets[i].Hud.UpdateHP();
+                    yield return ShowDamageDetails(damageDetails);
+                }
+
+                if (attack.Base.Secondaries != null && attack.Base.Secondaries.Count > 0 && hitTargets[i].Familiar.HP > 0)
+                {
+                    foreach (var secondary in attack.Base.Secondaries)
+                    {
+                        var rnd = UnityEngine.Random.Range(1, 101);
+                        if (rnd <= secondary.Chance)
+                            yield return RunAttackEffects(sourceUnit, hitTargets[i], secondary, secondary.Target);
+                    }
+                }
+
+
+                if (targetUnit[i].Familiar.HP <= 0)
+                {
+                    yield return ResolveFainting(targetUnit[i]);
+                }
+            }
+        }
+        else
+        {
+            yield return dialogMenu.TypeDialog($"{sourceUnit.Familiar.Base.Name}'s attack missed.");
+        }
+
+        sourceUnit.Familiar.OnAfterAttack();
+        
+    }
+
+    IEnumerator RunAttackEffects(CombatUnit source, CombatUnit target, AttackEffects effects, AttackTarget attackTarget)
+    {
+        Debug.Log("[CombatHandler.cs/RunAttackEffects()] Running Attack Effects.");
+        // Stat Boosting
+        if (effects.Boosts != null)
+        {
+            target.Familiar.ApplyBoosts(effects.Boosts);
+        }
+
+        // Status Condition
+        if (effects.Status != ConditionID.none)
+        {
+            target.Familiar.SetStatus(effects.Status);
+        }
+
+        // Volatile Status Condition
+        if (effects.Status != ConditionID.none)
+        {
+            target.Familiar.SetVolatileStatus(effects.VolatileStatus);
+        }
+
+        if (effects.Movement != null)
+        {
+            Debug.Log("[CombatHandler.cs/RunAttackEffects()] Trying to push");
+            Field _field = playerField;
+            if (target.isPlayerUnit)
+                _field = playerField;
+            else if (!target.isPlayerUnit)
+                _field = enemyField;
+
+            Tile _t = target.GetCurrentTile(false);
+            // back 0
+            if (effects.Movement.direction == 0)
+            {
+                int cur = 1;
+                int max = effects.Movement.squares;
+                for (cur = 1; cur > max; cur++)
+                {
+                    Debug.Log("Checking " + cur + " behind.");
+                    if (_field.GetTile((target.x + cur) * 3 + target.y).familiarOccupant != null)
+                    {
+                        break;
+                    }
+                    _t = _field.GetTile((target.x + cur) * 3 + target.y);
+                }
+                
+            }
+
+            target.SetCurrentTile(_t);
+            //target.SetCurrentTile
+
+            // forward 2
+        }
+
+        yield return ShowStatusChanges(target.Familiar);
+    }
+
+    List<CombatUnit> CheckIfAttackHits(Attack attack, CombatUnit source, List<CombatUnit> target)
+    {
+        if (attack.Base.AlwaysHits)
+            return target;
+
+        List<CombatUnit> hitTargets = new List<CombatUnit>();
+
+        float moveAccuracy = attack.Base.Accuracy;
+
+        int accuracy = source.Familiar.StatBoosts[Stat.Accuracy];
+        int evasion;
+        var boostValues = new float[] { 1f, 4f / 3f, 5f / 3f, 2f, 7f / 3f, 8f / 3f, 3f };
+        for (int i = 0; i < target.Count; i++)
+        {
+            evasion = target[i].Familiar.StatBoosts[Stat.Evasion];
+
+            if (accuracy > 0)
+                moveAccuracy *= boostValues[accuracy];
+            else
+                moveAccuracy /= boostValues[-accuracy];
+
+            if (evasion > 0)
+                moveAccuracy /= boostValues[evasion];
+            else
+                moveAccuracy *= boostValues[-evasion];
+
+            if (UnityEngine.Random.Range(1, 101) <= moveAccuracy)
+            {
+                hitTargets.Add(target[i]);
+            }
+        }
+
+        return hitTargets;
+    }
+
+    IEnumerator ShowStatusChanges(Familiar familiar)
+    {
+        while (familiar.StatusChanges.Count > 0)
+        {
+            var message = familiar.StatusChanges.Dequeue();
+            yield return dialogMenu.TypeDialog(message);
+        }
     }
 
     IEnumerator ResolveFainting(CombatUnit unit)
@@ -815,19 +938,13 @@ public class CombatHandler : MonoBehaviour
                 playerTeam[i].teamPosition = i;
             }
 
-            Debug.Log(playerTeam.Count);
-            for (int i = 0; i < playerTeam.Count; i++)
-            {
-                Debug.Log("[CombatHandler.cs/ResolveFainting] " + playerTeam[i].Familiar.Base.Name + "-" + playerTeam[i].Familiar.RandomID + " position is " + playerTeam[i].teamPosition);
-            }
-
-            Debug.Log("Passed for loop.");
             for (int  i = 0; i < 3; i++)
             {
                 if (i < playerTeam.Count)
                 {
-                    playerHUDs[i].SetData(playerTeam[i].Familiar);
-                    playerHUDs[i].Active(true);
+                    playerTeam[i].Hud = playerHUDs[i];
+                    playerTeam[i].Hud.SetData(playerTeam[i].Familiar);
+                    playerTeam[i].Hud.Active(true);
                 }
                 else
                 {
@@ -846,19 +963,13 @@ public class CombatHandler : MonoBehaviour
                 enemyTeam[i].teamPosition = i;
             }
 
-            Debug.Log(enemyTeam.Count);
-            for (int i = 0; i < enemyTeam.Count; i++)
-            {
-                Debug.Log("[CombatHandler.cs/ResolveFainting] " + enemyTeam[i].Familiar.Base.Name + "-" + enemyTeam[i].Familiar.RandomID + " position is " + enemyTeam[i].teamPosition);
-            }
-            Debug.Log("Passed for loop.");
-
             for (int i = 0; i < 3; i++)
             {
                 if (i < enemyTeam.Count)
                 {
-                    enemyHUDs[i].SetData(enemyTeam[i].Familiar);
-                    enemyHUDs[i].Active(true);
+                    enemyTeam[i].Hud = enemyHUDs[i];
+                    enemyTeam[i].Hud.SetData(enemyTeam[i].Familiar);
+                    enemyTeam[i].Hud.Active(true);
                 }
                 else
                 {
@@ -885,16 +996,36 @@ public class CombatHandler : MonoBehaviour
 
     }
 
-    void PerformAttack(Attack attack, CombatUnit user, CombatUnit target)
+    IEnumerator EndOfTurn()
     {
-        CombatUnit[] _targets = new CombatUnit[1];
-        _targets[0] = target;
-        //PerformAttack(attack, user, _targets);
-    }
+        for (int i = 0; i < playerTeam.Count; i++)
+        {
+            playerTeam[i].Familiar.OnAfterTurn();
+            yield return ShowStatusChanges(playerTeam[i].Familiar);
+            yield return playerTeam[i].Hud.UpdateHP();
 
-    void PerformAttack(Attack attack, CombatUnit user, CombatUnit [] targets)
-    {
+            if (playerTeam[i].Familiar.HP <= 0)
+            {
+                yield return ResolveFainting(playerTeam[i]);
+            }
+        }
 
+        for (int i = 0; i < enemyTeam.Count; i++)
+        {
+            enemyTeam[i].Familiar.OnAfterTurn();
+            yield return ShowStatusChanges(enemyTeam[i].Familiar);
+            yield return enemyTeam[i].Hud.UpdateHP();
+
+            if (enemyTeam[i].Familiar.HP <= 0)
+            {
+                yield return ResolveFainting(enemyTeam[i]);
+            }
+        }
+
+        //playerTeam.ForEach(f => f.Familiar.OnAfterTurn());
+        //enemyTeam.ForEach(f => f.Familiar.OnAfterTurn());
+        actions = 3;
+        FamiliarSelection();
     }
     
     void PlayNoise(AudioClip audio)
@@ -906,7 +1037,7 @@ public class CombatHandler : MonoBehaviour
     IEnumerator AdvanceAttackPreview()
     {
         yield return new WaitForSeconds(1.2f);
-        if (combatState == CombatState.PlayerAttack)
+        if (combatState == CombatState.AttackSelection)
         {
             if (currentAttackPreview == maxAttackPreview)
             {
@@ -959,6 +1090,7 @@ public class CombatHandler : MonoBehaviour
     {
         if (playerTeam.Count <= 0)
         {
+            CurrentFamiliarsController.Instance.playerFamiliars.ForEach(f => f.OnBattleOver());
             OnBattleOver(false);
         }
         if (enemyTeam.Count <= 0)

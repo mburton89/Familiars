@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fa7157f267b68e4abb637a352e0c721, type: 3}
+  m_Name: Sickening Sweetness
+  m_EditorClassIdentifier: 
+  name: Sickening Sweetness
+  description: 
+  power: 0
+  magic: 0
+  accuracy: 100
+  alwaysHits: 0
+  range: 0
+  uses: 10
+  type: 10
+  targetOriginPosition: 4
+  sourceOriginPosition: 4
+  attackStyle: 1
+  category: 1
+  effects:
+    boosts: []
+    status: 1
+    volatileStatus: 0
+    movement:
+      direction: 0
+      squares: 0
+  secondaries: []
+  target: 0
+  relative: 0
+  sources: {fileID: 11400000, guid: fd75b55ab13b8ef4a801a9dc7f53d181, type: 2}
+  targets: {fileID: 11400000, guid: a4cc5d9ea8c858d4cb9bc1ea0af9bade, type: 2}
+  targetingReticle: {fileID: 11400000, guid: 66b91b76630576244962617c5d174294, type: 2}
+  sourceArray:
+  - {fileID: 11400000, guid: fd75b55ab13b8ef4a801a9dc7f53d181, type: 2}
+  targetArray:
+  - {fileID: 11400000, guid: a4cc5d9ea8c858d4cb9bc1ea0af9bade, type: 2}
+  targetingReticleArray:
+  - {fileID: 11400000, guid: 66b91b76630576244962617c5d174294, type: 2}
+  projectileOrigin: 1
+  eligibleOrigins: {fileID: 0}
+  direction: 0
+  upperX: 2
+  upperY: 2
+  lowerX: 0
+  lowerY: 0

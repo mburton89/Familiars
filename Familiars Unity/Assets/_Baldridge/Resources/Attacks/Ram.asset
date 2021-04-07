@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fa7157f267b68e4abb637a352e0c721, type: 3}
+  m_Name: Ram
+  m_EditorClassIdentifier: 
+  name: Ram
+  description: 
+  power: 2
+  magic: 0
+  accuracy: 100
+  alwaysHits: 0
+  range: 0
+  uses: 10
+  type: 8
+  targetOriginPosition: 4
+  sourceOriginPosition: 4
+  attackStyle: 2
+  category: 0
+  effects:
+    boosts: []
+    status: 0
+    volatileStatus: 0
+    movement:
+      direction: 0
+      squares: 1
+  secondaries: []
+  target: 0
+  relative: 0
+  sources: {fileID: 11400000, guid: 95377d7e29851fd4f9b00419fdcc25cb, type: 2}
+  targets: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
+  targetingReticle: {fileID: 11400000, guid: f7444362d5d79b44ea5d252db01e795d, type: 2}
+  sourceArray:
+  - {fileID: 11400000, guid: b7b9ef9b9e2c8274481625952fc383bc, type: 2}
+  - {fileID: 11400000, guid: 3c70aaceff02d8d488c6b6852e071712, type: 2}
+  - {fileID: 11400000, guid: ff9a6f11df69ff1439c2c6258da6b663, type: 2}
+  targetArray:
+  - {fileID: 11400000, guid: 4da85267f870137448a1fe4f1b55f3d0, type: 2}
+  - {fileID: 11400000, guid: f7444362d5d79b44ea5d252db01e795d, type: 2}
+  - {fileID: 11400000, guid: 258f79c9e21fb494d924a256012bec6b, type: 2}
+  targetingReticleArray:
+  - {fileID: 11400000, guid: 4da85267f870137448a1fe4f1b55f3d0, type: 2}
+  - {fileID: 11400000, guid: f7444362d5d79b44ea5d252db01e795d, type: 2}
+  - {fileID: 11400000, guid: 258f79c9e21fb494d924a256012bec6b, type: 2}
+  projectileOrigin: 1
+  eligibleOrigins: {fileID: 11400000, guid: 95377d7e29851fd4f9b00419fdcc25cb, type: 2}
+  direction: 0
+  upperX: 2
+  upperY: 2
+  lowerX: 0
+  lowerY: 0

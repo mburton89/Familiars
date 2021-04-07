@@ -111,7 +111,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8005578554979651552}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.97, y: 1.22, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.0625, y: 0.0625, z: 1}
   m_Children:
   - {fileID: 8005578553992988407}
@@ -202,12 +202,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 833f2743052e6064fa78337e4e9544f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  barrierLayer:
+    serializedVersion: 2
+    m_Bits: 256
   grassLayer:
     serializedVersion: 2
     m_Bits: 512
   dashLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   noEncounterPeriod: 2
 --- !u!114 &8619296074394305677
 MonoBehaviour:
@@ -225,6 +228,6 @@ MonoBehaviour:
   - _base: {fileID: 11400000, guid: 93c33f88a50dc9b4a9236f496730af85, type: 2}
     level: 10
   - _base: {fileID: 11400000, guid: 187b4ef4ed34dfc4db8f73921786b577, type: 2}
-    level: 6
+    level: 7
   - _base: {fileID: 11400000, guid: db0728033cce4a146800282e65d61b1b, type: 2}
     level: 7
