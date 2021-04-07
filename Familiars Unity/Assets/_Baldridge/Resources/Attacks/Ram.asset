@@ -30,6 +30,7 @@ MonoBehaviour:
     status: 0
     volatileStatus: 0
     movement:
+      move: 1
       direction: 0
       squares: 1
   secondaries: []

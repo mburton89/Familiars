@@ -59,14 +59,14 @@ public class BattleHUD : MonoBehaviour
 
     void SetStatusText()
     {
-        if (_familiar.Status == null)
-        {
-            statusText.text = "";
-        }
-        else
+        if (_familiar.Status?.Name == "Burn" || _familiar.Status?.Name == "Poison" || _familiar.Status?.Name == "Dazed")
         {
             statusText.text = _familiar.Status.Id.ToString().ToUpper();
             statusText.color = statusColors[_familiar.Status.Id];
+        }
+        else
+        {
+            statusText.text = "";
         }
     }
 
@@ -83,39 +83,4 @@ public class BattleHUD : MonoBehaviour
     {
         this.gameObject.SetActive(active);
     }
-
-    /*
-    public void Display(HUDDisplay display)
-    {
-        StartCoroutine(ShowHUD(display));
-    }
-
-    IEnumerator ShowHUD(HUDDisplay display)
-    {
-        float currentPos = rTransform.localPosition.y;
-        float newPos = hiddenY;
-        
-        switch (display)
-        {
-            case HUDDisplay.Hidden:
-                newPos = hiddenY;
-                break;
-            case HUDDisplay.Visible:
-                newPos = visibleY;
-                break;
-            case HUDDisplay.Active:
-                newPos = activeY;
-                break;
-        }
-        float changeAmt = currentPos - newPos;
-
-        while (currentPos - newPos > Mathf.Epsilon)
-        {
-            currentPos -= changeAmt * Time.deltaTime;
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x, currentPos);
-            yield return null;
-        }
-        gameObject.transform.position = new Vector3(gameObject.transform.position.x, newPos);
-    }
-    */
 }

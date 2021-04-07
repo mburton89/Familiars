@@ -835,12 +835,12 @@ public class CombatHandler : MonoBehaviour
         }
 
         // Volatile Status Condition
-        if (effects.Status != ConditionID.none)
+        if (effects.VolatileStatus != ConditionID.none)
         {
             target.Familiar.SetVolatileStatus(effects.VolatileStatus);
         }
 
-        if (effects.Movement != null)
+        if (effects.Movement.move)
         {
             Debug.Log("[CombatHandler.cs/RunAttackEffects()] Trying to push");
             Field _field = playerField;

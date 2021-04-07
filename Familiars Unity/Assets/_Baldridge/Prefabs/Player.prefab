@@ -225,9 +225,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   familiars:
-  - _base: {fileID: 11400000, guid: 93c33f88a50dc9b4a9236f496730af85, type: 2}
+  - _base: {fileID: 11400000, guid: 53f97e6397be28b41bbedd046ad33db4, type: 2}
     level: 10
+  - _base: {fileID: 11400000, guid: 80acf062e91162d498308be968d77859, type: 2}
+    level: 7
   - _base: {fileID: 11400000, guid: 187b4ef4ed34dfc4db8f73921786b577, type: 2}
-    level: 7
-  - _base: {fileID: 11400000, guid: db0728033cce4a146800282e65d61b1b, type: 2}
-    level: 7
+    level: 8

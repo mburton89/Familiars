@@ -270,6 +270,7 @@ public class StatBoost
 [System.Serializable]
 public class ForcedMovement
 {
+    public bool move; 
     public int direction;
     public int squares;
 }
