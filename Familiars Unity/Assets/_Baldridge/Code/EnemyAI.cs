@@ -231,10 +231,8 @@ public class EnemyAI : MonoBehaviour
                         }
                     }
 
-                    for (int i = 0; i < _targetSets.Count; i++)
-                    {
-                        _targets.Add(_targetSets[i][Random.Range(0, _targetSets[i].Count)]);
-                    }
+                    int _r = Random.Range(0, _targetSets.Count);
+                    _targets.Add(_targetSets[_r][Random.Range(0, _targetSets[_r].Count)]);
                     
                     break;
                 case AttackStyle.AreaStatic:
