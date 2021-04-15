@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fa7157f267b68e4abb637a352e0c721, type: 3}
-  m_Name: Erupt
+  m_Name: TauntingLaugher
   m_EditorClassIdentifier: 
-  name: Erupt
+  name: Taunting Laughter
   description: 
-  power: 1
-  magic: 4
+  power: 0
+  magic: 9
   accuracy: 100
   alwaysHits: 0
   range: 0
   uses: 10
-  type: 9
+  type: 11
   targetOriginPosition: 4
   sourceOriginPosition: 4
   attackStyle: 4
@@ -40,11 +40,17 @@ MonoBehaviour:
   targets: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
   targetingReticle: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
   sourceArray:
-  - {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
+  - {fileID: 11400000, guid: 4da85267f870137448a1fe4f1b55f3d0, type: 2}
+  - {fileID: 11400000, guid: f7444362d5d79b44ea5d252db01e795d, type: 2}
+  - {fileID: 11400000, guid: 258f79c9e21fb494d924a256012bec6b, type: 2}
   targetArray:
-  - {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
+  - {fileID: 11400000, guid: 4da85267f870137448a1fe4f1b55f3d0, type: 2}
+  - {fileID: 11400000, guid: f7444362d5d79b44ea5d252db01e795d, type: 2}
+  - {fileID: 11400000, guid: 258f79c9e21fb494d924a256012bec6b, type: 2}
   targetingReticleArray:
-  - {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
+  - {fileID: 11400000, guid: 4da85267f870137448a1fe4f1b55f3d0, type: 2}
+  - {fileID: 11400000, guid: f7444362d5d79b44ea5d252db01e795d, type: 2}
+  - {fileID: 11400000, guid: 258f79c9e21fb494d924a256012bec6b, type: 2}
   projectileOrigin: 1
   eligibleOrigins: {fileID: 0}
   direction: 0

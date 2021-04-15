@@ -25,4 +25,12 @@ MonoBehaviour:
   movement: 0
   attackSound: {fileID: 0}
   injuredSound: {fileID: 0}
-  learnableAttacks: []
+  learnableAttacks:
+  - attackBase: {fileID: 11400000, guid: 831aff259c70bf8499b0c695294cdb78, type: 2}
+    level: 10
+  - attackBase: {fileID: 11400000, guid: eed35f02a71151345a6ef9b84bb38b22, type: 2}
+    level: 15
+  - attackBase: {fileID: 11400000, guid: 8874cf4523cde244488c712c2c33b408, type: 2}
+    level: 0
+  - attackBase: {fileID: 11400000, guid: 0dff9373be1ca494fa82071a270c718a, type: 2}
+    level: 5

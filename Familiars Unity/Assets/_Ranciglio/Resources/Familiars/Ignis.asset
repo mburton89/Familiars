@@ -26,11 +26,11 @@ MonoBehaviour:
   attackSound: {fileID: 0}
   injuredSound: {fileID: 0}
   learnableAttacks:
-  - attackBase: {fileID: 11400000, guid: bc3d50a6614e7ff4e8fbfd90e5edc0f4, type: 2}
-    level: 0
-  - attackBase: {fileID: 11400000, guid: d7c7c9be84c55a94da46bc123e5630d2, type: 2}
-    level: 0
-  - attackBase: {fileID: 11400000, guid: 80fd6e66fbeedd242ba78aa8daaa35d3, type: 2}
-    level: 0
-  - attackBase: {fileID: 0}
+  - attackBase: {fileID: 11400000, guid: caea158b297d3ed45a8d12b744827152, type: 2}
+    level: 4
+  - attackBase: {fileID: 11400000, guid: 0cd80e9458e9f9843810dee8f0605dbf, type: 2}
+    level: 9
+  - attackBase: {fileID: 11400000, guid: 95ea5f2923210344996f10f96e3decc9, type: 2}
+    level: 14
+  - attackBase: {fileID: 11400000, guid: c0b406df85033564090d7984062193d8, type: 2}
     level: 0
