@@ -107,6 +107,11 @@ public class CharacterController : MonoBehaviour
         }
     }
 
+    public void SetPosition(Vector3 position)
+    {
+        this.gameObject.transform.position = position;
+    }
+
     public void SetEncounterCooldown()
     {
         noEncounter = true;

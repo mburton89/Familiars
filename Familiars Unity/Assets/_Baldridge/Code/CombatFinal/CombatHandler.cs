@@ -365,6 +365,10 @@ public class CombatHandler : MonoBehaviour
                 //AttackSelection();
                 FamiliarSelection();
             }
+            if (currentActionPosition == 3)
+            {
+                OnBattleOver(true);
+            }
         }
     }
 
