@@ -102,8 +102,8 @@ public class CharacterController : MonoBehaviour
     {
         if (!noEncounter)
         {
-            //if (Physics2D.OverlapCircle(transform.position, 0.2f, grassLayer) != null)
-            //{
+            if (inGrass)
+            {
                 Debug.Log("Grass");
                 if (UnityEngine.Random.Range(1, 101) <= 5)
                 {
@@ -112,7 +112,7 @@ public class CharacterController : MonoBehaviour
                         OnEncountered();
                     }
                 }
-            //}
+            }
         }
     }
 
