@@ -19,6 +19,7 @@ public class CharacterController : MonoBehaviour
     private bool isDashButtonDown;
 
     [SerializeField] float noEncounterPeriod = 2f;
+    bool inGrass = false;
     bool noEncounter;
 
     [HideInInspector] public PlayerState state = PlayerState.Normal;
@@ -101,8 +102,9 @@ public class CharacterController : MonoBehaviour
     {
         if (!noEncounter)
         {
-            if (Physics2D.OverlapCircle(transform.position, 0.2f, grassLayer) != null)
-            {
+            //if (Physics2D.OverlapCircle(transform.position, 0.2f, grassLayer) != null)
+            //{
+                Debug.Log("Grass");
                 if (UnityEngine.Random.Range(1, 101) <= 5)
                 {
                     if (OnEncountered != null)
@@ -110,8 +112,13 @@ public class CharacterController : MonoBehaviour
                         OnEncountered();
                     }
                 }
-            }
+            //}
         }
+    }
+
+    public void SetPosition(Vector3 position)
+    {
+        this.gameObject.transform.position = position;
     }
 
     public void SetEncounterCooldown()
@@ -125,5 +132,21 @@ public class CharacterController : MonoBehaviour
     {
         yield return new WaitForSeconds(noEncounterPeriod);
         noEncounter = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Grass")
+        {
+            inGrass = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "Grass")
+        {
+            inGrass = false;
+        }
     }
 }

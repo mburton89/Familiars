@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum CombatState { Start, FamiliarSelection, ActionSelection, AttackSelection, MoveSelection, TargetSelection, PerformAttack, Busy }
+public enum CombatState { Start, ActionSelection, FamiliarSelection, AttackSelection, MoveSelection, TargetSelection, PerformAttack, Busy }
 
 public class CombatHandler : MonoBehaviour
 {
@@ -172,7 +172,7 @@ public class CombatHandler : MonoBehaviour
         playerField.GatherNeighbors();
         enemyField.GatherNeighbors();
 
-        FamiliarSelection();
+        ActionSelection();
     }
 
     #region State Shifters
@@ -180,7 +180,7 @@ public class CombatHandler : MonoBehaviour
     {
         combatState = CombatState.FamiliarSelection;
 
-        currentActionPosition = 0;
+        //currentActionPosition = 0;
         currentAttackPosition = 0;
         currentAttack = null;
         selectedFamiliar = null;
@@ -188,7 +188,18 @@ public class CombatHandler : MonoBehaviour
         playerField.ClearTiles();
         enemyField.ClearTiles();
 
+        dialogMenu.EnableDialogText(true);
         dialogMenu.EnableActionSelector(false);
+        dialogMenu.EnableAttackSelector(false);
+
+        if (currentActionPosition == 0)
+        {
+            dialogMenu.SetDialog("Select a familiar to attack with.");
+        }
+        else if (currentActionPosition == 1)
+        {
+            dialogMenu.SetDialog("Select a familiar to move.");
+        }
     }
 
     void ActionSelection()
@@ -212,6 +223,7 @@ public class CombatHandler : MonoBehaviour
         currentAttackPreview = 0;
         maxAttackPreview = 0;
 
+        dialogMenu.EnableDialogText(false);
         dialogMenu.EnableActionSelector(false);
         dialogMenu.EnableAttackSelector(true);
 
@@ -242,6 +254,8 @@ public class CombatHandler : MonoBehaviour
         dialogMenu.EnableActionSelector(false);
         dialogMenu.EnableDialogText(true);
 
+        dialogMenu.SetDialog($"Select a blue tile to move {selectedFamiliar.Familiar.Base.Name} to.");
+        
         selectedFamiliar.SetCurrentTile(playerField.GetTile(currentPosition));
         List<Tile> _t = selectedFamiliar.FindSelectableTiles(TileState.Move, selectedFamiliar.Familiar.Base.Movement);
         for (int i = 0; i < _t.Count; i++)
@@ -306,11 +320,11 @@ public class CombatHandler : MonoBehaviour
     {
         switch (combatState)
         {
-            case CombatState.FamiliarSelection:
-                HandlePlayerSelection();
-                break;
             case CombatState.ActionSelection:
                 HandlePlayerAction();
+                break;
+            case CombatState.FamiliarSelection:
+                HandlePlayerSelection();
                 break;
             case CombatState.AttackSelection:
                 HandlePlayerAttack();
@@ -325,6 +339,39 @@ public class CombatHandler : MonoBehaviour
     }
 
     #region Update Handlers
+
+    void HandlePlayerAction()
+    {
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            if (currentActionPosition < 3)
+                ++currentActionPosition;
+
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            if (currentActionPosition > 0)
+                --currentActionPosition;
+        }
+
+        dialogMenu.UpdateActionSelection(currentActionPosition);
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            if (currentActionPosition == 0 || currentActionPosition == 1)
+            {
+                // Fight
+                //dialogMenu.SetAttackNames(selectedFamiliar.Familiar.Attacks);
+                //AttackSelection();
+                FamiliarSelection();
+            }
+            if (currentActionPosition == 3)
+            {
+                OnBattleOver(true);
+            }
+        }
+    }
+
     void HandlePlayerSelection()
     {
         #region Navigation
@@ -370,48 +417,25 @@ public class CombatHandler : MonoBehaviour
                 if (_combatUnit.Familiar.CanAct)
                 {
                     selectedFamiliar = _combatUnit;
-                    ActionSelection();
+                    if (currentActionPosition == 0)
+                    {
+                        dialogMenu.SetAttackNames(selectedFamiliar.Familiar.Attacks);
+                        AttackSelection();
+                    }
+                    else if (currentActionPosition == 1)
+                    {
+                        MoveSelection();
+                    }
+                    //ActionSelection();
                 }
              }
         }
 
-    }
-
-    void HandlePlayerAction()
-    {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            if (currentActionPosition < 3)
-                ++currentActionPosition;
-
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            if (currentActionPosition > 0)
-                --currentActionPosition;
-        }
-
-        dialogMenu.UpdateActionSelection(currentActionPosition);
-
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            if (currentActionPosition == 0)
-            {
-                // Fight
-                dialogMenu.SetAttackNames(selectedFamiliar.Familiar.Attacks);
-                AttackSelection();
-            }
-            else if (currentActionPosition == 1)
-            {
-                // Move
-                MoveSelection();
-            }
-        }
-
         if (Input.GetKeyDown(KeyCode.X))
         {
-            FamiliarSelection();
+            ActionSelection();
         }
+
     }
 
     void HandlePlayerAttack()
@@ -451,7 +475,7 @@ public class CombatHandler : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.X))
         {
-            ActionSelection();
+            FamiliarSelection();
         }
     }
 
@@ -542,14 +566,6 @@ public class CombatHandler : MonoBehaviour
             switch (currentAttack.Base.AttackStyle)
             {
                 case AttackStyle.Target:
-                    if(currentField == playerField)
-                    {
-                        Debug.Log("[CombatHandler.cs/HandlePlayerTargeting()] It's the player field");
-                    }
-                    else if (currentField == enemyField)
-                    {
-                        Debug.Log("[CombatHandler.cs/HandlePlayerTargeting()] It's the enemy field");
-                    }
                     if (currentField.GetTile(currentTargetPosition).familiarOccupant != null && currentAttack.Base.Targets.Active[currentTargetPosition])
                     {
                         targets.Add(currentField.GetTile(currentTargetPosition).familiarOccupant);
@@ -611,7 +627,7 @@ public class CombatHandler : MonoBehaviour
                 case AttackStyle.AreaStatic:
                     for (int i = 0; i < 9; i++)
                     {
-                        if (currentField.GetTile(i).familiarOccupant != null && currentAttack.Base.Targets.Active[i])
+                        if (currentField.GetTile(i).familiarOccupant != null && currentAttack.Base.TargetArray[currentAttackPreview].Active[i])
                         {
                             valid = true;
                             targets.Add(currentField.GetTile(i).familiarOccupant);
@@ -680,7 +696,7 @@ public class CombatHandler : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.X))
         {
-            ActionSelection();
+            FamiliarSelection();
         }
     }
     #endregion
@@ -695,7 +711,7 @@ public class CombatHandler : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         if (actions > 0)
         {
-            FamiliarSelection();
+            ActionSelection();
         }
         else
         {
@@ -714,7 +730,7 @@ public class CombatHandler : MonoBehaviour
         yield return new WaitForSeconds(1f);
         if (actions > 0)
         {
-            FamiliarSelection();
+            ActionSelection();
         }
         else
         {
@@ -822,6 +838,8 @@ public class CombatHandler : MonoBehaviour
     IEnumerator RunAttackEffects(CombatUnit source, CombatUnit target, AttackEffects effects, AttackTarget attackTarget)
     {
         Debug.Log("[CombatHandler.cs/RunAttackEffects()] Running Attack Effects.");
+
+        
         // Stat Boosting
         if (effects.Boosts != null)
         {
@@ -839,10 +857,9 @@ public class CombatHandler : MonoBehaviour
         {
             target.Familiar.SetVolatileStatus(effects.VolatileStatus);
         }
-
+        
         if (effects.Movement.move)
         {
-            Debug.Log("[CombatHandler.cs/RunAttackEffects()] Trying to push");
             Field _field = playerField;
             if (target.isPlayerUnit)
                 _field = playerField;
@@ -854,10 +871,9 @@ public class CombatHandler : MonoBehaviour
             if (effects.Movement.direction == 0)
             {
                 int cur = 1;
-                int max = effects.Movement.squares;
-                for (cur = 1; cur > max; cur++)
+                int max = effects.Movement.squares + 1;
+                for (cur = 1; cur < max; cur++)
                 {
-                    Debug.Log("Checking " + cur + " behind.");
                     if (_field.GetTile((target.x + cur) * 3 + target.y).familiarOccupant != null)
                     {
                         break;
@@ -1025,7 +1041,7 @@ public class CombatHandler : MonoBehaviour
         //playerTeam.ForEach(f => f.Familiar.OnAfterTurn());
         //enemyTeam.ForEach(f => f.Familiar.OnAfterTurn());
         actions = 3;
-        FamiliarSelection();
+        ActionSelection();
     }
     
     void PlayNoise(AudioClip audio)
