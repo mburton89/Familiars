@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PlayerState { Normal, Interacting }
 public class CharacterController : MonoBehaviour
 {
     private const float MOVE_SPEED = 6f;
@@ -19,6 +20,8 @@ public class CharacterController : MonoBehaviour
 
     [SerializeField] float noEncounterPeriod = 2f;
     bool noEncounter;
+
+    [HideInInspector] public PlayerState state = PlayerState.Normal;
 
     private void Awake()
     {
@@ -64,26 +67,33 @@ public class CharacterController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rigidbody2D.velocity = moveDir * MOVE_SPEED;
-
-        if(isDashButtonDown)
+        if (state == PlayerState.Normal)
         {
-            float dashAmount = 4f;
-            Vector3 dashPosition = transform.position + moveDir * dashAmount;
+            rigidbody2D.velocity = moveDir * MOVE_SPEED;
 
-            RaycastHit2D raycastHit2d = Physics2D.Raycast(transform.position, moveDir, dashAmount, dashLayerMask);
-            if(raycastHit2d.collider != null)
+            if (isDashButtonDown)
             {
-                dashPosition = raycastHit2d.point;
+                float dashAmount = 4f;
+                Vector3 dashPosition = transform.position + moveDir * dashAmount;
+
+                RaycastHit2D raycastHit2d = Physics2D.Raycast(transform.position, moveDir, dashAmount, dashLayerMask);
+                if (raycastHit2d.collider != null)
+                {
+                    dashPosition = raycastHit2d.point;
+                }
+
+                rigidbody2D.MovePosition(dashPosition);
+                isDashButtonDown = false;
             }
 
-            rigidbody2D.MovePosition(dashPosition);
-            isDashButtonDown = false;
+            if (rigidbody2D.velocity.magnitude > 0)
+            {
+                CheckForEncounters();
+            }
         }
-
-        if (rigidbody2D.velocity.magnitude > 0)
+        else if (state == PlayerState.Interacting)
         {
-            CheckForEncounters();
+            rigidbody2D.velocity = new Vector2(0, 0);
         }
     }
 

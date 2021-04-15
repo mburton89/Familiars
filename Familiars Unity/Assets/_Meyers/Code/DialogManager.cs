@@ -25,11 +25,14 @@ public class DialogManager : MonoBehaviour
     int currentLine = 0;
     bool isTyping;
 
+    GameObject player;
+
     public bool IsShowing { get; private set; }
 
-    public IEnumerator ShowDialog(Dialog dialog, Action onFinished=null)
+    public IEnumerator ShowDialog(Dialog dialog, GameObject player, Action onFinished=null)
     {
         yield return new WaitForEndOfFrame();
+        this.player = player;
 
         OnShowDialog?.Invoke();
 
@@ -39,6 +42,11 @@ public class DialogManager : MonoBehaviour
 
         dialogBox.SetActive(true);
         StartCoroutine(TypeDialog(dialog.Lines[0]));
+    }
+
+    void Update()
+    {
+        HandleUpdate();
     }
 
     public void HandleUpdate()
@@ -57,6 +65,7 @@ public class DialogManager : MonoBehaviour
                 dialogBox.SetActive(false);
                 onDialogFinished?.Invoke();
                 OnCloseDialog?.Invoke();
+                player.GetComponent<CharacterController>().state = PlayerState.Normal;
             }
         }
     }
