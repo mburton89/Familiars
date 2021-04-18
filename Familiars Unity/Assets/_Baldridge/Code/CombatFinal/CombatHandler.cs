@@ -94,8 +94,8 @@ public class CombatHandler : MonoBehaviour
         int _x, _y, iteration;
 
         List<Familiar> _aliveParty = CurrentFamiliarsController.Instance.GetHealthyFamiliars(CurrentFamiliarsController.Instance.playerFamiliars);
-        float _count = (float)_aliveParty.Count;
-        for (int i = 0; i < Mathf.Min(3f, _count); i++)
+        int _count = _aliveParty.Count;
+        for (int i = 0; i < Mathf.Min(3, _count); i++)
         {
             _fam = Instantiate(combatUnitPrefab, canvas.gameObject.transform);
             _curUnit = _fam.GetComponent<CombatUnit>();
@@ -127,13 +127,13 @@ public class CombatHandler : MonoBehaviour
             _curUnit.Hud.SetData(_curUnit.Familiar);
             _curUnit.Hud.Active(true);
 
-            playerTeam[i] = _curUnit;
+            playerTeam.Add(_curUnit);
             Debug.Log("Player Initial -- Name: " + _curUnit.Familiar.Base.Name + " ID: " + _curUnit.Familiar.RandomID);
             //playerTeam.Add(_curUnit);
         }
 
-        _count = (float)enemyTeam.Count;
-        for (int i = 0; i < Mathf.Min(3f, _count); i++)
+        _count = CurrentFamiliarsController.Instance.enemyFamiliars.Count;
+        for (int i = 0; i < Mathf.Min(3, _count); i++)
         {
             _fam = Instantiate(combatUnitPrefab, canvas.gameObject.transform);
             _curUnit = _fam.GetComponent<CombatUnit>();
@@ -164,7 +164,7 @@ public class CombatHandler : MonoBehaviour
             _curUnit.Hud.SetData(_curUnit.Familiar);
             _curUnit.Hud.Active(true);
 
-            enemyTeam[i] = _curUnit;
+            enemyTeam.Add(_curUnit);
             Debug.Log("Enemy Initial -- Name: " + _curUnit.Familiar.Base.Name + " ID: " + _curUnit.Familiar.RandomID);
             //enemyTeam.Add(_curUnit);
         }

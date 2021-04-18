@@ -4700,11 +4700,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1669771678718885548, guid: a9900b1ca1571034790dd1a5557d1215, type: 3}
       propertyPath: playerTeam.Array.size
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1669771678718885548, guid: a9900b1ca1571034790dd1a5557d1215, type: 3}
       propertyPath: enemyTeam.Array.size
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1669771678718885548, guid: a9900b1ca1571034790dd1a5557d1215, type: 3}
       propertyPath: playerHUDs.Array.size
@@ -6980,7 +6980,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1459745536}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &1459745538
 Camera:
   m_ObjectHideFlags: 0

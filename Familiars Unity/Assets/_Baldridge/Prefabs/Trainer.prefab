@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8591477060870647080}
   - component: {fileID: 8591477060870647081}
-  - component: {fileID: 8591477060870647082}
   - component: {fileID: 8591477060870647083}
   - component: {fileID: 7655935098066457025}
+  - component: {fileID: 4751449325874933396}
   m_Layer: 0
   m_Name: Trainer
   m_TagString: Untagged
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.990566, g: 0.6485404, b: 0.66859335, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -85,20 +85,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8591477060870647082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8591477060870647060}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a688d81d6854e634d87ae43dfb0546aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dialog:
-    lines: []
 --- !u!58 &8591477060870647083
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -128,3 +114,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   familiars: []
+--- !u!114 &4751449325874933396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8591477060870647060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 874717dd579e3f24684dd29a7715ac19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

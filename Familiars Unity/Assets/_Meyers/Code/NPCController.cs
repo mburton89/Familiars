@@ -4,35 +4,24 @@ using UnityEngine;
 
 public class NPCController : MonoBehaviour
 {
-    [SerializeField] Dialog dialog;
-    [SerializeField] Dialog battleCompleteDialog;
+    [SerializeField] protected Dialog dialog;
 
-    NPCState state;
-    float idleTimer = 0f;
-    int currentPattern = 0;
 
-    bool interactable;
-    CharacterController player;
+    protected NPCState state;
+    protected float idleTimer = 0f;
+    protected int currentPattern = 0;
 
-    // Trainer stuff
+    protected bool interactable;
+    protected CharacterController player;
 
-    FamiliarParty familiarParty;
-    bool trainer;
-    [HideInInspector] public bool completeBattle; 
+
 
     void Awake()
     {
         state = NPCState.Idle;
-
-        familiarParty = gameObject.GetComponent<FamiliarParty>();
-        if (familiarParty != null)
-        {
-            trainer = true;
-            Debug.Log("There be trainers here!");
-        }
     }
 
-    private void Update()
+    protected void Update()
     {
         if (interactable && Input.GetKeyDown(KeyCode.Z) && player.state == PlayerState.Normal)
         {
@@ -48,35 +37,11 @@ public class NPCController : MonoBehaviour
             state = NPCState.Dialog;
             //GameController.Instance.LookTowards(initiator.position);
 
-            if (trainer)
+            StartCoroutine(DialogManager.Instance.ShowDialog(dialog, player, () =>
             {
-                if (!completeBattle)
-                {
-                    StartCoroutine(DialogManager.Instance.ShowDialog(dialog, player, () =>
-                    {
-                        idleTimer = 0f;
-                        state = NPCState.Idle;
-                        GameController.Instance.StartTrainerBattle(familiarParty.familiars, this);
-                    }));
-                }
-                else
-                {
-                    StartCoroutine(DialogManager.Instance.ShowDialog(battleCompleteDialog, player, () =>
-                    {
-                        idleTimer = 0f;
-                        state = NPCState.Idle;
-                    }));
-                }
-                
-            }
-            else
-            {
-                StartCoroutine(DialogManager.Instance.ShowDialog(dialog, player, () =>
-                {
-                    idleTimer = 0f;
-                    state = NPCState.Idle;
-                }));
-            }
+                idleTimer = 0f;
+                state = NPCState.Idle;
+            }));
         }
     }
 
@@ -86,14 +51,10 @@ public class NPCController : MonoBehaviour
         {
             player = other.gameObject.GetComponent<CharacterController>();
             interactable = true;
-            if (trainer && !completeBattle)
-            {
-                Interact(player.gameObject);
-            }
         }
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    protected void OnTriggerExit2D(Collider2D other)
     {
         if (other.tag == "Player")
         {
