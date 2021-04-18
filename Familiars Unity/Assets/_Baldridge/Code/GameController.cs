@@ -49,9 +49,21 @@ public class GameController : MonoBehaviour
         CurrentFamiliarsController.Instance.UpdateEnemyFamiliars(wildFamiliars);
         playerPosition = playerController.gameObject.transform.position;
         
-        SceneManager.LoadScene(battleScreen);
+        SceneManager.LoadSceneAsync(battleScreen);
 
         player.SetActive(false);
+    }
+
+    public void StartTrainerBattle(List<Familiar> trainerFamiliars)
+    {
+        state = GameState.Battle;
+
+        var playerParty = PlayerParty.Instance;
+        CurrentFamiliarsController.Instance.UpdateEnemyFamiliars(trainerFamiliars);
+
+        playerPosition = playerController.gameObject.transform.position;
+        
+        SceneManager.LoadSceneAsync(battleScreen);
     }
 
     void EndBattle(bool win)
@@ -59,7 +71,7 @@ public class GameController : MonoBehaviour
         // we're just basically gonna assume a victory for now since other wise would need you to go back to one of those stations
         state = GameState.FreeRoam;
 
-        SceneManager.LoadScene(worldScreen);
+        SceneManager.LoadSceneAsync(worldScreen);
         player.SetActive(true);
         playerController.SetEncounterCooldown();
     }
@@ -71,7 +83,7 @@ public class GameController : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene(worldScreen);
+        SceneManager.LoadSceneAsync(worldScreen);
         player = Instantiate(playerPrefab, new Vector3(0, 0, 1), Quaternion.identity);
         GameObject _p = GameObject.Find("Player");
         if (_p != null)
