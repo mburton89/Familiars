@@ -4,19 +4,34 @@ using UnityEngine;
 
 public class NPCController : MonoBehaviour
 {
-    [SerializeField] Dialog dialog;
+    [SerializeField] protected Dialog dialog;
 
-    NPCState state;
-    float idleTimer = 0f;
-    int currentPattern = 0;
+
+    protected NPCState state;
+    protected float idleTimer = 0f;
+    protected int currentPattern = 0;
+
+    protected bool interactable;
+    protected CharacterController player;
+
+
 
     void Awake()
     {
         state = NPCState.Idle;
     }
 
+    protected void Update()
+    {
+        if (interactable && Input.GetKeyDown(KeyCode.Z) && player.state == PlayerState.Normal)
+        {
+            Interact(player.gameObject);
+        }
+    }
+
     public void Interact(GameObject player)
     {
+        this.player.state = PlayerState.Interacting;
         if (state == NPCState.Idle)
         {
             state = NPCState.Dialog;
@@ -32,14 +47,21 @@ public class NPCController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        
         if (other.tag == "Player")
         {
-            other.gameObject.GetComponent<CharacterController>().state = PlayerState.Interacting;
-            Interact(other.gameObject);
+            player = other.gameObject.GetComponent<CharacterController>();
+            interactable = true;
         }
     }
 
+    protected void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.tag == "Player")
+        {
+            player = null;
+            interactable = false;
+        }
+    }
 }
 
 public enum NPCState {Dialog, Idle }

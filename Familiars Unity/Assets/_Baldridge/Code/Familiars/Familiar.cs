@@ -205,7 +205,7 @@ public class Familiar
         float mod = Random.Range(0.8f, 1f);
         float d = ((attack.Base.Power + attacker.Attack) - Defense) + (((attack.Base.Magic + attacker.SpAttack) - SpDefense) * type);
 
-        Debug.Log("[Familiar.cs/TakeDamage()] Damage: " + d);
+        //Debug.Log("[Familiar.cs/TakeDamage()] Damage: " + d);
 
         var damageDetails = new DamageDetails()
         {
@@ -214,7 +214,7 @@ public class Familiar
             Fainted = false
         };
         
-        int damage = Mathf.FloorToInt(d * mod);
+        int damage = Mathf.FloorToInt((d * mod) * 2f);
         UpdateHP(damage);
 
         return damageDetails;

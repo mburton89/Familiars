@@ -51,21 +51,25 @@ public class DialogManager : MonoBehaviour
 
     public void HandleUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.Z) && !isTyping)
+        if (IsShowing)
         {
-            ++currentLine;
-            if (currentLine < dialog.Lines.Count)
+            if (Input.GetKeyDown(KeyCode.Z) && !isTyping)
             {
-                StartCoroutine(TypeDialog(dialog.Lines[currentLine]));
-            }
-            else
-            {
-                currentLine = 0;
-                IsShowing = false;
-                dialogBox.SetActive(false);
-                onDialogFinished?.Invoke();
-                OnCloseDialog?.Invoke();
-                player.GetComponent<CharacterController>().state = PlayerState.Normal;
+                ++currentLine;
+                if (currentLine < dialog.Lines.Count)
+                {
+                    StartCoroutine(TypeDialog(dialog.Lines[currentLine]));
+                }
+                else
+                {
+                    currentLine = 0;
+                    IsShowing = false;
+                    Debug.Log("[DialogManager.cs] Dialog Finished");
+                    dialogBox.SetActive(false);
+                    onDialogFinished?.Invoke();
+                    OnCloseDialog?.Invoke();
+                    player.GetComponent<CharacterController>().state = PlayerState.Normal;
+                }
             }
         }
     }
@@ -81,4 +85,15 @@ public class DialogManager : MonoBehaviour
         }
         isTyping = false;
     }
+
+    /*
+    public void StartBattle(FamiliarParty fParty)
+    {
+        Debug.Log("[DialogManager.cs] Starting Battle After Dialog");
+        onDialogFinished = () =>
+        {
+            Debug.Log("[DialogManager.cs] Dialog Finished, in onDialogFinished Check");
+            GameController.Instance.StartTrainerBattle(fParty.familiars);
+        };
+    }*/
 }

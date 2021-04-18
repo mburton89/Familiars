@@ -14,6 +14,7 @@ public class GameController : MonoBehaviour
     GameObject player;
 
     CharacterController playerController;
+    int currentNPC = -1;
 
     GameState state;
     Vector3 playerPosition;
@@ -49,9 +50,23 @@ public class GameController : MonoBehaviour
         CurrentFamiliarsController.Instance.UpdateEnemyFamiliars(wildFamiliars);
         playerPosition = playerController.gameObject.transform.position;
         
-        SceneManager.LoadScene(battleScreen);
+        SceneManager.LoadSceneAsync(battleScreen);
 
         player.SetActive(false);
+    }
+
+    public void StartTrainerBattle(List<Familiar> trainerFamiliars, TrainerController trainer)
+    {
+        state = GameState.Battle;
+
+        var playerParty = PlayerParty.Instance;
+        CurrentFamiliarsController.Instance.UpdateEnemyFamiliars(trainerFamiliars);
+
+        playerPosition = playerController.gameObject.transform.position;
+        currentNPC = trainer.GetTrainerID();
+        Debug.Log("[GameController.cs/StartTrainerBattle()] currentNPC = " + currentNPC);
+        Debug.Log("[GameController.cs] currentNPC ID = " + currentNPC);
+        SceneManager.LoadSceneAsync(battleScreen);
     }
 
     void EndBattle(bool win)
@@ -59,7 +74,22 @@ public class GameController : MonoBehaviour
         // we're just basically gonna assume a victory for now since other wise would need you to go back to one of those stations
         state = GameState.FreeRoam;
 
-        SceneManager.LoadScene(worldScreen);
+        Debug.Log("[GameController.cs/EndBattle():1] currentNPC = " + currentNPC);
+        Debug.Log("[GameController.cs] " + win);
+        if (win)
+        {
+            Debug.Log("[GameController.cs/EndBattle():2] currentNPC = " + currentNPC);
+            if (currentNPC != -1)
+            {
+                Debug.Log("[GameController.cs] currentNPC not null, setting TrainerFlag");
+                FlagManager.Instance.SetTrainerFlag(currentNPC, true);
+                currentNPC = -1;
+            }
+        }
+        Debug.Log("[GameController.cs/EndBattle():3] currentNPC = " + currentNPC);
+
+        SceneManager.LoadSceneAsync(worldScreen);
+
         player.SetActive(true);
         playerController.SetEncounterCooldown();
     }
@@ -71,7 +101,7 @@ public class GameController : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene(worldScreen);
+        SceneManager.LoadSceneAsync(worldScreen);
         player = Instantiate(playerPrefab, new Vector3(0, 0, 1), Quaternion.identity);
         GameObject _p = GameObject.Find("Player");
         if (_p != null)
@@ -94,6 +124,7 @@ public class GameController : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        Debug.Log("[GameController.cs/OnSceneLoaded()] currentNPC = " + currentNPC);
         if (IsWorldScene(scene.buildIndex))
         {
             GameObject _p = GameObject.Find("Player");
@@ -101,7 +132,6 @@ public class GameController : MonoBehaviour
             {
                 //_p.transform.position = new Vector3(10, 10, 1);
             }
-
         }
     }
 
@@ -112,5 +142,10 @@ public class GameController : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void PrintNPC()
+    {
+        Debug.Log("[GameController.cs/PrintNPC()] currentNPC = " + currentNPC);
     }
 }
