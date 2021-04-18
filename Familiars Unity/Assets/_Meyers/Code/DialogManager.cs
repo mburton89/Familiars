@@ -86,6 +86,7 @@ public class DialogManager : MonoBehaviour
         isTyping = false;
     }
 
+    /*
     public void StartBattle(FamiliarParty fParty)
     {
         Debug.Log("[DialogManager.cs] Starting Battle After Dialog");
@@ -94,5 +95,5 @@ public class DialogManager : MonoBehaviour
             Debug.Log("[DialogManager.cs] Dialog Finished, in onDialogFinished Check");
             GameController.Instance.StartTrainerBattle(fParty.familiars);
         };
-    }
+    }*/
 }

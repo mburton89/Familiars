@@ -5,6 +5,7 @@ using UnityEngine;
 public class NPCController : MonoBehaviour
 {
     [SerializeField] Dialog dialog;
+    [SerializeField] Dialog battleCompleteDialog;
 
     NPCState state;
     float idleTimer = 0f;
@@ -13,8 +14,11 @@ public class NPCController : MonoBehaviour
     bool interactable;
     CharacterController player;
 
+    // Trainer stuff
+
     FamiliarParty familiarParty;
     bool trainer;
+    [HideInInspector] public bool completeBattle; 
 
     void Awake()
     {
@@ -44,11 +48,35 @@ public class NPCController : MonoBehaviour
             state = NPCState.Dialog;
             //GameController.Instance.LookTowards(initiator.position);
 
-            StartCoroutine(DialogManager.Instance.ShowDialog(dialog, player, () =>
+            if (trainer)
             {
-                idleTimer = 0f;
-                state = NPCState.Idle;
-            }));
+                if (!completeBattle)
+                {
+                    StartCoroutine(DialogManager.Instance.ShowDialog(dialog, player, () =>
+                    {
+                        idleTimer = 0f;
+                        state = NPCState.Idle;
+                        GameController.Instance.StartTrainerBattle(familiarParty.familiars, this);
+                    }));
+                }
+                else
+                {
+                    StartCoroutine(DialogManager.Instance.ShowDialog(battleCompleteDialog, player, () =>
+                    {
+                        idleTimer = 0f;
+                        state = NPCState.Idle;
+                    }));
+                }
+                
+            }
+            else
+            {
+                StartCoroutine(DialogManager.Instance.ShowDialog(dialog, player, () =>
+                {
+                    idleTimer = 0f;
+                    state = NPCState.Idle;
+                }));
+            }
         }
     }
 
@@ -58,10 +86,9 @@ public class NPCController : MonoBehaviour
         {
             player = other.gameObject.GetComponent<CharacterController>();
             interactable = true;
-            if (trainer)
+            if (trainer && !completeBattle)
             {
                 Interact(player.gameObject);
-                DialogManager.Instance.StartBattle(familiarParty);
             }
         }
     }

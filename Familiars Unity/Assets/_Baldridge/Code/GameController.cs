@@ -14,6 +14,7 @@ public class GameController : MonoBehaviour
     GameObject player;
 
     CharacterController playerController;
+    NPCController currentNPC;
 
     GameState state;
     Vector3 playerPosition;
@@ -54,7 +55,7 @@ public class GameController : MonoBehaviour
         player.SetActive(false);
     }
 
-    public void StartTrainerBattle(List<Familiar> trainerFamiliars)
+    public void StartTrainerBattle(List<Familiar> trainerFamiliars, NPCController trainer)
     {
         state = GameState.Battle;
 
@@ -62,6 +63,7 @@ public class GameController : MonoBehaviour
         CurrentFamiliarsController.Instance.UpdateEnemyFamiliars(trainerFamiliars);
 
         playerPosition = playerController.gameObject.transform.position;
+        currentNPC = trainer;
         
         SceneManager.LoadSceneAsync(battleScreen);
     }
@@ -72,6 +74,16 @@ public class GameController : MonoBehaviour
         state = GameState.FreeRoam;
 
         SceneManager.LoadSceneAsync(worldScreen);
+
+        if (win)
+        {
+            if (currentNPC != null)
+            {
+                currentNPC.completeBattle = true;
+                currentNPC = null;
+            }
+        }
+
         player.SetActive(true);
         playerController.SetEncounterCooldown();
     }

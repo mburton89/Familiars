@@ -214,7 +214,7 @@ public class Familiar
             Fainted = false
         };
         
-        int damage = Mathf.FloorToInt(d * mod);
+        int damage = Mathf.FloorToInt((d * mod) * 2f);
         UpdateHP(damage);
 
         return damageDetails;
