@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum CombatState { Start, ActionSelection, FamiliarSelection, AttackSelection, MoveSelection, TargetSelection, PerformAttack, Busy }
+public enum CombatState { Start, ActionSelection, FamiliarSelection, AttackSelection, MoveSelection, TargetSelection, CatchSelection, PerformAttack, Busy }
 
 public class CombatHandler : MonoBehaviour
 {
@@ -212,7 +212,8 @@ public class CombatHandler : MonoBehaviour
         dialogMenu.EnableDialogText(false);
         dialogMenu.EnableAttackSelector(false);
         dialogMenu.EnableActionSelector(true);
-        
+
+        navigator.SetActive(false);
     }
 
     void AttackSelection()
@@ -241,6 +242,7 @@ public class CombatHandler : MonoBehaviour
             currentField = enemyField;
         }
 
+        navigator.SetActive(true);
         StartCoroutine(AdvanceAttackPreview());
     }
 
@@ -262,6 +264,8 @@ public class CombatHandler : MonoBehaviour
         {
             _t[i].SetState(TileState.Move);
         }
+
+        navigator.SetActive(true);
     }
 
     void TargetSelection()
@@ -287,12 +291,25 @@ public class CombatHandler : MonoBehaviour
             playerField.SetFieldPattern(currentAttack.Base.SourceArray[currentAttackPreview], TileState.ActiveSource);
             enemyField.SetFieldPattern(currentAttack.Base.TargetArray[currentAttackPreview], TileState.ActiveTarget);
         }
-        
+
+        navigator.SetActive(true);
 
         upperBoundX = currentAttack.Base.UpperX;
         upperBoundY = currentAttack.Base.UpperY;
         lowerBoundX = currentAttack.Base.LowerX;
         lowerBoundY = currentAttack.Base.LowerY;
+    }
+    
+    void CatchSelection()
+    {
+        combatState = CombatState.CatchSelection;
+
+        dialogMenu.EnableActionSelector(false);
+        dialogMenu.EnableDialogText(true);
+
+        navigator.SetActive(true);
+
+        dialogMenu.SetDialog($"Select an enemy familiar to attempt to catch.");
     }
 
     void StartPlayerAttack()
@@ -302,6 +319,9 @@ public class CombatHandler : MonoBehaviour
 
         dialogMenu.EnableAttackSelector(false);
         dialogMenu.EnableDialogText(true);
+
+        navigator.SetActive(false);
+
         StartCoroutine(PlayerAttack());
     }
 
@@ -311,6 +331,8 @@ public class CombatHandler : MonoBehaviour
 
         playerField.ClearTiles();
         enemyField.ClearTiles();
+
+        navigator.SetActive(false);
 
         StartCoroutine(PerformEnemyAttack());
     }
@@ -335,6 +357,9 @@ public class CombatHandler : MonoBehaviour
             case CombatState.TargetSelection:
                 HandlePlayerTargeting();
                 break;
+            case CombatState.CatchSelection:
+                HandlePlayerCatch();
+                break;
         }
     }
 
@@ -344,7 +369,7 @@ public class CombatHandler : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            if (currentActionPosition < 3)
+            if (currentActionPosition < 4)
                 ++currentActionPosition;
 
         }
@@ -365,7 +390,11 @@ public class CombatHandler : MonoBehaviour
                 //AttackSelection();
                 FamiliarSelection();
             }
-            if (currentActionPosition == 3)
+            else if (currentActionPosition == 3)
+            {
+                CatchSelection();
+            }
+            else if (currentActionPosition == 4)
             {
                 OnBattleOver(true);
             }
@@ -699,7 +728,52 @@ public class CombatHandler : MonoBehaviour
             FamiliarSelection();
         }
     }
-    #endregion
+
+    void HandlePlayerCatch()
+    {
+        #region Navigation
+        // Move left (add switching to supp. board later)
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            if (currentPosition > 2)
+            {
+                currentPosition -= 3;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            if (currentPosition < 6)
+            {
+                currentPosition += 3;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            if (currentPosition % 3 != 2)
+            {
+                currentPosition++;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            if (currentPosition % 3 != 0)
+            {
+                currentPosition--;
+            }
+        }
+
+        navigator.SetLocation(enemyField.GetTile(currentPosition));
+        #endregion
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            if (enemyField.GetTile(currentPosition).familiarOccupant != null)
+            {
+                StartCoroutine(AttemptCatching(enemyField.GetTile(currentPosition).familiarOccupant));
+            }
+        }
+    }
+#endregion
 
     IEnumerator PlayerMoving()
     {
@@ -719,6 +793,10 @@ public class CombatHandler : MonoBehaviour
         }
     }
 
+    /*  ======================================================================
+     *   Different Attack Coroutines 
+     *  ====================================================================== */
+    #region Attack Coroutines
     IEnumerator PlayerAttack()
     {
         combatState = CombatState.PerformAttack;
@@ -935,6 +1013,7 @@ public class CombatHandler : MonoBehaviour
             yield return dialogMenu.TypeDialog(message);
         }
     }
+#endregion
 
     IEnumerator ResolveFainting(CombatUnit unit)
     {
@@ -1042,6 +1121,71 @@ public class CombatHandler : MonoBehaviour
         //enemyTeam.ForEach(f => f.Familiar.OnAfterTurn());
         actions = 3;
         ActionSelection();
+    }
+
+    IEnumerator AttemptCatching(CombatUnit unit)
+    {
+        yield return dialogMenu.TypeDialog($"Attempting to catch {unit.Familiar.Base.Name}...");
+
+        int currentUnits = enemyTeam.Count;
+        float hpPercent = unit.Familiar.HP / unit.Familiar.MaxHp * 100;
+        bool afflicted = unit.Familiar.Status != null;
+        int bonus = 0;
+        if (afflicted) bonus = 30;
+        bonus += (int)(100f - hpPercent);
+
+        int threshold = 50 + ((currentUnits - 1) * 10) - bonus;
+        Debug.Log("[CombatHandler.cs/AttemptCatching()] threshold = " + threshold);
+        if (UnityEngine.Random.Range(0, 100) > threshold)
+        {
+            // Successful Catching
+            yield return dialogMenu.TypeDialog("... and it worked!");
+            PlayerParty.Instance.familiars.Add(unit.Familiar);
+
+            Tile _tile = enemyField.GetTile(unit.x * 3 + unit.y);
+            _tile.familiarOccupant = null;
+            enemyTeam.Remove(unit);
+
+            for (int i = 0; i < enemyTeam.Count; i++)
+            {
+                enemyTeam[i].teamPosition = i;
+            }
+
+            for (int i = 0; i < 3; i++)
+            {
+                if (i < enemyTeam.Count)
+                {
+                    enemyTeam[i].Hud = enemyHUDs[i];
+                    enemyTeam[i].Hud.SetData(enemyTeam[i].Familiar);
+                    enemyTeam[i].Hud.Active(true);
+                }
+                else
+                {
+                    enemyHUDs[i].Active(false);
+                }
+            }
+
+            yield return new WaitForSeconds(0.75f);
+            Destroy(unit.gameObject);
+            CheckEndBattle();
+        }
+        else
+        {
+            // Unsuccessful Catching
+            yield return dialogMenu.TypeDialog("... but it refused!");
+        }
+
+        actions--;
+        yield return new WaitForSeconds(1f);
+        if (actions > 0)
+        {
+            ActionSelection();
+        }
+        else
+        {
+            EnemyAttack();
+        }
+
     }
     
     void PlayNoise(AudioClip audio)

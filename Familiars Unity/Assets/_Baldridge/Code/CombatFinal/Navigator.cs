@@ -8,4 +8,9 @@ public class Navigator : MonoBehaviour
     {
         this.gameObject.transform.position = t.gameObject.transform.position;
     }
+
+    public void SetActive(bool active)
+    {
+        this.gameObject.SetActive(active);
+    }
 }

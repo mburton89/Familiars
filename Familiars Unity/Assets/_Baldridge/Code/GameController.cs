@@ -22,7 +22,7 @@ public class GameController : MonoBehaviour
     int worldScreen = 1;
     int battleScreen = 2;
 
-    bool haveBattled;
+    public bool versusTrainer;
 
     private void Awake()
     {
@@ -64,8 +64,7 @@ public class GameController : MonoBehaviour
 
         playerPosition = playerController.gameObject.transform.position;
         currentNPC = trainer.GetTrainerID();
-        Debug.Log("[GameController.cs/StartTrainerBattle()] currentNPC = " + currentNPC);
-        Debug.Log("[GameController.cs] currentNPC ID = " + currentNPC);
+        versusTrainer = true;
         SceneManager.LoadSceneAsync(battleScreen);
     }
 
@@ -84,6 +83,7 @@ public class GameController : MonoBehaviour
                 Debug.Log("[GameController.cs] currentNPC not null, setting TrainerFlag");
                 FlagManager.Instance.SetTrainerFlag(currentNPC, true);
                 currentNPC = -1;
+                versusTrainer = false;
             }
         }
         Debug.Log("[GameController.cs/EndBattle():3] currentNPC = " + currentNPC);
