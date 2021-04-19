@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fa7157f267b68e4abb637a352e0c721, type: 3}
-  m_Name: Gust
+  m_Name: Flood
   m_EditorClassIdentifier: 
-  name: Gust
+  name: Flood
   description: 
-  power: 1
-  magic: 3
+  power: 2
+  magic: 4
   accuracy: 100
   alwaysHits: 0
-  range: 2
-  uses: 30
-  type: 6
+  range: 0
+  uses: 10
+  type: 3
   targetOriginPosition: 4
   sourceOriginPosition: 4
-  attackStyle: 1
+  attackStyle: 3
   category: 0
   effects:
     boosts: []
@@ -36,17 +36,17 @@ MonoBehaviour:
   secondaries: []
   target: 0
   relative: 0
-  sources: {fileID: 11400000, guid: dec509fe37e97a9449d52a9c4fad4202, type: 2}
-  targets: {fileID: 11400000, guid: 657e23ff3bf7a3a49b7572c010a6c9a0, type: 2}
-  targetingReticle: {fileID: 11400000, guid: adfbd9d9716edd44888ac690c94389cd, type: 2}
+  sources: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
+  targets: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
+  targetingReticle: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
   sourceArray:
-  - {fileID: 11400000, guid: dec509fe37e97a9449d52a9c4fad4202, type: 2}
+  - {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
   targetArray:
-  - {fileID: 11400000, guid: 657e23ff3bf7a3a49b7572c010a6c9a0, type: 2}
+  - {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
   targetingReticleArray:
   - {fileID: 11400000, guid: adfbd9d9716edd44888ac690c94389cd, type: 2}
   projectileOrigin: 1
-  eligibleOrigins: {fileID: 0}
+  eligibleOrigins: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
   direction: 0
   upperX: 2
   upperY: 2
