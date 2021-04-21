@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Dimmit
   description: 
-  familiarSprite: {fileID: 0}
+  familiarSprite: {fileID: 21300000, guid: d7c54e3f7ef8def4b87734a062c85abd, type: 3}
   type: 0d00000000000000
   maxHp: 0
   attack: 0

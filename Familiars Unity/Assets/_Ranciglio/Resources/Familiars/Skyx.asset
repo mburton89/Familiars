@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Skyx
   description: 
-  familiarSprite: {fileID: 0}
+  familiarSprite: {fileID: 21300000, guid: ae53b6ad93b979448b0e8adab6939ec3, type: 3}
   type: 0600000000000000
   maxHp: 0
   attack: 0

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Pasburn
   description: 
-  familiarSprite: {fileID: 0}
+  familiarSprite: {fileID: 21300000, guid: b7801cac9c76a2b4cb3936c193b61087, type: 3}
   type: 0200000000000000
   maxHp: 0
   attack: 0

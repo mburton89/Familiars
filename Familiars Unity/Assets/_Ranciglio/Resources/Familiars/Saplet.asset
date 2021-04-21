@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Saplet
   description: 
-  familiarSprite: {fileID: 0}
+  familiarSprite: {fileID: 21300000, guid: e1e74f3213bc46340800dcd78475bcca, type: 3}
   type: 0400000000000000
   maxHp: 0
   attack: 0
