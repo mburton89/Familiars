@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum CombatState { Start, ActionSelection, FamiliarSelection, AttackSelection, MoveSelection, TargetSelection, CatchSelection, PerformAttack, Busy }
+public enum CombatState { Start, ActionSelection, FamiliarSelection, AttackSelection, MoveSelection, TargetSelection, SwitchSelection, SwitchTarget, CatchSelection, PerformAttack, Busy }
 
 public class CombatHandler : MonoBehaviour
 {
@@ -31,6 +31,7 @@ public class CombatHandler : MonoBehaviour
     // Dialog Menus
     [SerializeField] BattleDialogBox dialogMenu;
 
+    [SerializeField] FamiliarPartyManager familiarPartyManager;
     #endregion
 
     public event Action<bool> OnBattleOver;
@@ -47,6 +48,13 @@ public class CombatHandler : MonoBehaviour
     CombatState nextState;
 
     int actions = 3;
+
+    // Familiar Switching Stuff
+
+    Familiar switchTarget;
+
+    int switchTargetPositon;
+    int switchPlacementPosition;
 
     // Attack Preview Stuff
 
@@ -209,6 +217,8 @@ public class CombatHandler : MonoBehaviour
         playerField.ClearTiles();
         enemyField.ClearTiles();
 
+        familiarPartyManager.ClosePanel();
+
         dialogMenu.EnableDialogText(false);
         dialogMenu.EnableAttackSelector(false);
         dialogMenu.EnableActionSelector(true);
@@ -300,6 +310,26 @@ public class CombatHandler : MonoBehaviour
         lowerBoundY = currentAttack.Base.LowerY;
     }
     
+    void SwitchSelection()
+    {
+        combatState = CombatState.SwitchSelection;
+
+        navigator.SetActive(false);
+
+        familiarPartyManager.OpenPanel();
+    }
+
+    void SwitchTarget()
+    {
+        combatState = CombatState.SwitchTarget;
+
+        navigator.SetActive(true);
+        navigator.SetLocation(familiarPartyManager.GetTile(4));
+
+        familiarPartyManager.SetPanel(switchTargetPositon, PanelState.Selected);
+
+    }
+
     void CatchSelection()
     {
         combatState = CombatState.CatchSelection;
@@ -357,6 +387,12 @@ public class CombatHandler : MonoBehaviour
             case CombatState.TargetSelection:
                 HandlePlayerTargeting();
                 break;
+            case CombatState.SwitchSelection:
+                HandlePlayerSwitch();
+                break;
+            case CombatState.SwitchTarget:
+                HandlePlayerSwitchTarget();
+                break;
             case CombatState.CatchSelection:
                 HandlePlayerCatch();
                 break;
@@ -389,6 +425,10 @@ public class CombatHandler : MonoBehaviour
                 //dialogMenu.SetAttackNames(selectedFamiliar.Familiar.Attacks);
                 //AttackSelection();
                 FamiliarSelection();
+            }
+            else if (currentActionPosition == 2)
+            {
+                SwitchSelection();
             }
             else if (currentActionPosition == 3)
             {
@@ -584,10 +624,10 @@ public class CombatHandler : MonoBehaviour
             playerField.SetFieldPattern(currentAttack.Base.TargetArray[currentAttackPreview], TileState.ActiveAllyTarget);
             playerField.SetFieldTargetingReticle(currentAttack.Base.TargetingReticleArray[currentAttackPreview], TileState.AllyTargetReticle, currentTargetPosition);
         }
-        
+
         //navigator.SetLocation(enemyField.GetTile(currentTargetPosition));
         #endregion
-
+        #region Targetting
         if (Input.GetKeyDown(KeyCode.Z))
         {
             bool valid = false;
@@ -669,7 +709,8 @@ public class CombatHandler : MonoBehaviour
 
             
         }
-
+        #endregion
+        
         if (Input.GetKeyDown(KeyCode.X))
         {
             AttackSelection();
@@ -729,6 +770,79 @@ public class CombatHandler : MonoBehaviour
         }
     }
 
+    void HandlePlayerSwitch()
+    {
+        #region Navigation
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            if (switchTargetPositon == 0) switchTargetPositon = PlayerParty.Instance.familiars.Count - 1;
+            else switchTargetPositon--;
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            if (switchTargetPositon == PlayerParty.Instance.familiars.Count - 1) switchTargetPositon = 0;
+            else switchTargetPositon++;
+        }
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            if (!(switchTargetPositon == 0 || switchTargetPositon == 1)) switchTargetPositon -= 2;
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            if (!(switchTargetPositon == PlayerParty.Instance.familiars.Count - 1 || switchTargetPositon == PlayerParty.Instance.familiars.Count - 2)) switchTargetPositon += 2;
+        }
+
+        familiarPartyManager.SetPanel(switchTargetPositon, PanelState.Hover);
+        #endregion
+
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            SwitchTarget();
+        }
+        else if (Input.GetKeyDown(KeyCode.X))
+        {
+            ActionSelection();
+        }
+    }
+
+    void HandlePlayerSwitchTarget()
+    {
+        #region Navigation
+        // Move left (add switching to supp. board later)
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            if (switchPlacementPosition < 6)
+            {
+                switchPlacementPosition += 3;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            if (switchPlacementPosition > 2)
+            {
+                switchPlacementPosition -= 3;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            if (switchPlacementPosition % 3 != 2)
+            {
+                switchPlacementPosition++;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            if (switchPlacementPosition % 3 != 0)
+            {
+                switchPlacementPosition--;
+            }
+        }
+
+        navigator.SetLocation(familiarPartyManager.GetTile(switchPlacementPosition));
+        #endregion
+    }
+
     void HandlePlayerCatch()
     {
         #region Navigation
@@ -771,6 +885,10 @@ public class CombatHandler : MonoBehaviour
             {
                 StartCoroutine(AttemptCatching(enemyField.GetTile(currentPosition).familiarOccupant));
             }
+        }
+        else if (Input.GetKeyDown(KeyCode.X))
+        {
+            ActionSelection();
         }
     }
 #endregion
