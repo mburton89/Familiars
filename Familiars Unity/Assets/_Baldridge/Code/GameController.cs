@@ -112,6 +112,8 @@ public class GameController : MonoBehaviour
         playerController = player.GetComponent<CharacterController>();
         player.transform.position = new Vector3(0, -2, 0);
         playerController.OnEncountered += StartBattle;
+        player.GetComponent<SpriteRenderer>().enabled = false;
+        playerController.cm.enabled = false;
     }
 
     void Update()
@@ -124,13 +126,13 @@ public class GameController : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log("[GameController.cs/OnSceneLoaded()] currentNPC = " + currentNPC);
         if (IsWorldScene(scene.buildIndex))
         {
             GameObject _p = GameObject.Find("Player");
             if (_p != null)
             {
-                //_p.transform.position = new Vector3(10, 10, 1);
+                _p.GetComponent<SpriteRenderer>().enabled = true;
+                _p.GetComponent<CharacterController>().cm.enabled = true;
             }
         }
     }
@@ -142,10 +144,5 @@ public class GameController : MonoBehaviour
             return true;
         }
         return false;
-    }
-
-    public void PrintNPC()
-    {
-        Debug.Log("[GameController.cs/PrintNPC()] currentNPC = " + currentNPC);
     }
 }

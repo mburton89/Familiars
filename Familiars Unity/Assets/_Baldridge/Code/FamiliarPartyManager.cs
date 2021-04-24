@@ -47,6 +47,19 @@ public class FamiliarPartyManager : MonoBehaviour
         partyPanels[position].SetState(state);
     }
 
+    public void LockPanel(int position)
+    {
+        partyPanels[position].Lock(true);
+    }
+
+    public void UnlockPanels()
+    {
+        for (int i = 0; i < partyPanels.Count; i++)
+        {
+            partyPanels[i].Lock(false);
+        }
+    }
+
     public Tile GetTile(int pos)
     {
         return playerField.GetTile(pos);

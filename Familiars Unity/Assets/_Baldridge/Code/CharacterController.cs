@@ -11,10 +11,11 @@ public class CharacterController : MonoBehaviour
     public LayerMask grassLayer;
 
     [SerializeField] private LayerMask dashLayerMask;
+    public Camera cm;
 
     public event Action OnEncountered;
 
-    private Rigidbody2D rigidbody2D;
+    private Rigidbody2D rb2D;
     private Vector3 moveDir;
     private bool isDashButtonDown;
 
@@ -26,7 +27,7 @@ public class CharacterController : MonoBehaviour
 
     private void Awake()
     {
-        rigidbody2D = GetComponent<Rigidbody2D>();
+        rb2D = GetComponent<Rigidbody2D>();
         Debug.Log(this);
         DontDestroyOnLoad(this.gameObject);
     }
@@ -70,7 +71,7 @@ public class CharacterController : MonoBehaviour
     {
         if (state == PlayerState.Normal)
         {
-            rigidbody2D.velocity = moveDir * MOVE_SPEED;
+            rb2D.velocity = moveDir * MOVE_SPEED;
 
             if (isDashButtonDown)
             {
@@ -83,18 +84,18 @@ public class CharacterController : MonoBehaviour
                     dashPosition = raycastHit2d.point;
                 }
 
-                rigidbody2D.MovePosition(dashPosition);
+                rb2D.MovePosition(dashPosition);
                 isDashButtonDown = false;
             }
 
-            if (rigidbody2D.velocity.magnitude > 0)
+            if (rb2D.velocity.magnitude > 0)
             {
                 CheckForEncounters();
             }
         }
         else if (state == PlayerState.Interacting)
         {
-            rigidbody2D.velocity = new Vector2(0, 0);
+            rb2D.velocity = new Vector2(0, 0);
         }
     }
 
@@ -104,13 +105,11 @@ public class CharacterController : MonoBehaviour
         {
             if (inGrass)
             {
-                Debug.Log("Grass");
-                if (UnityEngine.Random.Range(1, 101) <= 5)
+                int _r = UnityEngine.Random.Range(1, 101);
+                Debug.Log("Grass, " + _r);
+                if (_r <= 5)
                 {
-                    if (OnEncountered != null)
-                    {
-                        OnEncountered();
-                    }
+                    OnEncountered?.Invoke();
                 }
             }
         }

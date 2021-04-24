@@ -18,6 +18,8 @@ public class PartyPanel : MonoBehaviour
     [SerializeField] Color standardBackgroundColor;
     [SerializeField] Color faintedBackgroundColor;
 
+    bool locked;
+
     public void UpdateDisplay(Familiar familiar)
     {
         nameText.text = familiar.Base.Name;
@@ -37,17 +39,25 @@ public class PartyPanel : MonoBehaviour
 
     public void SetState(PanelState state)
     {
-        switch (state)
+        if (!locked)
         {
-            case PanelState.Normal:
-                this.gameObject.GetComponent<Image>().color = regularColor;
-                break;
-            case PanelState.Hover:
-                this.gameObject.GetComponent<Image>().color = hoverColor;
-                break;
-            case PanelState.Selected:
-                this.gameObject.GetComponent<Image>().color = selectedColor;
-                break;
+            switch (state)
+            {
+                case PanelState.Normal:
+                    this.gameObject.GetComponent<Image>().color = regularColor;
+                    break;
+                case PanelState.Hover:
+                    this.gameObject.GetComponent<Image>().color = hoverColor;
+                    break;
+                case PanelState.Selected:
+                    this.gameObject.GetComponent<Image>().color = selectedColor;
+                    break;
+            }
         }
+    }
+
+    public void Lock(bool l)
+    {
+        locked = l;
     }
 }

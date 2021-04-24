@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: db1e1392e58fb314ba82e22b2235bc6c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -97,3 +97,8 @@ MonoBehaviour:
   mainField: 1
   ch: {fileID: 0}
   sprite: {fileID: 335569814257435695}
+  visited: 0
+  selectable: 0
+  distance: 0
+  parent: {fileID: 0}
+  current: 0

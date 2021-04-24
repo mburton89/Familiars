@@ -26,6 +26,7 @@ public class Familiar
 
     public int HP { get; set; }
 
+    public int EXP { get; set; }
     public int RandomID { get; set; }
 
     public List<Attack> Attacks { get; set; }
@@ -66,6 +67,7 @@ public class Familiar
         RandomID = Random.Range(100000, 999999);
         StatusChanges = new Queue<string>();
 
+        Debug.Log("[Familiar.cs/Init()] " + Base.Name + ", " + RandomID + "  HP: " + HP);
         ResetStatBoost();
         Status = null;
         VolatileStatus = null;
