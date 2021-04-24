@@ -53,7 +53,7 @@ public class CombatHandler : MonoBehaviour
 
     Familiar switchTarget;
 
-    int switchTargetPositon;
+    int switchTargetPosition;
     int switchPlacementPosition;
 
     // Attack Preview Stuff
@@ -208,6 +208,7 @@ public class CombatHandler : MonoBehaviour
         {
             dialogMenu.SetDialog("Select a familiar to move.");
         }
+        navigator.SetActive(true);
     }
 
     void ActionSelection()
@@ -222,6 +223,8 @@ public class CombatHandler : MonoBehaviour
         dialogMenu.EnableDialogText(false);
         dialogMenu.EnableAttackSelector(false);
         dialogMenu.EnableActionSelector(true);
+
+        DisplayFamiliars(true);
 
         navigator.SetActive(false);
     }
@@ -243,6 +246,7 @@ public class CombatHandler : MonoBehaviour
         currentAttack = selectedFamiliar.Familiar.Attacks[currentAttackPosition];
         maxAttackPreview = currentAttack.Base.SourceArray.Length - 1;
         dialogMenu.UpdateAttackSelection(currentAttackPosition, currentAttack);
+
         if (currentAttack.Base.Target == AttackTarget.Ally)
         {
             currentField = playerField;
@@ -251,8 +255,7 @@ public class CombatHandler : MonoBehaviour
         {
             currentField = enemyField;
         }
-
-        navigator.SetActive(true);
+        
         StartCoroutine(AdvanceAttackPreview());
     }
 
@@ -267,9 +270,10 @@ public class CombatHandler : MonoBehaviour
         dialogMenu.EnableDialogText(true);
 
         dialogMenu.SetDialog($"Select a blue tile to move {selectedFamiliar.Familiar.Base.Name} to.");
-        
+
         selectedFamiliar.SetCurrentTile(playerField.GetTile(currentPosition));
         List<Tile> _t = selectedFamiliar.FindSelectableTiles(TileState.Move, selectedFamiliar.Familiar.Base.Movement);
+
         for (int i = 0; i < _t.Count; i++)
         {
             _t[i].SetState(TileState.Move);
@@ -316,7 +320,9 @@ public class CombatHandler : MonoBehaviour
 
         navigator.SetActive(false);
 
-        familiarPartyManager.OpenPanel();
+        DisplayFamiliars(false);
+        navigator.SetActive(false);
+        familiarPartyManager.OpenPanel(playerField);
     }
 
     void SwitchTarget()
@@ -326,7 +332,7 @@ public class CombatHandler : MonoBehaviour
         navigator.SetActive(true);
         navigator.SetLocation(familiarPartyManager.GetTile(4));
 
-        familiarPartyManager.SetPanel(switchTargetPositon, PanelState.Selected);
+        familiarPartyManager.SetPanel(switchTargetPosition, PanelState.Selected);
 
     }
 
@@ -775,30 +781,31 @@ public class CombatHandler : MonoBehaviour
         #region Navigation
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            if (switchTargetPositon == 0) switchTargetPositon = PlayerParty.Instance.familiars.Count - 1;
-            else switchTargetPositon--;
+            if (switchTargetPosition > 2) switchTargetPosition -= 3;
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            if (switchTargetPositon == PlayerParty.Instance.familiars.Count - 1) switchTargetPositon = 0;
-            else switchTargetPositon++;
+            if (switchTargetPosition < 3 && switchTargetPosition + 3 < CurrentFamiliarsController.Instance.playerFamiliars.Count - 1) switchTargetPosition += 3;
         }
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            if (!(switchTargetPositon == 0 || switchTargetPositon == 1)) switchTargetPositon -= 2;
+            if (switchTargetPosition > 0) switchTargetPosition--;
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            if (!(switchTargetPositon == PlayerParty.Instance.familiars.Count - 1 || switchTargetPositon == PlayerParty.Instance.familiars.Count - 2)) switchTargetPositon += 2;
+            if (switchTargetPosition < CurrentFamiliarsController.Instance.playerFamiliars.Count - 1) switchTargetPosition++;
         }
 
-        familiarPartyManager.SetPanel(switchTargetPositon, PanelState.Hover);
+        familiarPartyManager.SetPanel(switchTargetPosition, PanelState.Hover);
         #endregion
 
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            SwitchTarget();
+            if (CurrentFamiliarsController.Instance.playerFamiliars[switchTargetPosition].HP > 0)
+            {
+                SwitchTarget();
+            }
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
@@ -841,6 +848,11 @@ public class CombatHandler : MonoBehaviour
 
         navigator.SetLocation(familiarPartyManager.GetTile(switchPlacementPosition));
         #endregion
+
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            SwitchSelection();
+        }
     }
 
     void HandlePlayerCatch()
@@ -1374,6 +1386,25 @@ public class CombatHandler : MonoBehaviour
         if (enemyTeam.Count <= 0)
         {
             OnBattleOver(true);
+        }
+    }
+
+    void DisplayFamiliars(bool display)
+    {
+        for (int i = 0; i < playerTeam.Count; i++)
+        {
+            if (playerTeam[i] != null)
+            {
+                playerTeam[i].Display(display);
+            }
+        }
+
+        for (int i = 0; i < enemyTeam.Count; i++)
+        {
+            if (enemyTeam[i] != null)
+            {
+                enemyTeam[i].Display(display);
+            }
         }
     }
 }

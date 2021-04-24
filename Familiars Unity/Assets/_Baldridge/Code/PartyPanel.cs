@@ -23,7 +23,7 @@ public class PartyPanel : MonoBehaviour
         nameText.text = familiar.Base.Name;
         levelText.text = "Lvl: " + familiar.Level;
 
-        hpBar.SetHP(familiar.HP);
+        hpBar.SetHP((float) familiar.HP / familiar.MaxHp);
 
         if (familiar.HP == 0)
         {
@@ -49,6 +49,5 @@ public class PartyPanel : MonoBehaviour
                 this.gameObject.GetComponent<Image>().color = selectedColor;
                 break;
         }
-
     }
 }

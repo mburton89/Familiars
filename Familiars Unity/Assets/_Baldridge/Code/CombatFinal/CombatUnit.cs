@@ -53,6 +53,11 @@ public class CombatUnit : MonoBehaviour
     }
 
     #region Animations
+    public void Display(bool display)
+    {
+        image.enabled = display;
+    }
+    
     public void PlayEnterAnimation()
     {
         if (isPlayerUnit)

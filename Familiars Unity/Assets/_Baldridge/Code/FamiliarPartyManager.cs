@@ -1,14 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FamiliarPartyManager : MonoBehaviour
 {
     [SerializeField] Field playerField;
-
+    
     [SerializeField] List<PartyPanel> partyPanels;
 
-    private void Start()
+    private void Awake()
     {
         for (int i = 0; i < partyPanels.Count; i++)
         {
@@ -16,10 +17,20 @@ public class FamiliarPartyManager : MonoBehaviour
         }
     }
 
-    public void OpenPanel()
+    public void OpenPanel(Field field)
     {
         this.gameObject.SetActive(true);
         DisplayPanels();
+
+        CombatUnit _cu = null;
+        for (int i = 0; i < 9; i++)
+        {
+            _cu = field.GetTile(i).familiarOccupant;
+            if (_cu != null)
+            {
+                playerField.GetTile(i).GetComponent<Image>().sprite = _cu.Familiar.Base.FamiliarSprite;
+            }
+        }
     }
 
     public void ClosePanel()

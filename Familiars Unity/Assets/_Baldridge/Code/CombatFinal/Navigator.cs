@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Navigator : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class Navigator : MonoBehaviour
 
     public void SetActive(bool active)
     {
-        this.gameObject.SetActive(active);
+        Debug.Log("[Navigator.cs/SetActive( " + active + ")]");
+        this.gameObject.GetComponent<Image>().enabled = active;
     }
 }
