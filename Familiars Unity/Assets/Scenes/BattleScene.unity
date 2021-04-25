@@ -6283,6 +6283,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 799487216592689531, guid: a9900b1ca1571034790dd1a5557d1215, type: 3}
+      propertyPath: m_Volume
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 1669771678718885548, guid: a9900b1ca1571034790dd1a5557d1215, type: 3}
       propertyPath: playerTeam.Array.size
       value: 0
@@ -6383,6 +6387,10 @@ PrefabInstance:
       propertyPath: familiarPartyManager
       value: 
       objectReference: {fileID: 1180753233}
+    - target: {fileID: 1669771678718885548, guid: a9900b1ca1571034790dd1a5557d1215, type: 3}
+      propertyPath: music
+      value: 
+      objectReference: {fileID: 11400000, guid: d217f76898bb89b47b47feb4d8426d9d, type: 2}
     - target: {fileID: 3836459479903627893, guid: a9900b1ca1571034790dd1a5557d1215, type: 3}
       propertyPath: m_Name
       value: CombatHandler

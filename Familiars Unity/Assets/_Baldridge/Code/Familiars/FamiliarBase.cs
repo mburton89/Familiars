@@ -23,10 +23,29 @@ public class FamiliarBase : ScriptableObject
     [SerializeField] int speed;
     [SerializeField] int movement;
 
+    [SerializeField] int expYield = 50;
+    [SerializeField] GrowthRate growthRate = GrowthRate.MediumFast;
+
     [SerializeField] AudioClip attackSound;
     [SerializeField] AudioClip injuredSound;
 
     [SerializeField] List<LearnableAttack> learnableAttacks;
+
+    public static int MaxNumOfAttacks { get; set; } = 4;
+
+    public int GetExpForLevel(int level)
+    {
+        if (growthRate == GrowthRate.Fast)
+        {
+            return 4 * (level * level * level) / 5;
+        }
+        else if (growthRate == GrowthRate.MediumFast)
+        {
+            return (level * level * level);
+        }
+
+        return -1;
+    }
 
     public string Name
     {
@@ -77,6 +96,10 @@ public class FamiliarBase : ScriptableObject
     {
         get { return movement; }
     }
+
+    public int ExpYield => expYield;
+
+    public GrowthRate GrowthRate => growthRate;
 
     public AudioClip AttackSound
     {
@@ -132,6 +155,10 @@ public enum Types
     Ancient
 }
 
+public enum GrowthRate
+{
+    Fast, MediumFast
+}
 public enum Stat
 {
     Attack,

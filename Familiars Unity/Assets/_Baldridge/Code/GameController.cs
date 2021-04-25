@@ -10,6 +10,7 @@ public class GameController : MonoBehaviour
     public static GameController Instance;
 
     [SerializeField] GameObject playerPrefab;
+    [SerializeField] GameMusic music;
 
     GameObject player;
 
@@ -133,6 +134,15 @@ public class GameController : MonoBehaviour
             {
                 _p.GetComponent<SpriteRenderer>().enabled = true;
                 _p.GetComponent<CharacterController>().cm.enabled = true;
+            }
+        }
+        else if (scene.buildIndex == battleScreen)
+        {
+            if (versusTrainer)
+            {
+                AudioSource _as = GameObject.Find("Music").GetComponent<AudioSource>();
+                _as.clip = GameMusic.Instance.rivaltwoTheme;
+                _as.Play();
             }
         }
     }

@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+
 
 [System.Serializable]
 public class Familiar
@@ -60,6 +62,7 @@ public class Familiar
                 break;
         }
 
+        EXP = Base.GetExpForLevel(Level);
 
         CalculateStats();
         HP = MaxHp;
@@ -145,6 +148,28 @@ public class Familiar
         }
     }
 
+    public bool CheckForLevelUp()
+    {
+        if (EXP > Base.GetExpForLevel(Level + 1))
+        {
+            level++;
+            return true;
+        }
+        return false;
+    }
+
+    public LearnableAttack GetLearnableAttackAtCurrLevel()
+    {
+        return Base.LearnableAttacks.Where(x => x.Level == level).FirstOrDefault();
+    }
+
+    public void LearnMove(LearnableAttack attackToLearn)
+    {
+        if (Attacks.Count > FamiliarBase.MaxNumOfAttacks)
+            return;
+
+        Attacks.Add(new Attack(attackToLearn.Base));
+    }
     public int Attack
     {
         get { return GetStat(Stat.Attack); }

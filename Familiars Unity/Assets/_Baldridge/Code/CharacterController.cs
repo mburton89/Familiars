@@ -25,6 +25,8 @@ public class CharacterController : MonoBehaviour
 
     [HideInInspector] public PlayerState state = PlayerState.Normal;
 
+    [SerializeField] Animator animator;
+
     private void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();
@@ -59,7 +61,9 @@ public class CharacterController : MonoBehaviour
 
         moveDir = new Vector3(moveX, moveY).normalized;
 
-        
+        animator.SetFloat("Horizontal", moveX);
+        animator.SetFloat("Vertical", moveY);
+        animator.SetFloat("Speed", moveDir.sqrMagnitude);
 
         if(Input.GetKeyDown(KeyCode.Space))
         {

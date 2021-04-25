@@ -43,7 +43,7 @@ public class BattleHUD : MonoBehaviour
         _familiar = familiar;
 
         nameText.text = familiar.Base.Name;
-        levelText.text = "Lvl " + familiar.Level;
+        SetLevel();
         hpBar.SetHP((float) familiar.HP / familiar.MaxHp);
 
         statusColors = new Dictionary<ConditionID, Color>()
@@ -71,6 +71,11 @@ public class BattleHUD : MonoBehaviour
             statusBar.SetActive(false);
             statusText.text = "";
         }
+    }
+
+    public void SetLevel()
+    {
+        levelText.text = "Lvl " + _familiar.Level;
     }
 
     public IEnumerator UpdateHP()

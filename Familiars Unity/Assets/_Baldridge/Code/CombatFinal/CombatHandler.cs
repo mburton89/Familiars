@@ -47,6 +47,10 @@ public class CombatHandler : MonoBehaviour
     public List<GameObject> enemyActive;
     public List<GameObject> enemyBench;
 
+    // Music
+
+    [SerializeField] GameMusic music;
+
     CombatState nextState;
 
     int actions = 3;
@@ -453,12 +457,14 @@ public class CombatHandler : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
+            PlayNoise(music.buttonClick1SFX);
             if (currentActionPosition < 4)
                 ++currentActionPosition;
 
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
+            PlayNoise(music.buttonClick1SFX);
             if (currentActionPosition > 0)
                 --currentActionPosition;
         }
@@ -467,6 +473,7 @@ public class CombatHandler : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
+            PlayNoise(music.buttonClick3SFX);
             if (currentActionPosition == 0 || currentActionPosition == 1)
             {
                 // Fight
@@ -497,6 +504,7 @@ public class CombatHandler : MonoBehaviour
         {
             if (currentPosition < 6)
             {
+                PlayNoise(music.buttonClick1SFX);
                 currentPosition += 3;
             }
         }
@@ -504,6 +512,7 @@ public class CombatHandler : MonoBehaviour
         {
             if (currentPosition > 2)
             {
+                PlayNoise(music.buttonClick1SFX);
                 currentPosition -= 3;
             }
         }
@@ -511,6 +520,7 @@ public class CombatHandler : MonoBehaviour
         {
             if (currentPosition % 3 != 2)
             {
+                PlayNoise(music.buttonClick1SFX);
                 currentPosition++;
             }
         }
@@ -518,6 +528,7 @@ public class CombatHandler : MonoBehaviour
         {
             if (currentPosition % 3 != 0)
             {
+                PlayNoise(music.buttonClick1SFX);
                 currentPosition--;
             }
         }
@@ -533,6 +544,7 @@ public class CombatHandler : MonoBehaviour
             {
                 if (_combatUnit.Familiar.CanAct)
                 {
+                    PlayNoise(music.buttonClick3SFX);
                     selectedFamiliar = _combatUnit;
                     if (currentActionPosition == 0)
                     {
@@ -550,6 +562,7 @@ public class CombatHandler : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.X))
         {
+            PlayNoise(music.buttonClick2SFX);
             ActionSelection();
         }
 
@@ -569,6 +582,7 @@ public class CombatHandler : MonoBehaviour
 
         if (CheckButton(_button))
         {
+            PlayNoise(music.buttonClick1SFX);
             currentAttack = selectedFamiliar.Familiar.Attacks[currentAttackPosition];
             currentAttackPreview = 0;
             maxAttackPreview = currentAttack.Base.SourceArray.Length - 1;
@@ -586,6 +600,7 @@ public class CombatHandler : MonoBehaviour
             // If the attack can be used at the current position
             if (currentAttack.Base.Sources.Active[currentPosition])
             {
+                PlayNoise(music.buttonClick3SFX);
                 TargetSelection();
             }
         }
@@ -610,6 +625,7 @@ public class CombatHandler : MonoBehaviour
                 {
                     if (currentTargetPosition < (upperBoundX * 3) && selectedFamiliar.Familiar.Attacks[currentAttackPosition].Base.Targets.Active[currentTargetPosition + 3])
                     {
+                        PlayNoise(music.buttonClick1SFX);
                         currentTargetPosition += 3;
                     }
                 }
@@ -617,6 +633,7 @@ public class CombatHandler : MonoBehaviour
                 {
                     if (currentTargetPosition > (lowerBoundX + 2) && selectedFamiliar.Familiar.Attacks[currentAttackPosition].Base.Targets.Active[currentTargetPosition - 3])
                     {
+                        PlayNoise(music.buttonClick1SFX);
                         currentTargetPosition -= 3;
                     }
                 }
@@ -624,6 +641,7 @@ public class CombatHandler : MonoBehaviour
                 {
                     if (currentTargetPosition % 3 < upperBoundY && selectedFamiliar.Familiar.Attacks[currentAttackPosition].Base.Targets.Active[currentTargetPosition + 1])
                     {
+                        PlayNoise(music.buttonClick1SFX);
                         currentTargetPosition++;
                     }
                 }
@@ -631,6 +649,7 @@ public class CombatHandler : MonoBehaviour
                 {
                     if (currentTargetPosition % 3 > lowerBoundY && selectedFamiliar.Familiar.Attacks[currentAttackPosition].Base.Targets.Active[currentTargetPosition - 1])
                     {
+                        PlayNoise(music.buttonClick1SFX);
                         currentTargetPosition--;
                     }
                 }
@@ -646,6 +665,7 @@ public class CombatHandler : MonoBehaviour
             {
                 if (currentTargetPosition < 6)
                 {
+                    PlayNoise(music.buttonClick1SFX);
                     currentTargetPosition += 3;
                 }
             }
@@ -653,6 +673,7 @@ public class CombatHandler : MonoBehaviour
             {
                 if (currentTargetPosition > 2)
                 {
+                    PlayNoise(music.buttonClick1SFX);
                     currentTargetPosition -= 3;
                 }
             }
@@ -660,6 +681,7 @@ public class CombatHandler : MonoBehaviour
             {
                 if (currentTargetPosition % 3 != 2)
                 {
+                    PlayNoise(music.buttonClick1SFX);
                     currentTargetPosition++;
                 }
             }
@@ -667,6 +689,7 @@ public class CombatHandler : MonoBehaviour
             {
                 if (currentTargetPosition % 3 != 0)
                 {
+                    PlayNoise(music.buttonClick1SFX);
                     currentTargetPosition--;
                 }
             }
@@ -755,7 +778,11 @@ public class CombatHandler : MonoBehaviour
                     break;
             }
 
-            if (valid) StartPlayerAttack();
+            if (valid)
+            {
+                PlayNoise(music.buttonClick3SFX);
+                StartPlayerAttack();
+            }
 
 
         }
@@ -776,6 +803,7 @@ public class CombatHandler : MonoBehaviour
         {
             if (currentPosition < 6)
             {
+                PlayNoise(music.buttonClick1SFX);
                 currentPosition += 3;
             }
         }
@@ -783,6 +811,7 @@ public class CombatHandler : MonoBehaviour
         {
             if (currentPosition > 2)
             {
+                PlayNoise(music.buttonClick1SFX);
                 currentPosition -= 3;
             }
         }
@@ -790,6 +819,7 @@ public class CombatHandler : MonoBehaviour
         {
             if (currentPosition % 3 != 2)
             {
+                PlayNoise(music.buttonClick1SFX);
                 currentPosition++;
             }
         }
@@ -797,6 +827,7 @@ public class CombatHandler : MonoBehaviour
         {
             if (currentPosition % 3 != 0)
             {
+                PlayNoise(music.buttonClick1SFX);
                 currentPosition--;
             }
         }
@@ -809,6 +840,7 @@ public class CombatHandler : MonoBehaviour
             Tile _temp = playerField.GetTile(currentPosition);
             if (_temp.GetState() == TileState.Move)
             {
+                PlayNoise(music.buttonClick3SFX);
                 selectedFamiliar.SetCurrentTile(_temp);
 
                 StartCoroutine(PlayerMoving());
@@ -827,19 +859,34 @@ public class CombatHandler : MonoBehaviour
         #region Navigation
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            if (switchTargetPosition > 2) switchTargetPosition -= 3;
+            if (switchTargetPosition > 2)
+            {
+                PlayNoise(music.buttonClick1SFX); switchTargetPosition -= 3;
+            }
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            if (switchTargetPosition < 3 && switchTargetPosition + 3 < CurrentFamiliarsController.Instance.playerFamiliars.Count) switchTargetPosition += 3;
+            if (switchTargetPosition < 3 && switchTargetPosition + 3 < CurrentFamiliarsController.Instance.playerFamiliars.Count)
+            {
+                PlayNoise(music.buttonClick1SFX);
+                switchTargetPosition += 3;
+            }
         }
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            if (switchTargetPosition > 0) switchTargetPosition--;
+            if (switchTargetPosition > 0)
+            {
+                PlayNoise(music.buttonClick1SFX);
+                switchTargetPosition--;
+            }
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            if (switchTargetPosition < CurrentFamiliarsController.Instance.playerFamiliars.Count - 1) switchTargetPosition++;
+            if (switchTargetPosition < CurrentFamiliarsController.Instance.playerFamiliars.Count - 1)
+            {
+                PlayNoise(music.buttonClick1SFX);
+                switchTargetPosition++;
+            }
         }
 
         familiarPartyManager.SetPanel(switchTargetPosition, PanelState.Hover);
@@ -850,6 +897,7 @@ public class CombatHandler : MonoBehaviour
         {
             if (CurrentFamiliarsController.Instance.playerFamiliars[switchTargetPosition].HP > 0)
             {
+                PlayNoise(music.buttonClick3SFX);
                 if (switchTargetPosition <= 2)
                 {
                     switchingIn = false;
@@ -882,6 +930,7 @@ public class CombatHandler : MonoBehaviour
             {
                 if (switchPlacementPosition < 6)
                 {
+                    PlayNoise(music.buttonClick1SFX);
                     switchPlacementPosition += 3;
                 }
             }
@@ -889,6 +938,7 @@ public class CombatHandler : MonoBehaviour
             {
                 if (switchPlacementPosition > 2)
                 {
+                    PlayNoise(music.buttonClick1SFX);
                     switchPlacementPosition -= 3;
                 }
             }
@@ -896,6 +946,7 @@ public class CombatHandler : MonoBehaviour
             {
                 if (switchPlacementPosition % 3 != 2)
                 {
+                    PlayNoise(music.buttonClick1SFX);
                     switchPlacementPosition++;
                 }
             }
@@ -903,6 +954,7 @@ public class CombatHandler : MonoBehaviour
             {
                 if (switchPlacementPosition % 3 != 0)
                 {
+                    PlayNoise(music.buttonClick1SFX);
                     switchPlacementPosition--;
                 }
             }
@@ -914,6 +966,7 @@ public class CombatHandler : MonoBehaviour
             {
                 if (playerField.GetTile(switchPlacementPosition).familiarOccupant != null)
                 {
+                    PlayNoise(music.buttonClick3SFX);
                     switchTarget2 = playerField.GetTile(switchPlacementPosition).familiarOccupant.Familiar;
                     Switching();
                 }
@@ -926,19 +979,35 @@ public class CombatHandler : MonoBehaviour
             #region Navigation
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                if (switchTargetPosition > 2) switchTargetPosition -= 3;
+                if (switchTargetPosition > 2)
+                {
+                    PlayNoise(music.buttonClick1SFX);
+                    switchTargetPosition -= 3;
+                }
             }
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                if (switchTargetPosition < 3 && switchTargetPosition + 3 < CurrentFamiliarsController.Instance.playerFamiliars.Count) switchTargetPosition += 3;
+                if (switchTargetPosition < 3 && switchTargetPosition + 3 < CurrentFamiliarsController.Instance.playerFamiliars.Count)
+                {
+                    PlayNoise(music.buttonClick1SFX);
+                    switchTargetPosition += 3;
+                }
             }
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
-                if (switchTargetPosition > 0) switchTargetPosition--;
+                if (switchTargetPosition > 0)
+                {
+                    PlayNoise(music.buttonClick1SFX);
+                    switchTargetPosition--;
+                }
             }
             if (Input.GetKeyDown(KeyCode.DownArrow))
             {
-                if (switchTargetPosition < CurrentFamiliarsController.Instance.playerFamiliars.Count - 1) switchTargetPosition++;
+                if (switchTargetPosition < CurrentFamiliarsController.Instance.playerFamiliars.Count - 1)
+                {
+                    PlayNoise(music.buttonClick1SFX);
+                    switchTargetPosition++;
+                }
             }
 
             familiarPartyManager.SetPanel(switchTargetPosition, PanelState.Hover);
@@ -948,6 +1017,7 @@ public class CombatHandler : MonoBehaviour
             {
                 if (switchTargetPosition > 2 && CurrentFamiliarsController.Instance.playerFamiliars[switchTargetPosition].HP > 0)
                 {
+                    PlayNoise(music.buttonClick3SFX);
                     switchTarget2 = CurrentFamiliarsController.Instance.playerFamiliars[switchTargetPosition];
                     Switching();
                 }
@@ -969,6 +1039,7 @@ public class CombatHandler : MonoBehaviour
         {
             if (currentPosition > 2)
             {
+                PlayNoise(music.buttonClick1SFX);
                 currentPosition -= 3;
             }
         }
@@ -976,6 +1047,7 @@ public class CombatHandler : MonoBehaviour
         {
             if (currentPosition < 6)
             {
+                PlayNoise(music.buttonClick1SFX);
                 currentPosition += 3;
             }
         }
@@ -983,6 +1055,7 @@ public class CombatHandler : MonoBehaviour
         {
             if (currentPosition % 3 != 2)
             {
+                PlayNoise(music.buttonClick1SFX);
                 currentPosition++;
             }
         }
@@ -990,6 +1063,7 @@ public class CombatHandler : MonoBehaviour
         {
             if (currentPosition % 3 != 0)
             {
+                PlayNoise(music.buttonClick1SFX);
                 currentPosition--;
             }
         }
@@ -1001,6 +1075,7 @@ public class CombatHandler : MonoBehaviour
         {
             if (enemyField.GetTile(currentPosition).familiarOccupant != null)
             {
+                PlayNoise(music.buttonClick3SFX);
                 StartCoroutine(AttemptCatching(enemyField.GetTile(currentPosition).familiarOccupant));
             }
         }
@@ -1298,6 +1373,45 @@ public class CombatHandler : MonoBehaviour
         }
         else
         {
+            // EXP Gain
+            int expYield = unit.Familiar.Base.ExpYield;
+            int enemyLevel = unit.Familiar.Level;
+
+            int expGain = Mathf.FloorToInt((expYield * enemyLevel) / 7);
+
+            // Give EXP to the boys
+            List<Familiar> _aliveParty = CurrentFamiliarsController.Instance.GetHealthyFamiliars(CurrentFamiliarsController.Instance.playerFamiliars);
+            int val = Mathf.Min(_aliveParty.Count, 3);
+            for (int i = 0; i < val; i++)
+            {
+                CombatUnit _p = playerTeam[i];
+                _p.Familiar.EXP += expGain / val;
+
+                while (_p.Familiar.CheckForLevelUp())
+                {
+                    _p.Hud.SetLevel();
+                    yield return dialogMenu.TypeDialog($"{_p.Familiar.Base.Name} grew to level {_p.Familiar.Level}");
+
+                    // Try to learn a new move
+                    var newAttack = _p.Familiar.GetLearnableAttackAtCurrLevel();
+                    if (newAttack != null)
+                    {
+                        if (_p.Familiar.Attacks.Count < FamiliarBase.MaxNumOfAttacks)
+                        {
+                            _p.Familiar.LearnMove(newAttack);
+                            yield return dialogMenu.TypeDialog($"{_p.Familiar.Base.Name} has learned a new attack -- {newAttack.Base.Name}!");
+                        }
+                        else
+                        {
+                            // TODO: Option to forget a move
+                        }
+                    }
+                }
+            }
+
+            // Level Up
+
+
             _tile = enemyField.GetTile(unit.x * 3 + unit.y);
 
             // Available to switch?
