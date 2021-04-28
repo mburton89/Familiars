@@ -25,8 +25,9 @@ public class CharacterController : MonoBehaviour
 
     [HideInInspector] public PlayerState state = PlayerState.Normal;
 
-    [SerializeField] Animator animator;
+    // === Animation section
 
+    [SerializeField] Animator animator;
     private void Awake()
     {
         rb2D = GetComponent<Rigidbody2D>();
