@@ -53,6 +53,11 @@ public class CombatUnit : MonoBehaviour
     }
 
     #region Animations
+    public void Display(bool display)
+    {
+        image.enabled = display;
+    }
+    
     public void PlayEnterAnimation()
     {
         if (isPlayerUnit)
@@ -77,11 +82,57 @@ public class CombatUnit : MonoBehaviour
         sequence.Append(image.DOColor(originalColor, 0.1f));
     }
 
+    public void PlayEntranceAnimation()
+    {
+        var sequence = DOTween.Sequence();
+        image.transform.DOLocalMoveX(originalPos.x, 0.5f);
+        sequence.Join(image.DOFade(1f, 0.5f));
+    }
+
+    public void PlayReturnAnimation()
+    {
+        var sequence = DOTween.Sequence();
+        sequence.Append(image.transform.DOLocalMoveX(originalPos.x - 150f, 0.5f));
+        sequence.Join(image.DOFade(0f, 0.5f));
+    }
+
+    public void PlayCatchFlashAnimation()
+    {
+        var sequence = DOTween.Sequence();
+        sequence.Append(image.DOColor(Color.red, 0.15f));
+        sequence.Append(image.DOColor(originalColor, 0.15f));
+        sequence.Append(image.DOColor(Color.red, 0.1f));
+        sequence.Append(image.DOColor(originalColor, 0.1f));
+    }
+
+    public void PlayCatchSucceedAnimation()
+    {
+        var sequence = DOTween.Sequence();
+        sequence.Append(image.transform.DOLocalMoveY(originalPos.y + 150f, 0.5f));
+        sequence.Join(image.DOFade(0f, 0.5f));
+    }
+
+    public void PlayCatchFailedAnimation()
+    {
+        var sequence = DOTween.Sequence();
+        sequence.Append(image.transform.DOLocalMoveX(originalPos.x - 15f, 0.1f));
+        sequence.Append(image.transform.DOLocalMoveX(originalPos.x, 0.15f));
+        sequence.Append(image.transform.DOLocalMoveX(originalPos.x + 15f, 0.1f));
+        sequence.Append(image.transform.DOLocalMoveX(originalPos.x, 0.15f));
+    }
+
     public void PlayFaintAnimation()
     {
         var sequence = DOTween.Sequence();
         sequence.Append(image.transform.DOLocalMoveY(originalPos.y - 150f, 0.5f));
         sequence.Join(image.DOFade(0f, 0.5f));
+    }
+
+    public void PlayFaintReturn()
+    {
+        var sequence = DOTween.Sequence();
+        sequence.Append(image.transform.DOLocalMoveY(originalPos.y, 0.1f));
+        sequence.Join(image.transform.DOLocalMoveX(originalPos.x - 150f, 0.1f));
     }
     #endregion
 

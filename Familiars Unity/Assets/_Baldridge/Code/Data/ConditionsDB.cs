@@ -12,7 +12,6 @@ public class ConditionsDB
             var condition = kvp.Value;
 
             condition.Id = conditionId;
-            Debug.Log("[ConditionsDB.cs/Init()] Conition ID: " + condition.Id);
         }
     }
 

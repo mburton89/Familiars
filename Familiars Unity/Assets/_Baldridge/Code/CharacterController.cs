@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PlayerState { Normal, Interacting }
 public class CharacterController : MonoBehaviour
 {
     private const float MOVE_SPEED = 6f;
@@ -10,19 +11,26 @@ public class CharacterController : MonoBehaviour
     public LayerMask grassLayer;
 
     [SerializeField] private LayerMask dashLayerMask;
+    public Camera cm;
 
     public event Action OnEncountered;
 
-    private Rigidbody2D rigidbody2D;
+    private Rigidbody2D rb2D;
     private Vector3 moveDir;
     private bool isDashButtonDown;
 
     [SerializeField] float noEncounterPeriod = 2f;
+    bool inGrass = false;
     bool noEncounter;
 
+    [HideInInspector] public PlayerState state = PlayerState.Normal;
+
+    // === Animation section
+
+    [SerializeField] Animator animator;
     private void Awake()
     {
-        rigidbody2D = GetComponent<Rigidbody2D>();
+        rb2D = GetComponent<Rigidbody2D>();
         Debug.Log(this);
         DontDestroyOnLoad(this.gameObject);
     }
@@ -32,29 +40,31 @@ public class CharacterController : MonoBehaviour
         float moveX = 0f;
         float moveY = 0f;
 
-        if(Input.GetKey(KeyCode.W))
+        if(Input.GetKey(KeyCode.UpArrow))
         {
             moveY = +1f;
         }
 
-        if(Input.GetKey(KeyCode.S))
+        if(Input.GetKey(KeyCode.DownArrow))
         {
             moveY = -1f;
         }
 
-        if(Input.GetKey(KeyCode.A))
+        if(Input.GetKey(KeyCode.LeftArrow))
         {
             moveX = -1f;
         }
 
-        if(Input.GetKey(KeyCode.D))
+        if(Input.GetKey(KeyCode.RightArrow))
         {
             moveX = +1f;
         }
 
         moveDir = new Vector3(moveX, moveY).normalized;
 
-        
+        animator.SetFloat("Horizontal", moveX);
+        animator.SetFloat("Vertical", moveY);
+        animator.SetFloat("Speed", moveDir.sqrMagnitude);
 
         if(Input.GetKeyDown(KeyCode.Space))
         {
@@ -64,26 +74,33 @@ public class CharacterController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rigidbody2D.velocity = moveDir * MOVE_SPEED;
-
-        if(isDashButtonDown)
+        if (state == PlayerState.Normal)
         {
-            float dashAmount = 4f;
-            Vector3 dashPosition = transform.position + moveDir * dashAmount;
+            rb2D.velocity = moveDir * MOVE_SPEED;
 
-            RaycastHit2D raycastHit2d = Physics2D.Raycast(transform.position, moveDir, dashAmount, dashLayerMask);
-            if(raycastHit2d.collider != null)
+            if (isDashButtonDown)
             {
-                dashPosition = raycastHit2d.point;
+                float dashAmount = 4f;
+                Vector3 dashPosition = transform.position + moveDir * dashAmount;
+
+                RaycastHit2D raycastHit2d = Physics2D.Raycast(transform.position, moveDir, dashAmount, dashLayerMask);
+                if (raycastHit2d.collider != null)
+                {
+                    dashPosition = raycastHit2d.point;
+                }
+
+                rb2D.MovePosition(dashPosition);
+                isDashButtonDown = false;
             }
 
-            rigidbody2D.MovePosition(dashPosition);
-            isDashButtonDown = false;
+            if (rb2D.velocity.magnitude > 0)
+            {
+                CheckForEncounters();
+            }
         }
-
-        if (rigidbody2D.velocity.magnitude > 0)
+        else if (state == PlayerState.Interacting)
         {
-            CheckForEncounters();
+            rb2D.velocity = new Vector2(0, 0);
         }
     }
 
@@ -91,17 +108,21 @@ public class CharacterController : MonoBehaviour
     {
         if (!noEncounter)
         {
-            if (Physics2D.OverlapCircle(transform.position, 0.2f, grassLayer) != null)
+            if (inGrass)
             {
-                if (UnityEngine.Random.Range(1, 101) <= 5)
+                int _r = UnityEngine.Random.Range(1, 101);
+                Debug.Log("Grass, " + _r);
+                if (_r <= 5)
                 {
-                    if (OnEncountered != null)
-                    {
-                        OnEncountered();
-                    }
+                    OnEncountered?.Invoke();
                 }
             }
         }
+    }
+
+    public void SetPosition(Vector3 position)
+    {
+        this.gameObject.transform.position = position;
     }
 
     public void SetEncounterCooldown()
@@ -115,5 +136,21 @@ public class CharacterController : MonoBehaviour
     {
         yield return new WaitForSeconds(noEncounterPeriod);
         noEncounter = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Grass")
+        {
+            inGrass = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "Grass")
+        {
+            inGrass = false;
+        }
     }
 }

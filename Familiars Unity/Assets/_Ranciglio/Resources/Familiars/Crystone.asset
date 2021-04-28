@@ -14,23 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Crystone
   description: 
-  familiarSprite: {fileID: 0}
+  familiarSprite: {fileID: 21300000, guid: 6310c15046f493e40988cdf5c3a19652, type: 3}
   type: 050000000e000000
-  maxHp: 0
-  attack: 0
-  defense: 0
-  spAttack: 0
-  spDefense: 0
-  speed: 0
-  movement: 0
+  maxHp: 20
+  attack: 10
+  defense: 20
+  spAttack: 12
+  spDefense: 25
+  speed: 10
+  movement: 1
   attackSound: {fileID: 0}
   injuredSound: {fileID: 0}
   learnableAttacks:
   - attackBase: {fileID: 11400000, guid: 9ce4cc54ab9e85e4da48f56eb2ec0e8e, type: 2}
-    level: 0
+    level: 1
   - attackBase: {fileID: 11400000, guid: 0c8f6dd780ed80f4a8e19f7eeede5d25, type: 2}
-    level: 0
-  - attackBase: {fileID: 11400000, guid: a8e9aecbb4a638246a752a4a53bd02e0, type: 2}
-    level: 0
+    level: 4
+  - attackBase: {fileID: 11400000, guid: 7fcafb07f1a52554d889c7630996d463, type: 2}
+    level: 6
   - attackBase: {fileID: 11400000, guid: 7506cd3aebd3d0d4a98df6e58b3336a5, type: 2}
-    level: 0
+    level: 8

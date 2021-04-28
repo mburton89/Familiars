@@ -8,6 +8,7 @@ public class CurrentFamiliarsController : MonoBehaviour
 
     public List<Familiar> playerFamiliars;
     public List<Familiar> enemyFamiliars;
+
     void Awake()
     {
         if (Instance == null)

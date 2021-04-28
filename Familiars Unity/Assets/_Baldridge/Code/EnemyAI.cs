@@ -86,7 +86,7 @@ public class EnemyAI : MonoBehaviour
         int iteration = 0;
         int _preview = 0;
         // Check to see if the current attack has any valid targets;
-        Debug.Log(_attack.Base.Name);
+        //Debug.Log(_attack.Base.Name);
         while (!(_valid || iteration > 50))
         {
             if (_attack.Base.Sources.Active[user.x * 3 + user.y])
@@ -231,10 +231,8 @@ public class EnemyAI : MonoBehaviour
                         }
                     }
 
-                    for (int i = 0; i < _targetSets.Count; i++)
-                    {
-                        _targets.Add(_targetSets[i][Random.Range(0, _targetSets[i].Count)]);
-                    }
+                    int _r = Random.Range(0, _targetSets.Count);
+                    _targets.Add(_targetSets[_r][Random.Range(0, _targetSets[_r].Count)]);
                     
                     break;
                 case AttackStyle.AreaStatic:

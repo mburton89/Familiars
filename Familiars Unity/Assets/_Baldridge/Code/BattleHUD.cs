@@ -9,6 +9,7 @@ public class BattleHUD : MonoBehaviour
     [SerializeField] Text nameText;
     [SerializeField] Text levelText;
     [SerializeField] Text statusText;
+    [SerializeField] GameObject statusBar;
     [SerializeField] HpBar hpBar;
 
     [SerializeField] Color psnColor;
@@ -42,7 +43,7 @@ public class BattleHUD : MonoBehaviour
         _familiar = familiar;
 
         nameText.text = familiar.Base.Name;
-        levelText.text = "Lvl " + familiar.Level;
+        SetLevel();
         hpBar.SetHP((float) familiar.HP / familiar.MaxHp);
 
         statusColors = new Dictionary<ConditionID, Color>()
@@ -61,13 +62,20 @@ public class BattleHUD : MonoBehaviour
     {
         if (_familiar.Status?.Name == "Burn" || _familiar.Status?.Name == "Poison" || _familiar.Status?.Name == "Dazed")
         {
-            statusText.text = _familiar.Status.Id.ToString().ToUpper();
+            statusBar.SetActive(true);
+            statusText.text = _familiar.Status.Name.ToUpper();
             statusText.color = statusColors[_familiar.Status.Id];
         }
         else
         {
+            statusBar.SetActive(false);
             statusText.text = "";
         }
+    }
+
+    public void SetLevel()
+    {
+        levelText.text = "Lvl " + _familiar.Level;
     }
 
     public IEnumerator UpdateHP()

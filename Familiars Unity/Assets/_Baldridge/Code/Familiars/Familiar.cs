@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+
 
 [System.Serializable]
 public class Familiar
@@ -26,6 +28,7 @@ public class Familiar
 
     public int HP { get; set; }
 
+    public int EXP { get; set; }
     public int RandomID { get; set; }
 
     public List<Attack> Attacks { get; set; }
@@ -59,6 +62,7 @@ public class Familiar
                 break;
         }
 
+        EXP = Base.GetExpForLevel(Level);
 
         CalculateStats();
         HP = MaxHp;
@@ -66,6 +70,7 @@ public class Familiar
         RandomID = Random.Range(100000, 999999);
         StatusChanges = new Queue<string>();
 
+        Debug.Log("[Familiar.cs/Init()] " + Base.Name + ", " + RandomID + "  HP: " + HP);
         ResetStatBoost();
         Status = null;
         VolatileStatus = null;
@@ -143,6 +148,28 @@ public class Familiar
         }
     }
 
+    public bool CheckForLevelUp()
+    {
+        if (EXP > Base.GetExpForLevel(Level + 1))
+        {
+            level++;
+            return true;
+        }
+        return false;
+    }
+
+    public LearnableAttack GetLearnableAttackAtCurrLevel()
+    {
+        return Base.LearnableAttacks.Where(x => x.Level == level).FirstOrDefault();
+    }
+
+    public void LearnMove(LearnableAttack attackToLearn)
+    {
+        if (Attacks.Count > FamiliarBase.MaxNumOfAttacks)
+            return;
+
+        Attacks.Add(new Attack(attackToLearn.Base));
+    }
     public int Attack
     {
         get { return GetStat(Stat.Attack); }
@@ -205,7 +232,7 @@ public class Familiar
         float mod = Random.Range(0.8f, 1f);
         float d = ((attack.Base.Power + attacker.Attack) - Defense) + (((attack.Base.Magic + attacker.SpAttack) - SpDefense) * type);
 
-        Debug.Log("[Familiar.cs/TakeDamage()] Damage: " + d);
+        //Debug.Log("[Familiar.cs/TakeDamage()] Damage: " + d);
 
         var damageDetails = new DamageDetails()
         {
@@ -214,7 +241,7 @@ public class Familiar
             Fainted = false
         };
         
-        int damage = Mathf.FloorToInt(d * mod);
+        int damage = Mathf.FloorToInt((d * mod) * 2f);
         UpdateHP(damage);
 
         return damageDetails;
