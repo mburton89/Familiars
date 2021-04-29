@@ -14,6 +14,7 @@ public class Portal : MonoBehaviour, IPlayerTriggerable
     public void OnPlayerTriggered(CharacterController player)
     {
         this.player = player;
+        Debug.Log("[Portal.cs/OnPlayerTriggered()]");
         StartCoroutine(SwitchScene());
     }
 
@@ -26,24 +27,38 @@ public class Portal : MonoBehaviour, IPlayerTriggerable
     IEnumerator SwitchScene()
     {
         DontDestroyOnLoad(gameObject);
+        Debug.Log("[Portal.cs/SwitchScene()] Start of Switch Scene");
 
         //GameController.Instance.PauseGame(true);
         yield return fader.FadeIn(0.5f);
-
-        yield return SceneManager.LoadSceneAsync(sceneToLoad);
-
+        Debug.Log("1");
+       yield return SceneManager.LoadSceneAsync(sceneToLoad);
+        Debug.Log("2");
+        Debug.Log("[Portal.cs/SwitchScene()] before destPortal");
         var destPortal = FindObjectsOfType<Portal>().First(x => x != this && x.destinationPortal == this.destinationPortal);
+        Debug.Log("[Portal.cs/SwitchScene()] before setPosition");
         player.SetPosition(destPortal.SpawnPoint.position);
-
+        Debug.Log("[Portal.cs/SwitchScene()] after setPosition");
+        if (destPortal != null)
+        {
+            Debug.Log(destPortal.SpawnPoint.position);
+        }
+        else
+        {
+            Debug.Log("very much not pog");
+        }
+        Debug.Log("[Portal.cs/SwitchScene()] before fadeout");
         yield return fader.FadeOut(0.5f);
         //GameController.Instance.PauseGame(false);
 
-        Destroy(gameObject);
+
+        Debug.Log("[Portal.cs/SwitchScene()] End of Switch Scene");
+        Destroy(this.gameObject);
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("just checking");
+        
         if (other.tag == "Player")
         {
             Debug.Log("if we got here");
@@ -55,4 +70,4 @@ public class Portal : MonoBehaviour, IPlayerTriggerable
     public Transform SpawnPoint => spawnPoint;
 }
 
-public enum DestinationIdentifier { A, B, C, D, E }
+public enum DestinationIdentifier { A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z }

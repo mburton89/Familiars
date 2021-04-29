@@ -21,7 +21,7 @@ public class GameController : MonoBehaviour
     Vector3 playerPosition;
 
     int worldScreen = 1;
-    int battleScreen = 2;
+    int battleScreen = 3;
 
     public bool versusTrainer;
 
@@ -50,7 +50,9 @@ public class GameController : MonoBehaviour
         var wildFamiliars = FindObjectOfType<MapArea>().GetComponent<MapArea>().GetRandomWildFamiliars();
         CurrentFamiliarsController.Instance.UpdateEnemyFamiliars(wildFamiliars);
         playerPosition = playerController.gameObject.transform.position;
-        
+
+        worldScreen = SceneManager.GetActiveScene().buildIndex;
+
         SceneManager.LoadSceneAsync(battleScreen);
 
         player.SetActive(false);
@@ -66,6 +68,7 @@ public class GameController : MonoBehaviour
         playerPosition = playerController.gameObject.transform.position;
         currentNPC = trainer.GetTrainerID();
         versusTrainer = true;
+        worldScreen = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadSceneAsync(battleScreen);
     }
 
@@ -103,7 +106,7 @@ public class GameController : MonoBehaviour
     public void StartGame()
     {
         SceneManager.LoadSceneAsync(worldScreen);
-        player = Instantiate(playerPrefab, new Vector3(0, 0, 1), Quaternion.identity);
+        player = Instantiate(playerPrefab, new Vector3(10, 61, 1), Quaternion.identity);
         GameObject _p = GameObject.Find("Player");
         if (_p != null)
         {
@@ -111,7 +114,7 @@ public class GameController : MonoBehaviour
         }
         player.name = "Player";
         playerController = player.GetComponent<CharacterController>();
-        player.transform.position = new Vector3(0, -2, 0);
+        player.transform.position = new Vector3(10, 61, 1);
         playerController.OnEncountered += StartBattle;
         player.GetComponent<SpriteRenderer>().enabled = false;
         playerController.cm.enabled = false;
