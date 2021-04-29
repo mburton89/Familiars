@@ -11,6 +11,23 @@ public class PlayerBlockadeManager : MonoBehaviour
         Instance = this;
     }
 
+    private void Update()
+    {
+        //TEST STUFF
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            PlayerPrefs.DeleteAll();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            UnlockTownToForest();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            UnlockTownToCave();
+        }
+    }
+
     public void UnlockTownToForest()
     {
         PlayerPrefs.SetInt("TownToForest", 1);

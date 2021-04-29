@@ -16,20 +16,20 @@ public class TownBlockadeManager : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("TownToForest") == 1)
         {
-            townToForestBlockade.SetActive(true);
+            townToForestBlockade.SetActive(false);
         }
         else
         {
-            townToForestBlockade.SetActive(false);
+            townToForestBlockade.SetActive(true); 
         }
 
         if (PlayerPrefs.GetInt("TownToCave") == 1)
         {
-            townToCaveBlockade.SetActive(true);
+            townToCaveBlockade.SetActive(false);
         }
         else
         {
-            townToCaveBlockade.SetActive(false);
+            townToCaveBlockade.SetActive(true);
         }
     }
     
