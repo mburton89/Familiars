@@ -23,8 +23,8 @@ MonoBehaviour:
   spDefense: 25
   speed: 20
   movement: 2
-  attackSound: {fileID: 0}
-  injuredSound: {fileID: 0}
+  attackSound: {fileID: 8300000, guid: c37631af70539bf4baa703e42e958a32, type: 3}
+  injuredSound: {fileID: 8300000, guid: 11006d989e2091c488b992e4aa1f0ead, type: 3}
   learnableAttacks:
   - attackBase: {fileID: 11400000, guid: 4049cd6800ef8404abfd248e2b04499a, type: 2}
     level: 3

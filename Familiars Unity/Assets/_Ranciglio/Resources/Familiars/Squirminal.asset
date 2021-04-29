@@ -16,13 +16,13 @@ MonoBehaviour:
   description: 
   familiarSprite: {fileID: 0}
   type: 0700000000000000
-  maxHp: 0
-  attack: 0
-  defense: 0
-  spAttack: 0
-  spDefense: 0
-  speed: 0
-  movement: 0
+  maxHp: 20
+  attack: 20
+  defense: 15
+  spAttack: 10
+  spDefense: 15
+  speed: 10
+  movement: 2
   attackSound: {fileID: 0}
   injuredSound: {fileID: 0}
   learnableAttacks:

@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6966b4b74bbd40c44ab2b81e2a3d3836, type: 3}
+  m_Name: Harshmallow
+  m_EditorClassIdentifier: 
+  name: Harshmallow
+  description: 
+  familiarSprite: {fileID: 21300000, guid: e06dc941dc8a901459444b055207c340, type: 3}
+  type: 0a00000008000000
+  maxHp: 14
+  attack: 9
+  defense: 16
+  spAttack: 14
+  spDefense: 13
+  speed: 9
+  movement: 1
+  attackSound: {fileID: 8300000, guid: 05bae646aaed88b46a2df004139e4f27, type: 3}
+  injuredSound: {fileID: 8300000, guid: c840064c97be51c489eefca888bfed0a, type: 3}
+  learnableAttacks:
+  - attackBase: {fileID: 11400000, guid: fcb6a50c4c4acce42ac4a5bc33f745fe, type: 2}
+    level: 10
+  - attackBase: {fileID: 11400000, guid: 911285795c882604cb6b362b9cce710d, type: 2}
+    level: 0
+  - attackBase: {fileID: 11400000, guid: 94cc002c85a8c2e44a86986bf6047674, type: 2}
+    level: 5
+  - attackBase: {fileID: 11400000, guid: b9ecf31bdb94cbb4d87b9e8e9502839d, type: 2}
+    level: 15

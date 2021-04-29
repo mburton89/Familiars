@@ -16,15 +16,15 @@ MonoBehaviour:
   description: 
   familiarSprite: {fileID: 21300000, guid: 318143f4065faf0438c0b88179eae31a, type: 3}
   type: 0600000000000000
-  maxHp: 15
-  attack: 20
-  defense: 15
-  spAttack: 20
-  spDefense: 15
-  speed: 25
-  movement: 2
-  attackSound: {fileID: 0}
-  injuredSound: {fileID: 0}
+  maxHp: 14
+  attack: 21
+  defense: 10
+  spAttack: 21
+  spDefense: 10
+  speed: 9
+  movement: 3
+  attackSound: {fileID: 8300000, guid: b9b48c19587a0664ab06187be870d599, type: 3}
+  injuredSound: {fileID: 8300000, guid: 5a71fbe8234cb844989780b46a5ff1b9, type: 3}
   learnableAttacks:
   - attackBase: {fileID: 11400000, guid: 831aff259c70bf8499b0c695294cdb78, type: 2}
     level: 1
