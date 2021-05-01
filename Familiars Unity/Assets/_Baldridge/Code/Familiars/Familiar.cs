@@ -70,7 +70,7 @@ public class Familiar
         RandomID = Random.Range(100000, 999999);
         StatusChanges = new Queue<string>();
 
-        Debug.Log("[Familiar.cs/Init()] " + Base.Name + ", " + RandomID + "  HP: " + HP);
+        //Debug.Log("[Familiar.cs/Init()] " + Base.Name + ", " + RandomID + "  HP: " + HP);
         ResetStatBoost();
         Status = null;
         VolatileStatus = null;

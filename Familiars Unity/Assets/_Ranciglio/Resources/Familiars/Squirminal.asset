@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Squirminal
   description: 
-  familiarSprite: {fileID: 0}
+  familiarSprite: {fileID: 21300000, guid: 75375fd3b19a83e47a882196333519f7, type: 3}
   type: 0700000000000000
   maxHp: 0
   attack: 0
@@ -23,14 +23,16 @@ MonoBehaviour:
   spDefense: 0
   speed: 0
   movement: 0
+  expYield: 50
+  growthRate: 1
   attackSound: {fileID: 0}
   injuredSound: {fileID: 0}
   learnableAttacks:
-  - attackBase: {fileID: 0}
-    level: 0
-  - attackBase: {fileID: 0}
-    level: 0
-  - attackBase: {fileID: 0}
-    level: 0
-  - attackBase: {fileID: 0}
-    level: 0
+  - attackBase: {fileID: 11400000, guid: 2a6f611a764dabf4d808537653682f68, type: 2}
+    level: 1
+  - attackBase: {fileID: 11400000, guid: 4ab95e2b956c9a140b1f729c29a8ed87, type: 2}
+    level: 1
+  - attackBase: {fileID: 11400000, guid: 7a39599f991490a4e9aed54f62525a4e, type: 2}
+    level: 3
+  - attackBase: {fileID: 11400000, guid: 3ae88fc51fae958448f78315cd54f57a, type: 2}
+    level: 10

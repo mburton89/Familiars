@@ -20,7 +20,7 @@ public class GameController : MonoBehaviour
     GameState state;
     Vector3 playerPosition;
 
-    int worldScreen = 1;
+    int worldScreen = 5;
     int battleScreen = 2;
 
     public bool versusTrainer;
@@ -111,7 +111,7 @@ public class GameController : MonoBehaviour
         }
         player.name = "Player";
         playerController = player.GetComponent<CharacterController>();
-        player.transform.position = new Vector3(0, -2, 0);
+        player.transform.position = new Vector3(10, 64, 0);
         playerController.OnEncountered += StartBattle;
         player.GetComponent<SpriteRenderer>().enabled = false;
         playerController.cm.enabled = false;
@@ -149,7 +149,7 @@ public class GameController : MonoBehaviour
 
     bool IsWorldScene(int scene)
     {
-        if (scene == 1)
+        if (!(scene == 0 || scene == 2))
         {
             return true;
         }
