@@ -67,7 +67,9 @@ public class DialogManager : MonoBehaviour
                     Debug.Log("[DialogManager.cs] Dialog Finished");
                     dialogBox.SetActive(false);
                     onDialogFinished?.Invoke();
+                    Debug.Log("[DialogManager.cs] OnDialogFinished finished");
                     OnCloseDialog?.Invoke();
+                    Debug.Log("[DialogManager.cs] OnCloseDialog finished");
                     player.GetComponent<CharacterController>().state = PlayerState.Normal;
                 }
             }

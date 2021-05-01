@@ -11,7 +11,7 @@ public class TrainerController : NPCController
     FamiliarParty familiarParty;
     bool autoInteract;
 
-    void Awake()
+    protected new void Awake()
     {
         state = NPCState.Idle;
         familiarParty = gameObject.GetComponent<FamiliarParty>();
@@ -29,7 +29,7 @@ public class TrainerController : NPCController
         }
     }
 
-    public void Interact(GameObject player)
+    public new void Interact(GameObject player)
     {
         this.player.state = PlayerState.Interacting;
         if (state == NPCState.Idle)
@@ -62,7 +62,7 @@ public class TrainerController : NPCController
         return trainerID;
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    protected new void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Player")
         {
@@ -72,15 +72,6 @@ public class TrainerController : NPCController
             { 
                 Interact(player.gameObject);
             }
-        }
-    }
-
-    protected void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.tag == "Player")
-        {
-            player = null;
-            interactable = false;
         }
     }
 

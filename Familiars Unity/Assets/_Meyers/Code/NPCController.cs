@@ -14,18 +14,23 @@ public class NPCController : MonoBehaviour
     protected bool interactable;
     protected CharacterController player;
 
+    protected bool refreshed = true;
+    protected float refreshTimer;
 
-
-    void Awake()
+    protected void Awake()
     {
         state = NPCState.Idle;
     }
 
     protected void Update()
     {
-        if (interactable && Input.GetKeyDown(KeyCode.Z) && player.state == PlayerState.Normal)
+        if (refreshed)
         {
-            Interact(player.gameObject);
+            if (interactable && state == NPCState.Idle && Input.GetKeyDown(KeyCode.Z) && player.state == PlayerState.Normal)
+            {
+                Debug.Log("[NPCController.cs] Start Interact via Z");
+                Interact(player.gameObject);
+            }
         }
     }
 
@@ -45,7 +50,13 @@ public class NPCController : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    protected IEnumerator Refresh()
+    {
+        yield return new WaitForSeconds(refreshTimer);
+        refreshed = true;
+    }
+
+    protected void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Player")
         {

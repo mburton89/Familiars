@@ -230,19 +230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7af8adbc29b2bc349910d217195ec4c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  familiars:
-  - _base: {fileID: 11400000, guid: 53f97e6397be28b41bbedd046ad33db4, type: 2}
-    level: 10
-  - _base: {fileID: 11400000, guid: 80acf062e91162d498308be968d77859, type: 2}
-    level: 7
-  - _base: {fileID: 11400000, guid: 187b4ef4ed34dfc4db8f73921786b577, type: 2}
-    level: 8
-  - _base: {fileID: 11400000, guid: b33f7364ef512254eaca869c8ef1e74f, type: 2}
-    level: 6
-  - _base: {fileID: 11400000, guid: e92022646cbe5cf43a63e1618946818f, type: 2}
-    level: 6
-  - _base: {fileID: 11400000, guid: 0787ca68daab2574b8ed2c4c373bd687, type: 2}
-    level: 6
+  familiars: []
 --- !u!58 &3920804723372859678
 CircleCollider2D:
   m_ObjectHideFlags: 0

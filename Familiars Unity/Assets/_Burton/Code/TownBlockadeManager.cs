@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TownBlockadeManager : MonoBehaviour
 {
-    public GameObject townToForestBlockade;
+    public GameObject townToRouteBlockade;
     public GameObject townToCaveBlockade;
 
     void Start()
@@ -16,11 +16,11 @@ public class TownBlockadeManager : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("TownToForest") == 1)
         {
-            townToForestBlockade.SetActive(false);
+            townToRouteBlockade.SetActive(false);
         }
         else
         {
-            townToForestBlockade.SetActive(true); 
+            townToRouteBlockade.SetActive(true); 
         }
 
         if (PlayerPrefs.GetInt("TownToCave") == 1)

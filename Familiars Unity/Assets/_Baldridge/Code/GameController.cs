@@ -21,6 +21,7 @@ public class GameController : MonoBehaviour
     Vector3 playerPosition;
 
     int worldScreen = 5;
+    int prevWorldScreen = 5;
     int battleScreen = 2;
 
     public bool versusTrainer;
@@ -50,7 +51,7 @@ public class GameController : MonoBehaviour
         var wildFamiliars = FindObjectOfType<MapArea>().GetComponent<MapArea>().GetRandomWildFamiliars();
         CurrentFamiliarsController.Instance.UpdateEnemyFamiliars(wildFamiliars);
         playerPosition = playerController.gameObject.transform.position;
-        
+
         SceneManager.LoadSceneAsync(battleScreen);
 
         player.SetActive(false);
@@ -89,7 +90,7 @@ public class GameController : MonoBehaviour
         }
         Debug.Log("[GameController.cs/EndBattle():3] currentNPC = " + currentNPC);
 
-        SceneManager.LoadSceneAsync(worldScreen);
+        SceneManager.LoadSceneAsync(prevWorldScreen);
 
         player.SetActive(true);
         playerController.SetEncounterCooldown();
@@ -111,7 +112,7 @@ public class GameController : MonoBehaviour
         }
         player.name = "Player";
         playerController = player.GetComponent<CharacterController>();
-        player.transform.position = new Vector3(10, 64, 0);
+        player.transform.position = new Vector3(10, 61, 0);
         playerController.OnEncountered += StartBattle;
         player.GetComponent<SpriteRenderer>().enabled = false;
         playerController.cm.enabled = false;
@@ -135,6 +136,7 @@ public class GameController : MonoBehaviour
                 _p.GetComponent<SpriteRenderer>().enabled = true;
                 _p.GetComponent<CharacterController>().cm.enabled = true;
             }
+            prevWorldScreen = scene.buildIndex;
         }
         else if (scene.buildIndex == battleScreen)
         {
