@@ -46,6 +46,9 @@ public class NPCController : MonoBehaviour
             {
                 idleTimer = 0f;
                 state = NPCState.Idle;
+
+                interactable = false;
+                StartCoroutine(TalkCooldown(0.01f));
             }));
         }
     }
@@ -72,6 +75,12 @@ public class NPCController : MonoBehaviour
             player = null;
             interactable = false;
         }
+    }
+
+    protected IEnumerator TalkCooldown(float time)
+    {
+        yield return new WaitForSeconds(time);
+        interactable = true;
     }
 }
 

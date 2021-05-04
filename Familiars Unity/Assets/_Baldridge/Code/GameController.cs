@@ -20,7 +20,7 @@ public class GameController : MonoBehaviour
     GameState state;
     Vector3 playerPosition;
 
-    int worldScreen = 5;
+    [SerializeField] int worldScreen = 5;
     int prevWorldScreen = 5;
     int battleScreen = 2;
 
@@ -85,6 +85,11 @@ public class GameController : MonoBehaviour
                 Debug.Log("[GameController.cs] currentNPC not null, setting TrainerFlag");
                 FlagManager.Instance.SetTrainerFlag(currentNPC, true);
                 currentNPC = -1;
+
+                if (currentNPC == 15)
+                {
+                    PlayerPrefs.SetInt("ToPortal", 1);
+                }
                 versusTrainer = false;
             }
         }

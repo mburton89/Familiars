@@ -25,7 +25,7 @@ public class Portal : MonoBehaviour, IPlayerTriggerable
 
     IEnumerator SwitchScene()
     {
-        DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(this.gameObject);
 
         //GameController.Instance.PauseGame(true);
         yield return fader.FadeIn(0.5f);
@@ -38,7 +38,7 @@ public class Portal : MonoBehaviour, IPlayerTriggerable
         yield return fader.FadeOut(0.5f);
         //GameController.Instance.PauseGame(false);
 
-        Destroy(gameObject);
+        Destroy(this.gameObject);
     }
 
     void OnTriggerEnter2D(Collider2D other)
