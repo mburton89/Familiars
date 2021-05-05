@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fa7157f267b68e4abb637a352e0c721, type: 3}
+  m_Name: Flood
+  m_EditorClassIdentifier: 
+  name: Flood
+  description: 
+  power: 2
+  magic: 4
+  accuracy: 100
+  alwaysHits: 0
+  range: 0
+  uses: 10
+  type: 3
+  targetOriginPosition: 4
+  sourceOriginPosition: 4
+  attackStyle: 3
+  category: 0
+  effects:
+    boosts: []
+    status: 0
+    volatileStatus: 0
+    movement:
+      move: 0
+      direction: 0
+      squares: 0
+  secondaries: []
+  target: 0
+  relative: 0
+  sources: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
+  targets: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
+  targetingReticle: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
+  sourceArray:
+  - {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
+  targetArray:
+  - {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
+  targetingReticleArray:
+  - {fileID: 11400000, guid: adfbd9d9716edd44888ac690c94389cd, type: 2}
+  projectileOrigin: 1
+  eligibleOrigins: {fileID: 11400000, guid: b17e60f2fe8d4e943869e0d4b274aede, type: 2}
+  direction: 0
+  upperX: 2
+  upperY: 2
+  lowerX: 0
+  lowerY: 0

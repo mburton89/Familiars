@@ -16,21 +16,21 @@ MonoBehaviour:
   description: 
   familiarSprite: {fileID: 21300000, guid: 318143f4065faf0438c0b88179eae31a, type: 3}
   type: 0600000000000000
-  maxHp: 15
-  attack: 20
-  defense: 15
-  spAttack: 20
-  spDefense: 15
-  speed: 25
-  movement: 2
-  attackSound: {fileID: 0}
-  injuredSound: {fileID: 0}
+  maxHp: 14
+  attack: 21
+  defense: 10
+  spAttack: 21
+  spDefense: 10
+  speed: 9
+  movement: 3
+  attackSound: {fileID: 8300000, guid: b9b48c19587a0664ab06187be870d599, type: 3}
+  injuredSound: {fileID: 8300000, guid: 5a71fbe8234cb844989780b46a5ff1b9, type: 3}
   learnableAttacks:
-  - attackBase: {fileID: 11400000, guid: b587a5a13a0963544844016bb29c37b2, type: 2}
+  - attackBase: {fileID: 11400000, guid: 831aff259c70bf8499b0c695294cdb78, type: 2}
     level: 1
-  - attackBase: {fileID: 11400000, guid: bc3d50a6614e7ff4e8fbfd90e5edc0f4, type: 2}
+  - attackBase: {fileID: 11400000, guid: a6d6fa43b8e09ea4eadb7944adc6a4bf, type: 2}
     level: 1
-  - attackBase: {fileID: 11400000, guid: f43f13c722944e446a8cd969b060e11c, type: 2}
+  - attackBase: {fileID: 11400000, guid: f3e1a24f22255ae44b20af80b6e4c22e, type: 2}
     level: 7
-  - attackBase: {fileID: 11400000, guid: c9eaecb4102824a4ebfb9c8dcaf40b1c, type: 2}
+  - attackBase: {fileID: 11400000, guid: 3b825921a3f69104ba0f892c6ef3e943, type: 2}
     level: 10

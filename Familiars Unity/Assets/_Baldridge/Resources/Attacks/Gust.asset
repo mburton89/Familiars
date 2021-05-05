@@ -15,8 +15,9 @@ MonoBehaviour:
   name: Gust
   description: 
   power: 1
-  magic: 4
+  magic: 3
   accuracy: 100
+  alwaysHits: 0
   range: 2
   uses: 30
   type: 6
@@ -26,6 +27,13 @@ MonoBehaviour:
   category: 0
   effects:
     boosts: []
+    status: 0
+    volatileStatus: 0
+    movement:
+      move: 0
+      direction: 0
+      squares: 0
+  secondaries: []
   target: 0
   relative: 0
   sources: {fileID: 11400000, guid: dec509fe37e97a9449d52a9c4fad4202, type: 2}

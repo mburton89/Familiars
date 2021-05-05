@@ -21,7 +21,7 @@ public class BattleHUD : MonoBehaviour
 
     Familiar _familiar;
     Dictionary<ConditionID, Color> statusColors;
-
+    //
     // Placements for stuff;
     float visibleY;
     float hiddenY;

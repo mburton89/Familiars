@@ -14,23 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Ignis
   description: 
-  familiarSprite: {fileID: 0}
+  familiarSprite: {fileID: 21300000, guid: e17d4629ac32cd942bc44c61e47eac70, type: 3}
   type: 0200000000000000
-  maxHp: 0
-  attack: 0
-  defense: 0
-  spAttack: 0
-  spDefense: 0
-  speed: 0
-  movement: 0
-  attackSound: {fileID: 0}
-  injuredSound: {fileID: 0}
+  maxHp: 21
+  attack: 22
+  defense: 11
+  spAttack: 14
+  spDefense: 16
+  speed: 11
+  movement: 2
+  attackSound: {fileID: 8300000, guid: 5efb3f4141c129246939c93e598361a7, type: 3}
+  injuredSound: {fileID: 8300000, guid: a4dcef6b7376efc4a9197c5f8c678a54, type: 3}
   learnableAttacks:
-  - attackBase: {fileID: 11400000, guid: bc3d50a6614e7ff4e8fbfd90e5edc0f4, type: 2}
-    level: 0
-  - attackBase: {fileID: 11400000, guid: d7c7c9be84c55a94da46bc123e5630d2, type: 2}
-    level: 0
-  - attackBase: {fileID: 11400000, guid: 80fd6e66fbeedd242ba78aa8daaa35d3, type: 2}
-    level: 0
-  - attackBase: {fileID: 0}
+  - attackBase: {fileID: 11400000, guid: caea158b297d3ed45a8d12b744827152, type: 2}
+    level: 4
+  - attackBase: {fileID: 11400000, guid: 0cd80e9458e9f9843810dee8f0605dbf, type: 2}
+    level: 9
+  - attackBase: {fileID: 11400000, guid: 95ea5f2923210344996f10f96e3decc9, type: 2}
+    level: 14
+  - attackBase: {fileID: 11400000, guid: c0b406df85033564090d7984062193d8, type: 2}
     level: 0
