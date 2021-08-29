@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6966b4b74bbd40c44ab2b81e2a3d3836, type: 3}
-  m_Name: Nimbite
+  m_Name: Nimbyte
   m_EditorClassIdentifier: 
   name: Nimbyte
   description: 
@@ -23,6 +23,8 @@ MonoBehaviour:
   spDefense: 16
   speed: 11
   movement: 2
+  expYield: 50
+  growthRate: 1
   attackSound: {fileID: 8300000, guid: 2a13bcfe3259e9d4db20be125c7ddfa2, type: 3}
   injuredSound: {fileID: 8300000, guid: 5a71fbe8234cb844989780b46a5ff1b9, type: 3}
   learnableAttacks:
